@@ -181,6 +181,7 @@ public class MineMemberActivity extends BaseActivity<MineMemberContract.View, Mi
                 vipOrderBean.setBody(mMemberSelectBean.getTitle());
                 vipOrderBean.setPayPrice(mMemberSelectBean.getPrice());
                 vipOrderBean.setVipDay(mMemberSelectBean.getDays());
+
                 mPresenter.vipOrderParameter(vipOrderBean);
 
                 Log.e("vipSetMealId:",""+vipOrderBean.getVipSetMealId());

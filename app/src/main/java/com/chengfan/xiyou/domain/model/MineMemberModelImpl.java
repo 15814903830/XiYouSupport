@@ -41,6 +41,7 @@ public class MineMemberModelImpl implements MineMemberContract.Model {
     public Observable<String> VIP_ORDER_OBSERVABLE(VIPOrderBean vipOrderBean) {
         return HttpRequest.post(APIContents.CreateVIPOrder)
                 .paramsJsonString(new Gson().toJson(vipOrderBean))
+
                 .execute(new AdaptResponse<String>() {
                 });
     }
