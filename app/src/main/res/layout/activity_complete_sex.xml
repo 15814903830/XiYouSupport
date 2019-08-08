@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/complete_sex_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/padding_130"
+        android:text="@string/complete_sex_title_txt"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/text_size_25"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/complete_sex_title_tv"
+        android:layout_marginTop="@dimen/padding_120">
+
+        <LinearLayout
+            android:id="@+id/complete_nan_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_50"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/complete_nan_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/complete_nan"/>
+
+                <ImageView
+                    android:id="@+id/complete_nan_select_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/complete_select"
+                    app:layout_anchor="@+id/complete_nan_iv"
+                    app:layout_anchorGravity="end|bottom"/>
+
+            </android.support.design.widget.CoordinatorLayout>
+
+            <TextView
+                android:id="@+id/complete_z_nan_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_20"
+                android:text="@string/complete_nan_txt"
+                android:textSize="@dimen/text_size_15"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/complete_nv_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_80"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/complete_nv_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/complete_nv"/>
+
+                <ImageView
+                    android:id="@+id/complete_nv_select_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/complete_select"
+                    app:layout_anchor="@+id/complete_nv_iv"
+                    app:layout_anchorGravity="end|bottom"/>
+            </android.support.design.widget.CoordinatorLayout>
+
+
+            <TextView
+                android:id="@+id/complete_z_nv_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_20"
+                android:text="@string/complete_nv_Txt"
+                android:textSize="@dimen/text_size_15"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/complete_nex_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_50"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginRight="@dimen/padding_20"
+        android:layout_marginBottom="@dimen/padding_20"
+        android:background="@drawable/xiyou_button_bg"
+        android:text="@string/complete_next_txt"
+        android:textColor="@color/color_FFFFFF"/>
+</RelativeLayout>

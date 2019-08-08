@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_10"
+                android:layout_marginBottom="@dimen/padding_15"
+                android:orientation="vertical">
+
+
+    <com.zero.ci.widget.CircleImageView
+        android:id="@+id/family_user_pic_civ"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/padding_20"
+        />
+
+
+    <LinearLayout
+        android:id="@+id/family_z_ll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_60"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/family_user_pic_civ"
+        android:layout_toRightOf="@id/family_user_pic_civ"
+        android:gravity="center_vertical">
+
+
+        <TextView
+            android:id="@+id/family_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:text="dsgdf"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15"/>
+
+        <TextView
+            android:id="@+id/family_action_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/padding_25"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:background="@drawable/xy_mine_lick_add"
+            android:text="群主"
+            android:textColor="@color/color_E5E5E5"
+            android:textSize="@dimen/text_size_12"/>
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/family_z_ll"
+        android:layout_marginLeft="@dimen/padding_60"
+        android:background="@color/color_E5E5E5"/>
+
+</RelativeLayout>

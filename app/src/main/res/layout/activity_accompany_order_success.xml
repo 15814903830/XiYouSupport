@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/xy_tb"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            >
+
+            <com.chengfan.xiyou.view.MediumTextView
+                android:id="@+id/xy_middle_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/text_size_18"/>
+        </android.support.v7.widget.Toolbar>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/xy_tb"
+            android:background="@color/color_E5E5E5"/>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/complete_over_iv"
+            android:layout_width="@dimen/padding_65"
+            android:layout_height="@dimen/padding_65"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="160dp"
+            android:background="@drawable/complete_go"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/complete_over_des_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/complete_over_iv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/padding_40"
+            android:gravity="center"
+            android:text="@string/confirm_success_txt"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_20"/>
+
+        <com.chengfan.xiyou.view.MediumTextView
+            android:id="@+id/success_money_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/complete_over_des_tv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/padding_20"
+            android:text="$20"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_18"/>
+
+        <Button
+            android:id="@+id/success_go_main_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_50"
+            android:layout_above="@+id/success_go_detail_btn"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:layout_marginRight="@dimen/padding_20"
+            android:layout_marginBottom="@dimen/padding_20"
+            android:background="@drawable/xy_going_btn_bg"
+            android:text="@string/complete_now_txt"
+            android:textColor="@color/color_D1AE81"/>
+
+        <Button
+            android:id="@+id/success_go_detail_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_50"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:layout_marginRight="@dimen/padding_20"
+            android:layout_marginBottom="90dp"
+            android:background="@drawable/xy_order_button_bg"
+            android:text="@string/confirm_order_detail_txt"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/text_size_15"/>
+
+    </RelativeLayout>
+</LinearLayout>

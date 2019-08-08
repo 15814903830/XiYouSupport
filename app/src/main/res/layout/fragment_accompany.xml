@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_home_search"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/layout_item_banner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_20"/>
+
+            <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/accompany_game_rv"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/padding_180"-->
+            <!--android:layout_marginTop="@dimen/padding_20"/>-->
+
+            <com.chengfan.xiyou.widget.viewpager.JazzyViewPager
+                android:id="@+id/accompany_jvp"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"/>
+
+            <LinearLayout
+                android:id="@+id/linear"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_below="@+id/accompany_jvp"
+                android:gravity="center"
+                android:orientation="horizontal"></LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_F5F6FA"
+                android:orientation="vertical"
+                >
+
+
+                <com.zero.ci.navigation.BottomNavigationViewEx
+                    android:id="@+id/bot_nav"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/color_F5F6FA"
+                    app:itemTextColor="@color/selector_item_accompany_color"
+                    app:menu="@menu/menu_navigation_accompany_fab"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/accompany_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/padding_15"
+                    android:layout_marginRight="@dimen/padding_15"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

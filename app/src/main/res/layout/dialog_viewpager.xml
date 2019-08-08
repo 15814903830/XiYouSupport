@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/vp_dialog_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_20"/>
+
+
+    <com.chengfan.xiyou.widget.viewpager.JazzyViewPager
+        android:id="@+id/dialog_jazzy_vp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <Button
+        android:id="@+id/vp_close_btn"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/padding_20"
+        android:layout_marginRight="@dimen/padding_20"
+        android:background="@drawable/home_close"/>
+</RelativeLayout>

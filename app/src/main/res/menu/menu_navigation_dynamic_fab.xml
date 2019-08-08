@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/i_home"
+        android:checked="true"
+        android:title="@string/dynamic_attention_txt"/>
+
+    <item
+        android:id="@+id/i_accompany"
+        android:title="@string/dynamic_mine_txt"/>
+    <item
+        android:title=""/>
+</menu>

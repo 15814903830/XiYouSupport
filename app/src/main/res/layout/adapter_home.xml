@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="@dimen/padding_20"
+              android:layout_marginTop="@dimen/padding_20"
+              android:layout_marginRight="@dimen/padding_20"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="@dimen/padding_10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            >
+
+            <com.zero.ci.widget.CircleImageView
+                android:id="@+id/home_user_pic_civ"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_10">
+
+                    <com.chengfan.xiyou.view.MediumTextView
+                        android:id="@+id/home_user_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/text_size_15"/>
+
+                    <ImageView
+                        android:id="@+id/home_is_hy_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_15"
+                        android:background="@drawable/home_huiyuan"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/accompany_game_name_rl"
+                    android:layout_marginLeft="@dimen/padding_10"
+                    android:layout_marginTop="@dimen/padding_10"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/home_user_sex_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/home_nan"
+                        android:visibility="gone"/>
+
+                    <com.chengfan.xiyou.view.RegularTextView
+                        android:id="@+id/home_user_age_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_999999"
+                        android:textSize="@dimen/text_size_13"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="|"
+                        android:textColor="@color/color_999999"
+                        android:textSize="@dimen/text_size_13"/>
+
+                    <com.chengfan.xiyou.view.RegularTextView
+                        android:id="@+id/home_user_fanse_num_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_999999"
+                        android:textSize="@dimen/text_size_13"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/home_user_game_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="完整复活节哦.￥10/小时"
+            android:textColor="@color/color_D1AE81"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/home_user_address_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:text="广州 天河"
+            android:textColor="@color/color_E5E5E5"/>
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/home_user_url_iv"
+        android:layout_width="335dp"
+        android:layout_height="335dp"
+        android:layout_gravity="center"
+        android:scaleType="center"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/color_E5E5E5"/>
+</LinearLayout>

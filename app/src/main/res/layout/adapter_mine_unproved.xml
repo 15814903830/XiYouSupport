@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+    <include
+        android:id="@+id/complete_top_include"
+        layout="@layout/adapter_order_common_layout"/>
+
+    <TextView
+        android:id="@+id/order_unproved_tv"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:visibility="gone"
+        android:layout_below="@+id/complete_top_include"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/padding_15"
+        android:layout_marginEnd="@dimen/padding_20"
+        android:layout_marginRight="@dimen/padding_20"
+        android:background="@drawable/xy_order_ef_bg"
+        android:gravity="center"
+        android:text="@string/order_proved_txt"
+        android:textColor="@color/color_EF5350"
+        android:textSize="@dimen/text_size_13"/>
+
+    <LinearLayout
+        android:id="@+id/tanking_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/complete_top_include"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/padding_15"
+        android:layout_marginEnd="@dimen/padding_20"
+        android:layout_marginRight="@dimen/padding_20"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/taking_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12 "
+            android:textColor="@color/color_EF5350"
+            android:textSize="@dimen/text_size_13"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小时后自动确认"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_13"/>
+    </LinearLayout>
+</RelativeLayout>

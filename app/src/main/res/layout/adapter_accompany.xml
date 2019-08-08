@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/padding_5"
+    android:layout_marginTop="@dimen/padding_10"
+    android:layout_marginRight="@dimen/padding_5"
+    android:background="@color/color_FFFFFF">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ac_top_cl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="@dimen/padding_10"
+        android:layout_marginRight="@dimen/padding_10">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/ac_img_riv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:riv_border_width="0dp"
+            app:riv_corner_radius="5dp"
+            app:riv_mutate_background="true"
+            app:riv_oval="false"
+            app:riv_tile_mode="clamp"
+            tools:ignore="MissingConstraints"/>
+
+        <com.chengfan.xiyou.view.MediumTextView
+            android:id="@+id/ac_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="26dp"
+            android:text="sssss"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/text_size_15"
+            app:layout_constraintBottom_toBottomOf="@+id/ac_img_riv"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="0dp"/>
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/ac_user_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ac_top_cl"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="@dimen/padding_10"
+        android:layout_marginRight="@dimen/padding_10"
+        android:layout_marginBottom="@dimen/padding_10"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.zero.ci.widget.CircleImageView
+            android:id="@+id/ac_user_pic_civ"
+            android:layout_width="@dimen/padding_25"
+            android:layout_height="25dp"
+            />
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/ac_user_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_10"
+            android:text="sss"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_13"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/ac_show_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ac_user_ll"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="@dimen/padding_10"
+        android:layout_marginBottom="@dimen/padding_10">
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/ac_subject_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sss"
+            android:textSize="@dimen/text_size_11"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/ac_price_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="sss"
+            android:textColor="@color/color_D1AE81"
+            android:textSize="@dimen/text_size_11"/>
+    </RelativeLayout>
+
+</RelativeLayout>

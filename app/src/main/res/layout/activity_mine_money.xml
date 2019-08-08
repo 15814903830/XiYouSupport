@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/xy_tb"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/xiyou_top_bg"
+        >
+
+        <ImageView
+            android:id="@+id/xy_back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/icon_back"
+            />
+
+
+        <com.chengfan.xiyou.view.MediumTextView
+            android:id="@+id/xy_middle_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="我的钱包"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_18"/>
+
+        <TextView
+            android:id="@+id/xy_more_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="@dimen/padding_20"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"
+            />
+    </android.support.v7.widget.Toolbar>
+
+    <WebView
+        android:id="@+id/money_wv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

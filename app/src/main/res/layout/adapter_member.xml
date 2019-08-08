@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/member_layout"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="@dimen/padding_10"
+    >
+
+    <LinearLayout
+        android:id="@+id/member_z_info_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/member_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sdfdasdfasdf"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_17"/>
+
+        <TextView
+            android:id="@+id/member_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_10"
+            android:text="fddsdf"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_13"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/member_money_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="sgsdfbsdva"
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/text_size_18"/>
+
+</RelativeLayout>

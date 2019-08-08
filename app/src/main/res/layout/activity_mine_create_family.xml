@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+    >
+
+    <include
+        layout="@layout/layout_top"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginRight="@dimen/padding_20"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/create_name_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_10"
+            android:hint="@string/crate_hint_name_txt"
+            />
+
+        <EditText
+            android:id="@+id/crate_des_et"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="@dimen/padding_20"
+            android:background="@null"
+            android:gravity="left|top"
+            android:hint="@string/create_hint_des_txt"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:minLines="6"
+            android:textSize="15dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_40"
+            android:text="@string/create_f_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_13"/>
+
+        <com.chengfan.xiyou.widget.ninegridview.NineGridView
+            android:id="@+id/create_ngv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_E5E5E5"
+                android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/mine_member_top_bg">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/xy_tb"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginTop="@dimen/padding_20"
+            >
+
+            <ImageView
+                android:id="@+id/xy_back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_back"
+                />
+
+
+            <com.chengfan.xiyou.view.MediumTextView
+                android:id="@+id/xy_middle_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="@dimen/text_size_18"/>
+
+        </android.support.v7.widget.Toolbar>
+
+        <TextView
+            android:id="@+id/member_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_60"
+            android:layout_marginTop="95dp"
+            android:text="暂未开通会员权限"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/member_des_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/member_title_tv"
+            android:layout_marginLeft="@dimen/padding_60"
+            android:layout_marginTop="@dimen/padding_20"
+            android:layout_marginRight="@dimen/padding_35"
+            android:text="@string/member_no_des_txt"
+            android:textColor="@color/color_E5E5E5"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/member_middle_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="190dp"
+        android:layout_marginRight="@dimen/padding_20"
+        android:background="@drawable/xy_mine_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="67dp"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:layout_marginRight="@dimen/padding_20"
+            >
+
+            <TextView
+                android:id="@+id/member_z_b"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/member_buy_txt"
+                android:textColor="@color/color_D1AE81"
+                android:textSize="@dimen/text_size_18"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/member_z_b"
+                android:text="@string/member_more_txt"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/text_size_15"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/mine_member_title"/>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/member_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:layout_marginTop="@dimen/padding_20"
+            android:layout_marginRight="@dimen/padding_20"/>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_FFFFFF">
+
+        <TextView
+            android:id="@+id/member_take_money_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:text="￥10"
+            android:textColor="@color/color_D1AE81"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/member_pay_tv"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padding_20"
+            android:background="@drawable/xy_order_button_bg"
+            android:gravity="center"
+            android:text="@string/member_renew_txt"
+            android:textColor="@color/color_FFFFFF"
+            android:textSize="@dimen/text_size_15"/>
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,257 @@
+<resources>
+    <string name="app_name" translatable="false">嬉游</string>
+    <string name="login_welcome_txt" translatable="false">欢迎回来</string>
+    <string name="login_phone_txt" translatable="false">请输入您的手机号</string>
+    <string name="login_pw_txt" translatable="false">请输入您的账号密码密码</string>
+    <string name="login_btn_txt" translatable="false">立即登录</string>
+    <string name="login_no_reg_text" translatable="false">还没有注册</string>
+    <string name="login_forget_txt" translatable="false">忘记密码？</string>
+    <string name="login_retrieve_txt" translatable="false">立即找回</string>
+    <string name="login_check_phone_num_txt" translatable="false">请输入正确的手机号</string>
+    <string name="login_verification_null_txt" translatable="false">请输出验证码</string>
+
+
+    <string name="register_title_txt" translatable="false">注册账号</string>
+    <string name="register_get_code_txt" translatable="false">获取验证码</string>
+    <string name="register_code_txt" translatable="false">重新获取</string>
+    <string name="register_submit_txt" translatable="false">确认提交</string>
+    <string name="register_agree_txt" translatable="false">注册即视为同意</string>
+    <string name="register_agree_xy_txt" translatable="false">《嘻游用户账户协议》</string>
+    <string name="register_have_txt" translatable="false">以有账号</string>
+    <string name="register_hint_verification_txt" translatable="false">请输入您的验证码</string>
+    <string name="register_hint_invitation_txt" translatable="false">请输入您的邀请码（选填）</string>
+    <string name="register_send_code_txt" translatable="false">验证码已发送</string>
+
+    <string name="forget_title_txt" translatable="false">找回密码</string>
+
+    <string name="complete_title_txt" translatable="false">完善资料</string>
+    <string name="complete_video_title_txt" translatable="false">视频验证</string>
+    <string name="complete_leapfrog_txt" translatable="false">跳过</string>
+    <string name="complete_get_member_txt" translatable="false">验证完成可获赠</string>
+    <string name="complete_get_moth_txt" translatable="false">一个月会员</string>
+    <string name="complete_get_ge_txt" translatable="false">资格</string>
+    <string name="complete_look_txt" translatable="false">会员资格可在"我的会员"中查询</string>
+    <string name="complete_update_video_txt" translatable="false">上传视频</string>
+    <string name="complete_update_new_video_txt" translatable="false">重新上传</string>
+    <string name="complete_submit_txt" translatable="false">提交验证</string>
+    <string name="complete_sex_title_txt" translatable="false">请选择您的性别</string>
+    <string name="complete_next_txt" translatable="false">下一步</string>
+    <string name="complete_save_txt" translatable="false">保存</string>
+    <string name="complete_over_txt" translatable="false">恭喜您已完善您的资料</string>
+    <string name="complete_now_txt" translatable="false">立即进入首页</string>
+    <string name="complete_nan_txt" translatable="false">男</string>
+    <string name="complete_nv_Txt" translatable="false">女</string>
+
+    <string name="complete_head_txt" translatable="false">头像</string>
+    <string name="complete_name_txt" translatable="false">昵称</string>
+    <string name="complete_hint_name_txt" translatable="false">请输入您的昵称</string>
+    <string name="complete_age_txt" translatable="false">年龄</string>
+    <string name="complete_hint_age_txt" translatable="false">请输入您的年龄</string>
+    <string name="complete_city_txt" translatable="false">城市</string>
+    <string name="complete_hint_city_txt" translatable="false">请选择您的城市</string>
+    <string name="complete_face_txt" translatable="false">外貌</string>
+    <string name="complete_hint_face_txt" translatable="false">请选择您的外貌</string>
+    <string name="complete_wx_txt" translatable="false">微信</string>
+    <string name="complete_hint_wx_txt" translatable="false">请输入您的微信号</string>
+    <string name="complete_job_txt" translatable="false">职业</string>
+    <string name="complete_hint_job_txt" translatable="false">请选择您的职业</string>
+    <string name="complete_change_txt" translatable="false">更换</string>
+
+
+    <string name="main_home_txt" translatable="false">首页</string>
+    <string name="main_accompany_txt" translatable="false">陪玩</string>
+    <string name="main_chat_txt" translatable="false">聊天</string>
+    <string name="main_dynamic_txt" translatable="false">动态</string>
+    <string name="main_mine_txt" translatable="false">我的</string>
+    <string name="main_pei_game_txt" translatable="false">游戏陪玩</string>
+
+    <string name="home_search_txt" translatable="false">输入内容或ID搜索</string>
+    <string name="accompany_search_txt" translatable="false">请输入您要搜索的关键词</string>
+    <string name="accompany_id_txt" translatable="false">ID</string>
+    <string name="accompany_sex_txt" translatable="false">性别</string>
+    <string name="accompany_more_title_txt" translatable="false">更多陪玩</string>
+
+
+    <string name="order_info_txt" translatable="false">发私信</string>
+    <string name="order_xiadan_txt" translatable="false">下单</string>
+
+    <string name="confirm_title_txt" translatable="false">确认订单</string>
+    <string name="confirm_type_txt" translatable="false">陪玩类型</string>
+    <string name="confirm_time_txt" translatable="false">选择时长</string>
+    <string name="confirm_heji_txt" translatable="false">合计</string>
+    <string name="confirm_beizhu_txt" translatable="false">备注</string>
+    <string name="confirm_xiaoshi_txt" translatable="false">小时</string>
+    <string name="confirm_hint_beizhu_txt" translatable="false">请简要概括您的需求，限50字以内</string>
+    <string name="confirm_pay_type_txt" translatable="false">支付方式</string>
+    <string name="confirm_zfb_txt" translatable="false">支付宝</string>
+    <string name="confirm_wx_txt" translatable="false">微信</string>
+    <string name="confirm_submit_txt" translatable="false">立即提交</string>
+    <string name="confirm_success_txt" translatable="false">恭喜您,\n成功提交陪玩订单！</string>
+    <string name="confirm_go_banck_txt" translatable="false">返回首页</string>
+    <string name="confirm_order_detail_txt" translatable="false">订单详情</string>
+
+    <string name="mine_guanzhu_txt" translatable="false">关注</string>
+    <string name="mine_fensi_txt" translatable="false">粉丝</string>
+    <string name="mine_dongtai_txt" translatable="false">动态</string>
+    <string name="mine_order_txt" translatable="false">陪玩订单</string>
+    <string name="mine_pei_txt" translatable="false">我的陪玩</string>
+    <string name="mine_qian_txt" translatable="false">我的钱包</string>
+    <string name="mine_huiyuan_txt" translatable="false">我的会员</string>
+    <string name="mine_yaoqing_txt" translatable="false">我的邀请</string>
+    <string name="mine_familys_txt" translatable="false">我的家族</string>
+    <string name="mine_xiaofei_txt" translatable="false">消费记录</string>
+    <string name="mine_kefu_txt" translatable="false">联系客服</string>
+    <string name="mine_about_txt" translatable="false">关于我们</string>
+    <string name="mine_logout_txt" translatable="false">退出账号</string>
+    <string name="mine_more_txt" translatable="false">更多服务</string>
+
+    <string name="edit_info_yz_txt" translatable="false">视频验证</string>
+    <string name="edit_info_hi_txt" translatable="false">验证通过后可获取一个月会员资格</string>
+
+    <string name="attention_title_txt" translatable="false">我的关注</string>
+    <string name="attention_xh_txt" translatable="false">相互关注</string>
+
+    <string name="fans_title_txt" translatable="false">我的粉丝</string>
+
+
+    <string name="dynamic_attention_txt" translatable="false">我的关注</string>
+    <string name="dynamic_mine_txt" translatable="false">我的动态</string>
+
+
+    <string name="order_all_txt" translatable="false">全部</string>
+    <string name="order_no_started_txt" translatable="false">待开始</string>
+    <string name="order_ongoing_txt" translatable="false">陪玩中</string>
+    <string name="order_unproved_txt" translatable="false">待确认</string>
+    <string name="order_complete_txt" translatable="false">完成</string>
+    <string name="order_evaluate_txt" translatable="false">立即评价</string>
+    <string name="order_proved_txt" translatable="false">确认结束</string>
+    <string name="order_ongoing_over_txt" translatable="false">陪玩结束</string>
+    <string name="order_no_start_refuse_txt" translatable="false">拒绝</string>
+    <string name="order_no_start_takers_txt" translatable="false">接单</string>
+
+    <string name="game_title_txt" translatable="false">我的陪玩</string>
+    <string name="game_add_txt" translatable="false">新增</string>
+
+    <string name="add_title_txt" translatable="false">新增陪玩</string>
+    <string name="add_more_title_txt" translatable="false">完成</string>
+    <string name="add_play_title_txt" translatable="false">陪玩标题</string>
+    <string name="add_play_hint_title_txt" translatable="false">请输入您的陪玩标题</string>
+    <string name="add_play_type_txt" translatable="false">陪玩类型</string>
+    <string name="add_plat_hint_type_txt" translatable="false">请选择陪玩类型</string>
+    <string name="add_play_data_txt" translatable="false">接单日期</string>
+    <string name="add_play_hint_data_txt" translatable="false">请选择接单日期</string>
+    <string name="add_play_time_txt" translatable="false">接单时间</string>
+    <string name="add_play_hint_time_txt" translatable="false">请选择接单时间</string>
+    <string name="add_play_price_txt" translatable="false">单价</string>
+    <string name="add_play_hint_price_txt" translatable="false">请输入每小时单价</string>
+    <string name="add_play_hine_introduce_txt" translatable="false">请简单输入您的陪玩介绍</string>
+    <string name="add_play_update_pic_txt" translatable="false">上传照片</string>
+    <string name="add_play_update_new_pic_txt" translatable="false">重新上传</string>
+
+
+    <string name="money_title_txt" translatable="false">我的钱包</string>
+    <string name="money_money_num_txt" translatable="false">账户总余额</string>
+    <string name="money_submit_txt" translatable="false">提现</string>
+    <string name="money_all_txt" translatable="false">全部</string>
+    <string name="money_takers_txt" translatable="false">接单收入</string>
+    <string name="money_withdrawal_txt" translatable="false">提现支出</string>
+    <string name="money_invitation_txt" translatable="false">邀请收益</string>
+
+
+    <string name="withdrawal_title_txt" translatable="false">提现</string>
+    <string name="withdrawal_type_txt" translatable="false">到账方式</string>
+    <string name="withdrawal_user_name_txt" translatable="false">真实姓名</string>
+    <string name="withdrawal_hint_user_name_txt" translatable="false">请输入真实姓名</string>
+    <string name="withdrawal_phone_txt" translatable="false">手机号</string>
+    <string name="withdrawal_hint_phone_txt" translatable="false">请输入手机号</string>
+    <string name="withdrawal_zfb_txt" translatable="false">支付宝</string>
+    <string name="withdrawal_hint_zfb_txt" translatable="false">请输入支付宝账号</string>
+    <string name="withdrawal_submit_txt" translatable="false">申请提现</string>
+
+
+    <string name="member_top_title_txt" translatable="false">我的会员</string>
+    <string name="member_no_title_txt" translatable="false">暂未开通会员权限</string>
+    <string name="member_no_des_txt" translatable="false">开通会员特权可查看更多好友信息，与更多好友进行聊天</string>
+    <string name="member_title_txt" translatable="false">您已开通会员特权</string>
+    <string name="member_buy_txt" translatable="false">购买套餐</string>
+    <string name="member_more_txt" translatable="false">享受跟多会员特权</string>
+    <string name="member_opening_txt" translatable="false">立即开通</string>
+    <string name="member_renew_txt" translatable="false">立即续费</string>
+
+
+    <string name="invite_title_txt" translatable="false">我的邀请</string>
+    <string name="invite_mine_txt" translatable="false">我的邀请人</string>
+    <string name="invite_no_mine_txt" translatable="false">暂未填写</string>
+    <string name="invite_mine_num_txt" translatable="false">我的邀请码</string>
+    <string name="invite_hint_des_txt" translatable="false">请输入您的邀请人的邀请码</string>
+    <string name="invite_cancel_txt" translatable="false">取消</string>
+    <string name="invite_yes_txt" translatable="false">确认</string>
+
+    <string name="family_title_txt" translatable="false">我的家族</string>
+    <string name="family_create_txt" translatable="false">创建</string>
+    <string name="family_compile_txt" translatable="false">编辑</string>
+
+    <string name="create_title_txt" translatable="false">创建家族</string>
+    <string name="create_more_txt" translatable="false">完成</string>
+    <string name="create_f_txt" translatable="false">请长传家族群组，让家族更生动有趣喔</string>
+    <string name="crate_hint_name_txt" translatable="false">请输入家族的名字</string>
+    <string name="create_hint_des_txt" translatable="false">请输入家族的简单介绍</string>
+
+
+    <string name="about_title_txt" translatable="false">关于我们</string>
+    <string name="about_des_txt" translatable="false">公司介绍</string>
+
+
+    <string name="issued_title_txt" translatable="false">发布动态</string>
+    <string name="issued_hint_des_txt" translatable="false">与我们分享您的故事吧</string>
+    <string name="issued_title_done_txt" translatable="false">完成</string>
+
+    <string name="dialog_del_txt" translatable="false">确定删除这条动态吗？</string>
+    <string name="dialog_chat_friend_txt" translatable="false">确定删除该好友吗？</string>
+    <string name="dialog_title_txt" translatable="false">提示</string>
+    <string name="dialog_member_txt" translatable="false">确认解释该群聊吗？\n 解散后不在接收此群的群聊信息</string>
+    <string name="dialog_no_member_txt" translatable="false">确认退出该群聊吗？\n 退出后不再接收此群的信息</string>
+    <string name="dialog_check_vip_txt" translatable="false">您暂无开通会员，\n 开通后即可下单陪玩</string>
+    <string name="dialog_check_letter_txt" translatable="false">您暂未开通会员，\n只能与10位用户聊天</string>
+
+    <string name="no_selected" translatable="false">请先选择.</string>
+
+
+    <string name="pickerview_cancel">取消</string>
+    <string name="pickerview_submit">确定</string>
+    <string name="pickerview_year">年</string>
+    <string name="pickerview_month">月</string>
+    <string name="pickerview_day">日</string>
+    <string name="pickerview_hours">时</string>
+    <string name="pickerview_minutes">分</string>
+    <string name="pickerview_seconds">秒</string>
+
+
+
+
+    <string name="soft_update_no" translatable="false">已经是最新版本</string>
+    <string name="soft_update_title" translatable="false">软件更新</string>
+    <string name="soft_update_info" translatable="false">检测到新版本，立即更新</string>
+    <string name="soft_update_updatebtn" translatable="false">更新</string>
+    <string name="soft_update_later" translatable="false">稍后更新</string>
+    <string name="soft_updating" translatable="false">正在更新</string>
+    <string name="soft_update_cancel" translatable="false">取消</string>
+
+
+
+    <!--JazzyViewPager-->
+    <string-array name="jazzy_effects">
+        <item>Standard</item>
+        <item>Tablet</item>
+        <item>CubeIn</item>
+        <item>CubeOut</item>
+        <item>FlipVertical</item>
+        <item>FlipHorizontal</item>
+        <item>Stack</item>
+        <item>ZoomIn</item>
+        <item>ZoomOut</item>
+        <item>RotateUp</item>
+        <item>RotateDown</item>
+        <item>Accordion</item>
+    </string-array>
+</resources>

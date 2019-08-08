@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_20"
+        android:orientation="horizontal">
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:layout_width="@dimen/padding_40"
+            android:layout_height="wrap_content"
+            android:text="@string/complete_name_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/data_info_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_40"
+            android:text="\ssfsd"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_20"
+        android:orientation="horizontal">
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:layout_width="@dimen/padding_40"
+            android:layout_height="wrap_content"
+            android:text="@string/accompany_id_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/data_info_id_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_40"
+            android:text="\ssfsd"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_20"
+        android:orientation="horizontal">
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:layout_width="@dimen/padding_40"
+            android:layout_height="wrap_content"
+            android:text="@string/accompany_sex_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/data_info_sex_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_40"
+            android:text="\ssfsd"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_20"
+        android:orientation="horizontal">
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:layout_width="@dimen/padding_40"
+            android:layout_height="wrap_content"
+            android:text="@string/complete_age_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/data_info_age_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_40"
+            android:text="\ssfsd"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_20"
+        android:orientation="horizontal">
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:layout_width="@dimen/padding_40"
+            android:layout_height="wrap_content"
+            android:text="@string/complete_city_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/data_info_city_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_40"
+            android:text="\ssfsd"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_20"
+        android:orientation="horizontal">
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:layout_width="@dimen/padding_40"
+            android:layout_height="wrap_content"
+            android:text="@string/complete_face_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/data_info_face_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_40"
+            android:text="\ssfsd"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_20"
+        android:orientation="horizontal">
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:layout_width="@dimen/padding_40"
+            android:layout_height="wrap_content"
+            android:text="@string/complete_wx_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/data_info_wx_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_40"
+            android:text="\ssfsd"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_20"
+        android:orientation="horizontal">
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:layout_width="@dimen/padding_40"
+            android:layout_height="wrap_content"
+            android:text="@string/complete_job_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"/>
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/data_info_job_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_40"
+            android:text="\ssfsd"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

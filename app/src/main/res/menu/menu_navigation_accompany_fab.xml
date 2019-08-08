@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/i_tuijian"
+        android:checked="true"
+        android:title="推荐陪玩"/>
+
+    <item
+        android:id="@+id/i_wangzhe"
+        android:title="王者荣耀"/>
+
+    <item
+        android:id="@+id/i_shouwang"
+        android:title="守望先锋"/>
+
+    <item
+        android:id="@+id/i_juedi"
+        android:title="绝地求生"/>
+
+</menu>

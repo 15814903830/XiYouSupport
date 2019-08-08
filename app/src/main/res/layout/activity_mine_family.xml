@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_top"/>
+
+    <include
+        layout="@layout/layout_empty"
+        android:visibility="gone"
+        />
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/family_nsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.chengfan.xiyou.widget.viewpager.JazzyViewPager
+                android:id="@+id/family_vp"
+                android:layout_width="match_parent"
+                android:layout_height="281dp"/>
+
+            <TextView
+                android:id="@+id/img_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="280dp"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/text_size_20"/>
+
+            <LinearLayout
+                android:id="@+id/family_z_info_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/family_vp"
+                android:layout_marginLeft="@dimen/padding_20"
+                android:layout_marginTop="@dimen/padding_20"
+                android:layout_marginRight="@dimen/padding_20"
+                android:layout_marginBottom="@dimen/padding_20"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/family_name_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_333333"
+                    android:textSize="20sp"/>
+
+                <TextView
+                    android:id="@+id/family_des_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_20"
+                    android:textColor="@color/color_999999"
+                    android:textSize="@dimen/text_size_13"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/family_z_line_one"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/family_z_info_ll"
+                android:background="@color/color_E5E5E5"/>
+
+            <RelativeLayout
+                android:id="@+id/family_z_user_info_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/family_z_line_one"
+                android:layout_marginLeft="@dimen/padding_20"
+                android:layout_marginTop="@dimen/padding_20"
+                android:layout_marginBottom="@dimen/padding_20">
+
+                <com.zero.ci.widget.CircleImageView
+                    android:id="@+id/family_pic_civ"
+                    android:layout_width="@dimen/padding_40"
+                    android:layout_height="@dimen/padding_40"
+                    />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_10"
+                    android:layout_toEndOf="@+id/family_pic_civ"
+                    android:layout_toRightOf="@+id/family_pic_civ"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/family_user_name_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/text_size_17"/>
+
+                    <TextView
+                        android:id="@+id/family_create_time_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_999999"
+                        android:textSize="@dimen/text_size_13"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/family_z_line_two"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/family_z_user_info_rl"
+                android:background="@color/color_E5E5E5"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/family_z_line_two"
+                android:layout_marginTop="@dimen/padding_20">
+
+                <LinearLayout
+                    android:id="@+id/family_list_top_ll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/padding_40"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="@dimen/padding_5"
+                        android:layout_height="16dp"
+                        android:background="@color/color_D1AE81"/>
+
+                    <TextView
+                        android:id="@+id/family_num_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_20"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/text_size_18"/>
+
+                </LinearLayout>
+
+                <com.zero.ci.refresh.ZRefreshLayout
+                    android:id="@+id/family_zrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/family_list_top_ll"
+                    android:layout_marginTop="@dimen/padding_20">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/family_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </com.zero.ci.refresh.ZRefreshLayout>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

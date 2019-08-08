@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_top"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/confirm_game_pic_iv"
+            android:layout_width="@dimen/padding_65"
+            android:layout_height="@dimen/padding_45"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:layout_marginTop="@dimen/padding_20"
+            android:layout_marginBottom="@dimen/padding_20"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/padding_10"
+            android:layout_marginTop="@dimen/padding_20"
+            android:layout_toEndOf="@id/confirm_game_pic_iv"
+            android:layout_toRightOf="@id/confirm_game_pic_iv">
+
+
+            <RelativeLayout
+                android:id="@+id/confirm_game_name_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.chengfan.xiyou.view.MediumTextView
+                        android:id="@+id/confirm_game_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/text_size_15"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true">
+
+                    <com.chengfan.xiyou.view.MediumTextView
+                        android:id="@+id/confirm_game_money_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/padding_20"
+                        android:textColor="@color/color_D1AE81"
+                        android:textSize="@dimen/text_size_15"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/search_game_name_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/confirm_game_name_rl"
+                android:layout_marginTop="@dimen/padding_10"
+                android:gravity="center">
+
+
+                <com.chengfan.xiyou.view.RegularTextView
+                    android:id="@+id/confirm_game_time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/color_999999"
+                    android:textSize="@dimen/text_size_13"/>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_10"
+        android:background="@color/color_E5E5E5"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_15"
+        android:layout_marginRight="@dimen/padding_15"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/padding_20"
+            android:layout_marginBottom="@dimen/padding_20">
+
+            <com.chengfan.xiyou.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm_type_txt"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/text_size_15"/>
+
+            <com.chengfan.xiyou.view.RegularTextView
+                android:id="@+id/confirm_type_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="sdfsf"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_E5E5E5"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/padding_15"
+            android:layout_marginBottom="@dimen/padding_15">
+
+            <com.chengfan.xiyou.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm_time_txt"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/text_size_15"/>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/confirm_time_jian_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/padding_10"
+                    android:background="@drawable/confirm_jian"/>
+
+                <com.chengfan.xiyou.view.RegularTextView
+                    android:id="@+id/confirm_tim_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"/>
+
+                <ImageView
+                    android:id="@+id/confirm_time_jia_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_10"
+                    android:background="@drawable/confirm_jia"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_E5E5E5"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/padding_15"
+            android:layout_marginBottom="@dimen/padding_15">
+
+            <com.chengfan.xiyou.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm_heji_txt"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/text_size_15"/>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true">
+
+                <com.chengfan.xiyou.view.RegularTextView
+                    android:id="@+id/confirm_heji_time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/text_size_15"/>
+
+                <com.chengfan.xiyou.view.RegularTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小时"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/text_size_15"/>
+
+                <com.chengfan.xiyou.view.RegularTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_20"
+                    android:text="合计:"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/text_size_15"/>
+
+                <com.chengfan.xiyou.view.RegularTextView
+                    android:id="@+id/confirm_heji_money_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_10"
+                    android:text="200"
+                    android:textColor="@color/color_F44336"
+                    android:textSize="@dimen/text_size_15"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_E5E5E5"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_10"
+        android:background="@color/color_E5E5E5"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_50"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginRight="@dimen/padding_20"
+        >
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/confirm_beizhu_txt"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15"/>
+
+        <EditText
+            android:id="@+id/confirm_beizhu_et"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:hint="@string/confirm_hint_beizhu_txt"
+            android:textSize="@dimen/text_size_15"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_50"
+        android:background="@color/color_E5E5E5"
+        >
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:text="@string/confirm_pay_type_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_15"
+        android:layout_marginRight="@dimen/padding_15"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/confirm_zfb_select_rl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/padding_20"
+            android:layout_marginBottom="@dimen/padding_20">
+
+            <ImageView
+                android:id="@+id/co_zfb_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/confirm_zfb"
+                />
+
+            <com.chengfan.xiyou.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_10"
+                android:layout_toEndOf="@+id/co_zfb_iv"
+                android:layout_toRightOf="@+id/co_zfb_iv"
+                android:text="@string/confirm_zfb_txt"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/text_size_15"/>
+
+
+            <ImageView
+                android:id="@+id/confirm_zfb_select_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/confirm_select"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_E5E5E5"/>
+
+        <RelativeLayout
+            android:id="@+id/confirm_wx_select_rl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/padding_15"
+            android:layout_marginBottom="@dimen/padding_15">
+
+            <ImageView
+                android:id="@+id/co_wx_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/confirm_wx"/>
+
+            <com.chengfan.xiyou.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_10"
+                android:layout_toEndOf="@+id/co_wx_iv"
+                android:layout_toRightOf="@+id/co_wx_iv"
+                android:text="@string/confirm_wx_txt"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/text_size_15"/>
+
+
+            <ImageView
+                android:id="@+id/confirm_wx_select_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/confirm_select"/>
+
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_E5E5E5"/>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_E5E5E5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_FFFFFF">
+
+            <com.chengfan.xiyou.view.MediumTextView
+                android:id="@+id/co_he_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/padding_20"
+                android:text="合计："/>
+
+            <com.chengfan.xiyou.view.MediumTextView
+                android:id="@+id/confirm_he_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/padding_20"
+                android:layout_toEndOf="@id/co_he_tv"
+                android:layout_toRightOf="@id/co_he_tv"
+                android:text="200"
+                android:textColor="@color/color_F44336"/>
+
+            <Button
+                android:id="@+id/confirm_submit_btn"
+                android:layout_width="@dimen/padding_180"
+                android:layout_height="45dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/padding_20"
+                android:background="@drawable/xy_order_button_bg"
+                android:text="@string/confirm_submit_txt"
+                android:textColor="@color/color_FFFFFF"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

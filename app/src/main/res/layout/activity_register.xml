@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/register_z_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_80"
+        android:text="@string/register_title_txt"
+        android:textColor="@color/color_333333"
+        android:textSize="32sp"/>
+
+
+    <LinearLayout
+        android:id="@+id/register_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/register_z_title_tv"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="@dimen/padding_20"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/register_phone_et"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_50"
+            android:background="@null"
+            android:drawableLeft="@drawable/login_phone"
+            android:drawablePadding="@dimen/padding_10"
+            android:gravity="center_vertical"
+            android:hint="@string/login_phone_txt"
+            android:inputType="phone"
+            android:minHeight="53dp"
+            android:nextClusterForward="@id/register_verification_et"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:textColorHint="#bababa"
+            android:textSize="14sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_E5E5E5"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/register_verification_et"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_50"
+                android:background="@null"
+                android:drawableLeft="@drawable/login_verification"
+                android:drawablePadding="@dimen/padding_10"
+                android:gravity="center_vertical"
+                android:hint="@string/register_hint_verification_txt"
+                android:inputType="number"
+                android:minHeight="53dp"
+                android:nextClusterForward="@id/register_pw_et"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="10dp"
+                android:textColorHint="#bababb"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/register_get_code_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/padding_10"
+                android:button="@drawable/login_selector_password"
+                android:text="@string/register_get_code_txt"
+                android:textColor="@color/color_D1AE81"
+                android:textSize="@dimen/text_size_15"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_E5E5E5"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/register_pw_et"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_50"
+                android:background="@null"
+                android:drawableLeft="@drawable/login_pw"
+                android:drawablePadding="@dimen/padding_10"
+                android:gravity="center_vertical"
+                android:hint="@string/login_pw_txt"
+                android:inputType="textPassword"
+                android:minHeight="53dp"
+                android:nextClusterForward="@id/register_invitation_et"
+                android:paddingLeft="15dp"
+                android:paddingTop="10dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="10dp"
+                android:textColorHint="#bababb"
+                android:textSize="14sp"/>
+
+            <CheckBox
+                android:id="@+id/register_display_pw_cb"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:button="@drawable/login_selector_password"
+                android:checked="false"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_E5E5E5"/>
+
+        <EditText
+            android:id="@+id/register_invitation_et"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/padding_50"
+            android:background="@null"
+            android:drawableLeft="@drawable/login_invitation"
+            android:drawablePadding="@dimen/padding_10"
+            android:gravity="center_vertical"
+            android:hint="@string/register_hint_invitation_txt"
+            android:inputType="number"
+            android:minHeight="53dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="10dp"
+            android:textColorHint="#bababa"
+            android:textSize="14sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_E5E5E5"/>
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/register_submit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/register_ll"
+        android:layout_marginLeft="@dimen/padding_20"
+        android:layout_marginTop="@dimen/padding_50"
+        android:layout_marginRight="@dimen/padding_20"
+        android:background="@drawable/xiyou_button_bg"
+        android:text="@string/register_submit_txt"
+        android:textColor="@color/color_FFFFFF"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/register_submit_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/padding_20">
+
+        <TextView
+            android:id="@+id/register_z_agree_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_agree_txt"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_15"/>
+
+        <TextView
+            android:id="@+id/register_z_a_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_agree_xy_txt"
+            android:textColor="@color/color_D1AE81"
+            android:textSize="@dimen/text_size_15"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/register_have_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/padding_35"
+        android:text="@string/register_have_txt"
+        android:textColor="@color/color_D1AE81"
+        android:textSize="15sp"/>
+</RelativeLayout>
