@@ -1,5 +1,6 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * @DATE : 2019-07-20/11:38
  * @Description:
  */
-public class UpdateFamilyBean  {
+public class UpdateFamilyBean  implements Serializable {
 
     /**
      * totalMember : 0

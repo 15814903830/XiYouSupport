@@ -58,6 +58,7 @@ public class APPContents {
     /*当前会员id*/
     public static String E_CURRENT_MEMBER_ID = "currentMemberId";
 
+    public static String E_ROYUN_ID = "";
     public static String E_ORDER_ID = "id";
 
     public static String E_ORDER_STATUS = "orderStatus";

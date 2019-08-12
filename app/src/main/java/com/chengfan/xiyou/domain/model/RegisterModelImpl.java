@@ -34,6 +34,7 @@ public class RegisterModelImpl implements RegisterContract.Model {
                 .params(APPContents.E_TYPE, 1)
                 .params(APPContents.E_MEMBER_ID, null)
                 .execute(new AdaptResponse<BaseApiResponse>() {
+
                 });
     }
 }

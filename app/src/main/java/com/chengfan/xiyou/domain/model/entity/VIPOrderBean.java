@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-23/12:35
  * @Description:
  */
-public class VIPOrderBean {
+public class VIPOrderBean  implements Serializable {
 
     /**
      * vipSetMealId : 0

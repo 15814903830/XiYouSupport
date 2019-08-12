@@ -81,7 +81,6 @@ public class UploadFile implements Serializable {
         this.key = key;
     }
 
-
     public int getWhat() {
         return what;
     }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -130,29 +131,48 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                                 @Override
                                 public void run() {
 
-                                    HttpRequest.get("http://api.map.baidu.com/location/ip?ak=F454f8a5efe5e577997931cc01de3974&ip=" + LocationUtils.getNetIp())
-                                            .execute(new AbstractResponse<BaiDuEntity>() {
-                                                @Override
-                                                public void onSuccess(BaiDuEntity result) {
-                                                    String addressStr = result.getContent().getAddress_detail().getCity();
-                                                    Logger.d(addressStr);
-                                                    mSearchAddressTv.setText(result.getContent().getAddress_detail().getCity());
-                                                    for (int i = 0; i < mJsonBeanArrayList.size(); i++) {//遍历省份
-                                                        for (int c = 0; c < mJsonBeanArrayList.get(i).getCity().size(); c++) {
-                                                            Logger.d("areaCode : " + mJsonBeanArrayList.get(i).getCity().get(c).getName() + "   ===  " + addressStr);
-                                                            if (mJsonBeanArrayList.get(i).getCity().get(c).getName().contains(addressStr)) {
-                                                                areaCode = mCityList.get(i).get(c).getId();
-                                                                Logger.d("areaCode = mCityList.get(i).get(a).getId() :" + areaCode);
+
+
+                                    Looper.prepare();
+                                    Message message = new Message();
+                                    Bundle bundle = new Bundle();
+                                    Handler handler = new Handler(){
+                                        @Override
+                                        public void handleMessage(Message message) {
+                                            super.handleMessage(message);
+                                            Bundle bundle = message.getData();
+                                            HttpRequest.get("http://api.map.baidu.com/location/ip?ak=F454f8a5efe5e577997931cc01de3974&ip=" + LocationUtils.getNetIp())
+                                                    .execute(new AbstractResponse<BaiDuEntity>() {
+                                                        @Override
+                                                        public void onSuccess(BaiDuEntity result) {
+                                                            String addressStr = result.getContent().getAddress_detail().getCity();
+                                                            Logger.d(addressStr);
+                                                            mSearchAddressTv.setText(result.getContent().getAddress_detail().getCity());
+                                                            for (int i = 0; i < mJsonBeanArrayList.size(); i++) {//遍历省份
+                                                                for (int c = 0; c < mJsonBeanArrayList.get(i).getCity().size(); c++) {
+                                                                    Logger.d("areaCode : " + mJsonBeanArrayList.get(i).getCity().get(c).getName() + "   ===  " + addressStr);
+                                                                    if (mJsonBeanArrayList.get(i).getCity().get(c).getName().contains(addressStr)) {
+                                                                        areaCode = mCityList.get(i).get(c).getId();
+                                                                        Logger.d("areaCode = mCityList.get(i).get(a).getId() :" + areaCode);
+                                                                    }
+                                                                }
+
+
                                                             }
+
+                                                            mPresenter.homePageParameter(areaCode, 1);
+
                                                         }
+                                                    });
+                                        }
+                                    };
+                                    bundle.putString("msg", "你好！！！");
+                                    message.setData(bundle);
+                                    handler.sendMessage(message);
+                                    Looper.loop();
 
 
-                                                    }
 
-                                                    mPresenter.homePageParameter(areaCode, 1);
-
-                                                }
-                                            });
                                 }
                             }
                     ).start();
@@ -323,9 +343,19 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
         pvOptions = new OptionsPickerBuilder(getActivity(), new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                String cityName = mCityList.get(options1).get(options2).getName();
+                String cityName = null;
+                int areaCode = 0;
+                if (options1==28){
+                    cityName="香港特别行政区";
+                }else if (options1==29){
+                    cityName="澳门特别行政区";
+                }else if (options1==27){
+                    cityName="台湾省";
+                }else {
+                    cityName = mCityList.get(options1).get(options2).getName();
+                    areaCode = mCityList.get(options1).get(options2).getId();
+                }
 
-                int areaCode = mCityList.get(options1).get(options2).getId();
 
                 String tx = cityName;
 

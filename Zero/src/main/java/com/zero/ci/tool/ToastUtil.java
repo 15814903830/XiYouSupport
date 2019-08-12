@@ -21,10 +21,6 @@ public class ToastUtil {
             return;
         }
         if (toast == null) {
-            toast = Toast.makeText(BaseApplication.getZApplicationContext(), msg,
-                    Toast.LENGTH_SHORT);
-            //  toast.setGravity(Gravity.BOTTOM, 0, 0);
-            toast.show();
         } else {
             //  toast.setGravity(Gravity.BOTTOM, 0, 0);
             toast.setDuration(Toast.LENGTH_SHORT);

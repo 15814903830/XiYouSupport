@@ -1,5 +1,7 @@
 package com.chengfan.xiyou.domain.presenter;
 
+import android.util.Log;
+
 import com.chengfan.xiyou.domain.contract.RegisterContract;
 import com.chengfan.xiyou.domain.model.RegisterModelImpl;
 import com.chengfan.xiyou.domain.model.entity.RegisterBean;
@@ -48,6 +50,7 @@ public class RegisterPresenterImpl
 
             @Override
             public void onNetError(Throwable e) {
+                Log.e("Throwable",e.toString());
             }
         });
     }

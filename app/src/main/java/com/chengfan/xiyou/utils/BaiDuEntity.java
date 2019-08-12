@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.utils;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-28/19:39
  * @Description:
  */
-public class BaiDuEntity {
+public class BaiDuEntity implements Serializable {
     /**
      * address : CN|新疆|五家渠|None|CHINANET|0|0
      * content : {"address_detail":{"province":"新疆维吾尔自治区","city":"五家渠市","district":"","street":"","street_number":"","city_code":789},"address":"新疆维吾尔自治区五家渠市","point":{"y":"5492546.5092417","x":"9747847.25545653"}}

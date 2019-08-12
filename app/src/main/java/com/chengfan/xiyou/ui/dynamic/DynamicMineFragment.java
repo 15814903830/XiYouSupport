@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -48,8 +49,6 @@ import butterknife.Unbinder;
  */
 public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, DynamicMinePresenterImpl> implements DynamicMineContract.View {
     View mView;
-
-
     @BindView(R.id.dynamic_mine_rv)
     RecyclerView mDynamicMineRv;
     @BindView(R.id.dynamic_mine_zrl)
@@ -73,14 +72,11 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
         mUnbinder = ButterKnife.bind(this, mView);
         mPresenter = new DynamicMinePresenterImpl();
         mPresenter.onAttach(getActivity(), this);
-
         mDynamicMineEntityList = new ArrayList<>();
         mDynamicMineDelDialog = new DynamicMineDelDialog(getActivity());
-
         iniRv();
         initZrl();
         mPresenter.dynamicMineParameter(page, true);
-
         return mView;
     }
 
@@ -94,7 +90,6 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
             public void onItemClick(BaseRVAdapter adapter, View view, int position) {
                 Bundle toBundle = new Bundle();
                 toBundle.putString(APPContents.BUNDLE_DYNAMIC_ID, mDynamicMineEntityList.get(position).getId() + "");
-
                 Logger.d("DynamicMineFragment === >>> " + mDynamicMineEntityList.get(position).getId());
                 ForwardUtil.getInstance(getActivity()).forward(DynamicDetailActivity.class, toBundle);
             }
@@ -112,30 +107,35 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
         mDynamicMineAdapter.setLikeListener(new DynamicMineAdapter.LikeListener() {
             @Override
             public void onLikeListener(final int position) {
+                Toast.makeText(getContext(), "点赞", Toast.LENGTH_SHORT).show();
+
+
                 MemberShipBean shipBean = new MemberShipBean();
                 shipBean.setFriendId(AppData.getString(AppData.Keys.AD_USER_ID));
                 shipBean.setMemberId(mDynamicMineEntityList.get(position).getMemberId());
-                HttpRequest.post(APIContents.MEMBER_SHIP)
+                HttpRequest.post("/api/MemberNews/Praise")
                         .paramsJsonString(new Gson().toJson(shipBean))
                         .execute(new AbstractResponse<BaseApiResponse>() {
                             @Override
                             public void onSuccess(BaseApiResponse result) {
                                 if (result.isSuc()) {
                                     if (mDynamicMineEntityList.get(position).isHavePraise()) {
+                                        Toast.makeText(getContext(), "false", Toast.LENGTH_SHORT).show();
+
                                         mDynamicMineEntityList.get(position).setHavePraise(false);
                                         mDynamicMineEntityList.get(position).setTotalPraise(mDynamicMineEntityList.get(position).getTotalPraise() - 1);
                                     } else {
+                                        Toast.makeText(getContext(), "true", Toast.LENGTH_SHORT).show();
                                         mDynamicMineEntityList.get(position).setHavePraise(true);
                                         mDynamicMineEntityList.get(position).setTotalPraise(mDynamicMineEntityList.get(position).getTotalPraise() + 1);
                                     }
                                     mDynamicMineAdapter.setNewData(mDynamicMineEntityList);
+                                    mDynamicMineAdapter.notifyDataSetChanged();
                                 }
                             }
                         });
             }
         });
-
-
         mDynamicMineDelDialog.setDynamicMineDelListener(new DynamicMineDelDialog.DynamicMineDelListener() {
             @Override
             public void onDynamicMineDelListener() {

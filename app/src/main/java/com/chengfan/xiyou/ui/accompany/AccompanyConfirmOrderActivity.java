@@ -3,13 +3,16 @@ package com.chengfan.xiyou.ui.accompany;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alipay.sdk.app.PayTask;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
@@ -18,6 +21,7 @@ import com.chengfan.xiyou.domain.model.entity.AccompanyConfirmOrderBean;
 import com.chengfan.xiyou.domain.model.entity.AccompanyDetailEntity;
 import com.chengfan.xiyou.domain.presenter.AccompanyConfirmOrderPresenterImpl;
 import com.chengfan.xiyou.domain.presenter.AccompanyPresenterImpl;
+import com.chengfan.xiyou.ui.mine.MineMemberActivity;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.chengfan.xiyou.view.RegularTextView;
@@ -29,6 +33,8 @@ import com.zero.ci.tool.ForwardUtil;
 import com.zero.ci.tool.ToastUtil;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 import com.zero.ci.widget.logger.Logger;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -123,16 +129,18 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
 
     @Override
     public void AccompanyConfirmOrderLoad(BaseApiResponse baseApiResponse) {
-        if (baseApiResponse.isSuc()) {
-            ForwardUtil.getInstance(this).forward(AccompanyOrderSuccessActivity.class);
-        }
-        ToastUtil.show(baseApiResponse.getMsg());
+        paystart(""+baseApiResponse.getData());
+//        if (baseApiResponse.isSuc()) {
+//            ForwardUtil.getInstance(this).forward(AccompanyOrderSuccessActivity.class);
+//        }
+//        ToastUtil.show(baseApiResponse.getMsg());
     }
 
     @OnClick({R.id.xy_back_btn, R.id.confirm_time_jian_iv, R.id.confirm_time_jia_iv, R.id.confirm_zfb_select_rl, R.id.confirm_wx_select_rl, R.id.confirm_submit_btn})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.xy_back_btn:
+                finish();
                 break;
             case R.id.confirm_time_jian_iv:
 
@@ -168,14 +176,38 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
                 allStr = mConfirmHeTv.getText().toString();
                 remarkStr = mConfirmBeizhuEt.getText().toString().trim();
                 AccompanyConfirmOrderBean confirmOrderBean = new AccompanyConfirmOrderBean();
-                confirmOrderBean.setAccompanyPlayId(mAccompanyDetailEntity.getId() + "");
+                confirmOrderBean.setAccompanyPlayId(3 + "");
                 confirmOrderBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
                 confirmOrderBean.setHour(time + "");
                 confirmOrderBean.setRemark(remarkStr);
+
+                Log.e("paygetId",""+mAccompanyDetailEntity.getId());
+                Log.e("payAppData",""+AppData.getString(AppData.Keys.AD_USER_ID));
+                Log.e("paytime",""+time);
+                Log.e("payremarkStr",""+remarkStr);
 
                 Logger.d("AccompanyConfirmOrderActivity ===>>>  " + new Gson().toJson(confirmOrderBean));
                 mPresenter.AccompanyConfirmOrderParameter(confirmOrderBean);
                 break;
         }
+    }
+
+    private void paystart(final String info) {
+        Log.e("info", info);
+        Runnable payRunnable = new Runnable() {
+            @Override
+            public void run() {
+                Log.e("info", info);
+                PayTask alipay = new PayTask(AccompanyConfirmOrderActivity.this);
+               // Map<String, String> result = alipay.payV2("app_id=2019072966075097&biz_content=%7b%22body%22%3a%22%e5%8c%85%e6%9c%88%e4%bc%9a%e5%91%98%22%2c%22out_trade_no%22%3a%22950573%22%2c%22product_code%22%3a%221%22%2c%22subject%22%3a%22%e5%8c%85%e6%9c%88%e4%bc%9a%e5%91%98%22%2c%22timeout_express%22%3a%2260m%22%2c%22total_amount%22%3a%220.01%22%7d&charset=utf-8&format=json&method=alipay.trade.app.pay&notify_url=http%3a%2f%2fxy.gx11.cn%2fAPI%2f%2fOrder%2fNotifyVIPOrder%2fAliPay&sign_type=RSA2&timestamp=2019-08-09+11%3a51%3a05&version=1.0&sign=MhQdk9xtWb5kQ2ovaXwFoV66EIZbGdT9%2fEHJqeVHLSqEpAyFmuCVJtX4hLPZT3xCgidMKeychZapQvh7oaEFTwfwAanqRSc3PCGyYnRYxt25FZGn2Xg1%2bPRsR5k5%2f0%2ba0dz4s84NK2gkzRIc9gqhwB9w5vez8nKazHW3A0zmMnmMPv818T9A54ai9mi9w8squx%2f8LvxFtIlLeEMCyFWS6g%2blWc8dcjM1fZZONQIntTEAa%2fnXeUUzFwxUkdr230JysygLIRkebNI49nxonI2%2fv6gL8wvgDpbj7uTU3yq34xDwez6LqUtAce0j%2fQJ%2bBeYbjT3c69tBJxn%2fUR%2fVzRADOA%3d%3d", true);
+                Map<String, String> result = alipay.payV2(info, true);
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = result;
+            }
+        };
+        // 必须异步调用
+        Thread payThread = new Thread(payRunnable);
+        payThread.start();
     }
 }

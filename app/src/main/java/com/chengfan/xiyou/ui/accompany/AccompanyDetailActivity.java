@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -180,6 +181,11 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
         mOrderFocusTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mOrderFocusTv.getText().equals("关注")){
+                    mOrderFocusTv.setText("已关注");
+                }else {
+                    Toast.makeText(AccompanyDetailActivity.this, "已关注", Toast.LENGTH_SHORT).show();
+                }
                 if (accompanyDetailEntity.isIsFans()) {
                     mPresenter.memberShipLoad(currentMemberId, true);
                 } else {
@@ -217,13 +223,17 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
                 }
                 break;
             case R.id.order_xiadan_tv:
-                if ("true".equals(CheckVIP)) {
+//                if ("true".equals(CheckVIP)) {
+//                    Bundle toBundle = new Bundle();
+//                    toBundle.putSerializable(APPContents.BUNDLE_FRAGMENT, mAccompanyDetailEntity);
+//                    ForwardUtil.getInstance(this).forward(AccompanyConfirmOrderActivity.class, toBundle);
+//                } else {
+//                    mCheckVIPDialog.show();
+//                }
+
                     Bundle toBundle = new Bundle();
                     toBundle.putSerializable(APPContents.BUNDLE_FRAGMENT, mAccompanyDetailEntity);
                     ForwardUtil.getInstance(this).forward(AccompanyConfirmOrderActivity.class, toBundle);
-                } else {
-                    mCheckVIPDialog.show();
-                }
 
 
                 break;

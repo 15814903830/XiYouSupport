@@ -244,7 +244,7 @@ public class AccompanyUserInfoEntity implements Serializable {
             this.subject = subject;
         }
 
-        public static class SubjectBean {
+        public static class SubjectBean implements Serializable{
             /**
              * title : 守望先锋
              * images : Img/1.png

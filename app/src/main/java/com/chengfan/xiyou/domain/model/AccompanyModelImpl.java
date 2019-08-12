@@ -34,9 +34,9 @@ public class AccompanyModelImpl implements AccompanyContract.Model {
     }
 
     @Override
-    public Observable<List<AccompanyEntity>> ACCOMPANY_ENTITY_OBSERVABLE(int page) {
+    public Observable<List<AccompanyEntity>> ACCOMPANY_ENTITY_OBSERVABLE(int page,String position) {
         return HttpRequest.get(APIContents.AccompanyPlayList)
-                .params("subjectId", "1")
+                .params("subjectId", position)
                 .params("page", page)
                 .params("limit", 20)
                 .params(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID))

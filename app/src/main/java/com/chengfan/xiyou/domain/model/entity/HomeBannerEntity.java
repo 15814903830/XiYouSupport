@@ -1,5 +1,6 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * @DATE : 2019-07-13/23:18
  * @Description: 首页广告
  */
-public class HomeBannerEntity {
+public class HomeBannerEntity  implements Serializable {
 
     private List<NewsBean> news;
     private List<MemberBean> member;

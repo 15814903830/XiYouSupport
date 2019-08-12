@@ -1,5 +1,7 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
@@ -7,7 +9,7 @@ package com.chengfan.xiyou.domain.model.entity;
  * @Description: 关注/取消关注
  * {"friendId":"当前会员Id","memberId":"被关注会员Id"}
  */
-public class MemberShipBean {
+public class MemberShipBean  implements Serializable {
     String friendId;
     int memberId;
 

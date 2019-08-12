@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-13/19:12
  * @Description: 修改群名称
  */
-public class UpdateTeamBean {
+public class UpdateTeamBean  implements Serializable {
 
 
     /**

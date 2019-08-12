@@ -15,6 +15,10 @@ import com.chengfan.xiyou.domain.contract.DynamicIssuedContract;
 import com.chengfan.xiyou.domain.model.entity.UploadEntity;
 import com.chengfan.xiyou.domain.presenter.DynamicIssuedPresenterImpl;
 import com.chengfan.xiyou.utils.GlideImageLoader;
+import com.chengfan.xiyou.utils.dialog.BaseNiceDialog;
+import com.chengfan.xiyou.utils.dialog.NiceDialog;
+import com.chengfan.xiyou.utils.dialog.ViewConvertListener;
+import com.chengfan.xiyou.utils.dialog.ViewHolder;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.chengfan.xiyou.widget.ninegridview.NineGirdImageContainer;
 import com.chengfan.xiyou.widget.ninegridview.NineGridBean;
@@ -60,8 +64,7 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
     List<NineGridBean> resultList;
     List<UploadEntity> mUploadEntityList;
     int requestNum = 1;
-
-
+    private BaseNiceDialog mBaseNiceDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +92,8 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
 
     @Override
     public void publistLoad(BaseApiResponse baseApiResponse) {
-        ToastUtil.show(baseApiResponse.getMsg());
+        mBaseNiceDialog.dismiss();
+        finish();
     }
 
     @Override
@@ -229,6 +233,7 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
                 finish();
                 break;
             case R.id.xy_more_tv:
+                showLoading();
                 content = mIssuedDesEt.getText().toString().trim();
                 if (content.equals(""))
                     ToastUtil.show("与我们分享您的故事吧");
@@ -244,5 +249,22 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
         }
     }
 
-
+    /**
+     * 显示loading
+     */
+    public void showLoading() {
+        NiceDialog.init()
+                .setLayoutId(R.layout.dialog_loading_layout)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                         mBaseNiceDialog = dialog;
+                    }
+                })
+                .setOutCancel(false)
+                .setWidth(48)
+                .setHeight(48)
+                .setShowBottom(false)
+                .show(getSupportFragmentManager());
+    }
 }

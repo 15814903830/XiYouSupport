@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-20/12:49
  * @Description:
  */
-public class SayHiEntity {
+public class SayHiEntity implements Serializable {
     /**
      * id : 1
      * gender : 1

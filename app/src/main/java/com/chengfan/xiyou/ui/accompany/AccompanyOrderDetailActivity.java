@@ -2,6 +2,7 @@ package com.chengfan.xiyou.ui.accompany;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.webkit.WebView;
 
 import com.chengfan.xiyou.R;
@@ -31,6 +32,7 @@ public class AccompanyOrderDetailActivity extends BaseActivity<AccompanyOrderDet
         ButterKnife.bind(this);
 
         mOrderDetailWv.loadUrl("http://xy.gx11.cn/WapFinance/AccompanyPlayOrderDetail?id="+"s"+"&memberId="+ AppData.getString(AppData.Keys.AD_USER_ID));
+        Log.e("weburl",""+"http://xy.gx11.cn/WapFinance/AccompanyPlayOrderDetail?id="+"s"+"&memberId="+ AppData.getString(AppData.Keys.AD_USER_ID));
     }
 
     @Override

@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-21/10:08
  * @Description:
  */
-public class AccompanyEntity {
+public class AccompanyEntity implements Serializable {
 
     /**
      * id : 21

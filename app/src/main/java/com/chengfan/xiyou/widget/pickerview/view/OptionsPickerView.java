@@ -2,6 +2,7 @@ package com.chengfan.xiyou.widget.pickerview.view;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -183,6 +184,9 @@ public class OptionsPickerView<T> extends BasePickerView implements View.OnClick
     public void returnData() {
         if (mPickerOptions.optionsSelectListener != null) {
             int[] optionsCurrentItems = wheelOptions.getCurrentItems();
+            Log.e("optionsCurrentItems0",""+optionsCurrentItems[0]);
+            Log.e("optionsCurrentItems1",""+optionsCurrentItems[1]);
+            Log.e("optionsCurrentItems2",""+optionsCurrentItems[2]);
             mPickerOptions.optionsSelectListener.onOptionsSelect(optionsCurrentItems[0], optionsCurrentItems[1], optionsCurrentItems[2], clickView);
         }
     }

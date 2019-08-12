@@ -39,7 +39,6 @@ public class DynamicIssuedPresenterImpl extends BasePresenter<DynamicIssuedContr
     }
 
 
-
     @Override
     public void uploadParameter(UploadFile fileList) {
         append(mModel.UPLOAD_OBSERVABLE(fileList), new NetObserver<UploadEntity>(this) {

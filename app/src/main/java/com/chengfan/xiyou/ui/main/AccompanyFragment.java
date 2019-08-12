@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -99,6 +102,7 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     AccompanyAdapter mAccompanyAdapter;
     @BindView(R.id.linear)
     LinearLayout mLinear;
+    private boolean b = true;
 
 
     private CardPageTransformer mTransformer;
@@ -143,28 +147,45 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
                                 @Override
                                 public void run() {
 
-                                    HttpRequest.get("http://api.map.baidu.com/location/ip?ak=F454f8a5efe5e577997931cc01de3974&ip=" + LocationUtils.getNetIp())
-                                            .execute(new AbstractResponse<BaiDuEntity>() {
-                                                @Override
-                                                public void onSuccess(BaiDuEntity result) {
-                                                    String addressStr = result.getContent().getAddress_detail().getCity();
-                                                    Logger.d(addressStr);
-                                                    mSearchAddressTv.setText(result.getContent().getAddress_detail().getCity());
-                                                    for (int i = 0; i < mJsonBeanArrayList.size(); i++) {//遍历省份
-                                                        for (int c = 0; c < mJsonBeanArrayList.get(i).getCity().size(); c++) {
-                                                            Logger.d("areaCode : " + mJsonBeanArrayList.get(i).getCity().get(c).getName() + "   ===  " + addressStr);
-                                                            if (mJsonBeanArrayList.get(i).getCity().get(c).getName().contains(addressStr)) {
-                                                                areaCode = mCityList.get(i).get(c).getId();
-                                                                Logger.d("areaCode = mCityList.get(i).get(a).getId() :" + areaCode);
+                                    Looper.prepare();
+                                    Message message = new Message();
+                                    Bundle bundle = new Bundle();
+                                    Handler handler = new Handler() {
+                                        @Override
+                                        public void handleMessage(Message message) {
+                                            super.handleMessage(message);
+                                            Bundle bundle = message.getData();
+                                            String msg = bundle.getString("msg");
+                                            HttpRequest.get("http://api.map.baidu.com/location/ip?ak=F454f8a5efe5e577997931cc01de3974&ip=" + LocationUtils.getNetIp())
+                                                    .execute(new AbstractResponse<BaiDuEntity>() {
+                                                        @Override
+                                                        public void onSuccess(BaiDuEntity result) {
+                                                            String addressStr = result.getContent().getAddress_detail().getCity();
+                                                            Logger.d(addressStr);
+                                                            mSearchAddressTv.setText(result.getContent().getAddress_detail().getCity());
+                                                            for (int i = 0; i < mJsonBeanArrayList.size(); i++) {//遍历省份
+                                                                for (int c = 0; c < mJsonBeanArrayList.get(i).getCity().size(); c++) {
+                                                                    Logger.d("areaCode : " + mJsonBeanArrayList.get(i).getCity().get(c).getName() + "   ===  " + addressStr);
+                                                                    if (mJsonBeanArrayList.get(i).getCity().get(c).getName().contains(addressStr)) {
+                                                                        areaCode = mCityList.get(i).get(c).getId();
+                                                                        Logger.d("areaCode = mCityList.get(i).get(a).getId() :" + areaCode);
+                                                                    }
+                                                                }
+
+
                                                             }
+                                                            mPresenter.accompanyBannerParameter(areaCode, 1);
+
                                                         }
+                                                    });
+                                        }
+                                    };
+                                    bundle.putString("msg", "你好！！！");
+                                    message.setData(bundle);
+                                    handler.sendMessage(message);
+                                    Looper.loop();
 
 
-                                                    }
-                                                    mPresenter.accompanyBannerParameter(areaCode, 1);
-
-                                                }
-                                            });
                                 }
                             }
                     ).start();
@@ -195,12 +216,12 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
 
         mAccompanyEntityList = new ArrayList<>();
 
-//        areaCode = UserStorage.getInstance().getLogin().getAreaCode();
-//        areaName = UserStorage.getInstance().getLogin().getAreaName();
-//        mSearchAddressTv.setText(areaName);
+        //        areaCode = UserStorage.getInstance().getLogin().getAreaCode();
+        //        areaName = UserStorage.getInstance().getLogin().getAreaName();
+        //        mSearchAddressTv.setText(areaName);
 
 
-        mPresenter.accompanyPlayListParameter(1, true);
+        mPresenter.accompanyPlayListParameter(1, true, "0");
 
 
         mBotNav.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), APPContents.FONTS_BOLD));
@@ -250,7 +271,7 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     }
 
     private void initPoint() {
-        for (int i = 0; i <1; i++) {
+        for (int i = 0; i < 1; i++) {
             ImageView iv = new ImageView(getActivity());
             iv.setImageResource(R.drawable.indicator_viewpager_selector);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(30, 30);
@@ -313,7 +334,8 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int position = mBotNav.getMenuItemPosition(item);
-                mPresenter.accompanyPlayListParameter(1, true);
+                mAccompanyEntityList.clear();
+                mPresenter.accompanyPlayListParameter(1, true, "" + position);
                 return true;
             }
         });
@@ -358,6 +380,7 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
             mAccompanyEntityList.addAll(accompanyEntityList);
         }
         mAccompanyAdapter.addData(mAccompanyEntityList);
+        mAccompanyAdapter.notifyDataSetChanged();
     }
 
     @OnClick({R.id.search_address_ll, R.id.search_ll})

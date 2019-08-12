@@ -34,8 +34,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/padding_10">
-
                     <com.chengfan.xiyou.view.MediumTextView
+                        android:maxEms="4"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:id="@+id/home_user_name_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

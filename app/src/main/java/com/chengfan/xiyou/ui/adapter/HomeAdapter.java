@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.chengfan.xiyou.R;
@@ -46,6 +47,7 @@ public class HomeAdapter extends BaseRVAdapter<MemberBean, BaseViewHolder> {
 
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.home_user_pic_civ), APIContents.HOST + "/" + item.getAvatarUrl());
 
+        Log.e("homeurl:",APIContents.HOST + "/" + item.getAvatarUrl());
         List<ImageEntity> imageEntityList = new ArrayList<>();
         String imageStr = item.getMemberNews().getImages();
         if (imageStr != null) {

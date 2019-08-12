@@ -15,7 +15,7 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:fillViewport="true">
 
         <RelativeLayout
@@ -49,6 +49,8 @@
                         android:gravity="center">
 
                         <com.chengfan.xiyou.view.MediumTextView
+                            android:maxLines="1"
+                            android:maxEms="6"
                             android:id="@+id/a_user_info_name_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -79,6 +81,9 @@
                             android:visibility="gone"/>
 
                         <com.chengfan.xiyou.view.RegularTextView
+                            android:maxWidth="@dimen/album_dp_100"
+                            android:ellipsize="end"
+                            android:singleLine="true"
                             android:id="@+id/a_user_info_age_num_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

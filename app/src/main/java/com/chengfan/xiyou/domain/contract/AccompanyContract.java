@@ -18,7 +18,7 @@ public interface AccompanyContract {
     interface Model {
         Observable<HomeBannerEntity> BANNER_OBSERVABLE(int areaCode, int page);
 
-        Observable<List<AccompanyEntity>> ACCOMPANY_ENTITY_OBSERVABLE(int page);
+        Observable<List<AccompanyEntity>> ACCOMPANY_ENTITY_OBSERVABLE(int page,String position);
     }
 
     interface View extends BaseView {
@@ -30,7 +30,7 @@ public interface AccompanyContract {
     interface Presenter {
         void accompanyBannerParameter(int areaCode, int page);
 
-        void accompanyPlayListParameter(int page, boolean isPtr);
+        void accompanyPlayListParameter(int page, boolean isPtr,String position);
 
     }
 }

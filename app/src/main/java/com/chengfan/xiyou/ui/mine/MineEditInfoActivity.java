@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,6 +38,12 @@ import com.chengfan.xiyou.widget.pickerview.view.OptionsPickerView;
 import com.github.zackratos.ultimatebar.UltimateBar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.lljjcoder.Interface.OnCityItemClickListener;
+import com.lljjcoder.bean.CityBean;
+import com.lljjcoder.bean.DistrictBean;
+import com.lljjcoder.bean.ProvinceBean;
+import com.lljjcoder.citywheel.CityConfig;
+import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.yanzhenjie.album.Action;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumFile;
@@ -115,8 +122,9 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
 
 
     private ArrayList<AlbumFile> mAlbumFiles;
-
-
+    private String myprovince;
+    private String mycity;
+    private String mydistrict;
     OptionsPickerView pvOptions;
     private List<JsonBean> mJsonBeanArrayList = new ArrayList<>();
     private ArrayList<ArrayList<JsonBean.CityBean>> mCityList = new ArrayList<>();
@@ -125,7 +133,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
     private static final int MSG_LOAD_DATA = 0x0001;
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
-
+    private CityPickerView mCityPickerView;
 
     private ArrayList<String> shenGaoList = new ArrayList<>();
     private ArrayList<String> tiZhongList = new ArrayList<>();
@@ -191,6 +199,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         requestSystemConfigShenGao();
         requestSystemConfigTiZhong();
         requestSystemConfigJob();
+        showpicker();
     }
 
     @OnClick({R.id.xy_back_btn, R.id.complete_city_rl, R.id.complete_face_rl, R.id.complete_job_rl,
@@ -218,7 +227,6 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 ForwardUtil.getInstance(this).forward(CompleteVideoActivity.class, toBundle);
                 break;
             case R.id.edit_info_save_btn:
-
                 nameStr = mEditNameEt.getText().toString().trim();
                 ageStr = mEditAgeEt.getText().toString().trim();
                 wxStr = mEditWxEt.getText().toString().trim();
@@ -228,6 +236,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
 
                 MemberInfoBean bean = new MemberInfoBean();
                 bean.setId(AppData.getString(AppData.Keys.AD_USER_ID));
+               // bean.setAvatarUrl();
                 bean.setNickname(nameStr);
                 bean.setAge(ageStr);
                 if (sexStr.equals("男"))
@@ -235,9 +244,11 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 else
                     bean.setGender("0");
                 bean.setAreaCode(areaCode);
-                bean.setAreaName(areaName);
+                bean.setAreaName(mEditCityTv.getText().toString().trim());
                 bean.setExterior(faceStr);
                 bean.setWeiXinUId(wxStr);
+
+                Log.e("mEditWxEt",wxStr);
                 bean.setJob(jobStr);
                 mPresenter.memberInfoUpdateParameter(bean);
                 break;
@@ -261,6 +272,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
     @Override
     public void memberInfoUpdateLoad(BaseApiResponse baseApiResponse) {
         ToastUtil.show(baseApiResponse.getMsg());
+        finish();
     }
 
     private void selectImage() {
@@ -306,34 +318,40 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
 
 
     private void showPickerView() {// 弹出选择器
-
-        pvOptions = new OptionsPickerBuilder(this, new OnOptionsSelectListener() {
-            @Override
-            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                //返回的分别是三个级别的选中位置
-                String cityName = mCityList.get(options1).get(options2).getName();
-
-                areaName = cityName;
-                areaCode = mAreaList.get(options1).get(options2).get(options3).getId() + "";
-
-                String tx = cityName + areaName;
-
-
-                Logger.d("选择的城市为：" + tx + " code : " + areaCode);
-                mEditCityTv.setText(tx);
-
-            }
-        })
-
-                .setTitleText("城市选择")
-                .setDividerColor(Color.BLACK)
-                .setTextColorCenter(Color.BLACK) //设置选中项文字颜色
-                .setContentTextSize(20)
-                .build();
-
-        pvOptions.setPicker(mJsonBeanArrayList, mCityList, mAreaList);//三级选择器
-        pvOptions.show();
+        mCityPickerView.showCityPicker();//三级联动
     }
+
+    private void showpicker() {
+        //初始化地区pop
+        mCityPickerView = new CityPickerView();
+        mCityPickerView.init(this);
+        CityConfig cityConfig = new CityConfig.Builder().build();
+        mCityPickerView.setConfig(cityConfig);
+        mCityPickerView.setOnCityItemClickListener(new OnCityItemClickListener() {
+            @Override
+            public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
+                super.onSelected(province, city, district);
+                //省份
+                if (province != null) {
+                    myprovince = province.getName();
+                }
+
+                //城市
+                if (city != null) {
+                    mycity = city.getName();
+                }
+
+                //地区
+                if (district != null) {
+                    mydistrict = district.getName();
+                }
+                mEditCityTv.setText(province.getName() + "," + city.getName() + "," + district.getName());
+            }
+
+        });
+
+    }
+
 
     private void initJsonData() {//解析数据
 
@@ -345,7 +363,6 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         for (int i = 0; i < jsonBean.size(); i++) {//遍历省份
             ArrayList<JsonBean.CityBean> cityList = new ArrayList<>();//该省的城市列表（第二级）
             ArrayList<ArrayList<JsonBean.CityBean.AreaBean>> province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
-
             for (int c = 0; c < jsonBean.get(i).getCity().size(); c++) {//遍历该省份的所有城市
                 cityList.add(jsonBean.get(i).getCity().get(c));//添加城市
                 ArrayList<JsonBean.CityBean.AreaBean> city_AreaList = new ArrayList<>();//该城市的所有地区列表
@@ -543,6 +560,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         mEditCityTv.setText(getMemberInfoEntity.getAreaName());
         mEditFaceTv.setText(getMemberInfoEntity.getExterior());
         mEditWxEt.setText(getMemberInfoEntity.getWeiXin());
+        Log.e("mEditWxEt",""+getMemberInfoEntity.getWeiXin());
         if (getMemberInfoEntity.getGender() == 1) {
             mEditSexEt.setText("男");
         } else {

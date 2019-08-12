@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-20/00:02
  * @Description: 家族成员
  */
-public class MineFamilyMemberEntity {
+public class MineFamilyMemberEntity  implements Serializable {
 
     /**
      * role : 1

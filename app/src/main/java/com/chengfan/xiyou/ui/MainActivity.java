@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.chengfan.xiyou.R;
@@ -62,6 +63,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         UltimateBar.Companion.with(this)
                 .statusDrawable(new ColorDrawable(Color.WHITE))
                 .statusDark(true)
@@ -108,7 +110,6 @@ public class MainActivity extends BaseActivity {
                     }
                 });
 
-
         bottomInit();
 
 
@@ -132,6 +133,7 @@ public class MainActivity extends BaseActivity {
         fragments.add(mDynamicFragment);
         fragments.add(mMineFragment);
 
+
         //set enable
         mBotNav.enableItemShiftingMode(false);
         mBotNav.enableShiftingMode(false);
@@ -142,7 +144,7 @@ public class MainActivity extends BaseActivity {
         // set adapter
         adapter = new VpAdapter(getSupportFragmentManager(), fragments);
         mFragmentNavigationVp.setAdapter(adapter);
-        mFragmentNavigationVp.setOffscreenPageLimit(3);
+        mFragmentNavigationVp.setOffscreenPageLimit(4);
 
         // binding with ViewPager
         mBotNav.setupWithViewPager(mFragmentNavigationVp);
@@ -187,6 +189,8 @@ public class MainActivity extends BaseActivity {
              */
             @Override
             public void onSuccess(String userid) {
+                APPContents.E_ROYUN_ID=userid;
+                Log.e("ronyun",userid);
                 Logger.e("MainActivity ===>>>  connect rong--->>> onSuccess " + userid);
 
             }
@@ -197,7 +201,7 @@ public class MainActivity extends BaseActivity {
              */
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-
+                Log.e("ronyunerrorCode",errorCode.getMessage());
             }
         });
     }

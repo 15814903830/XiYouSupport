@@ -1,9 +1,10 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 
-public class CommentDetailBean {
+public class CommentDetailBean  implements Serializable {
     private int id;
     private String nickName;
     private String userLogo;

@@ -65,6 +65,7 @@ public class ChatCreateGroupAdapter
         checkBox.setChecked(isSelected.get(helper.getAdapterPosition()));
         helper.itemView.setSelected(isSelected.get(helper.getAdapterPosition()));
         helper.setText(R.id.chat_create_name_tv, item.getNickname());
+
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.chat_create_pic_civ), APIContents.HOST + "/" + item.getAvatarUrl());
 
         if (mSelectedListener != null) {

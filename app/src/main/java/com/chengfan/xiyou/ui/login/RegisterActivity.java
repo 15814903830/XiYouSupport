@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -180,8 +181,9 @@ public class RegisterActivity
 
     @Override
     public void registerLoad(RegisterResponse response) {
-        if (response.isSuc()) {
 
+        Log.e("response",response.getData().toString());
+        if (response.isSuc()) {
             UserStorage.getInstance().saveLoginInfo(response.getData());
             AppData.putString(AppData.Keys.AD_USER_ID, response.getData().getId() + "");
             if (response.getData().getAge() > 1) {
@@ -197,6 +199,7 @@ public class RegisterActivity
 
     @Override
     public void codeLoad(BaseApiResponse baseApiResponse) {
+
         if (baseApiResponse.isSuc()) {
             ToastUtil.show(R.string.register_send_code_txt);
         } else {

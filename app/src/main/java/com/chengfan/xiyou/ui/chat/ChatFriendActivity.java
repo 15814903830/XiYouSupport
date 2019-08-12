@@ -52,12 +52,17 @@ public class ChatFriendActivity extends BaseActivity {
                 .statusDark(true)
                 .create()
                 .drawableBar();
-
         mBotNav.setTypeface(Typeface.createFromAsset(this.getAssets(), APPContents.FONTS_BOLD));
 
         bottomInit();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
 
     private void bottomInit() {
         fragments = new ArrayList<>(2);

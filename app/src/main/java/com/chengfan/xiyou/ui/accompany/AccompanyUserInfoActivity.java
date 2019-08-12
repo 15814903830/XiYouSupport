@@ -123,13 +123,13 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
 
         mPresenter.userInfoParameter(currentMemberId);
 
-
     }
 
     @OnClick({R.id.detail_back, R.id.a_user_info_more_tv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.detail_back:
+                finish();
                 break;
             case R.id.a_user_info_more_tv:
                 ForwardUtil.getInstance(this).forward(AccompanyMoreActivity.class);
@@ -188,7 +188,6 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
 
         // binding with ViewPager
         mBotNav.setupWithViewPager(mFragmentNavigationVp);
-
 
     }
 

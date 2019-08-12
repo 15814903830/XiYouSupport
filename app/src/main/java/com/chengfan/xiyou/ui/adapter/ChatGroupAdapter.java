@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -26,6 +27,5 @@ public class ChatGroupAdapter extends BaseRVAdapter<ChatGroupEntity, BaseViewHol
     protected void convert(BaseViewHolder helper, ChatGroupEntity item) {
         helper.setText(R.id.chat_friend_name_tv, item.getTeam().getName());
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.chat_group_user_pic_civ), APIContents.HOST + "/" + item.getTeam().getAvatarUrl());
-
     }
 }

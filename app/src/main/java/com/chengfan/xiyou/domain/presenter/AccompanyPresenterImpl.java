@@ -40,8 +40,8 @@ public class AccompanyPresenterImpl extends BasePresenter<AccompanyContract.View
 
 
     @Override
-    public void accompanyPlayListParameter(final int page, final boolean isPtr) {
-        append(mModel.ACCOMPANY_ENTITY_OBSERVABLE(page), new NetObserver<List<AccompanyEntity>>(this) {
+    public void accompanyPlayListParameter(final int page, final boolean isPtr,final String position) {
+        append(mModel.ACCOMPANY_ENTITY_OBSERVABLE(page,position), new NetObserver<List<AccompanyEntity>>(this) {
             @Override
             public void onNetNext(List<AccompanyEntity> result) {
                 mView.accompanyPlayListLoad(result, isPtr);

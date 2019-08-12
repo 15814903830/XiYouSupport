@@ -19,7 +19,10 @@ import com.zero.ci.base.adapter.BaseViewHolder;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 import com.zero.ci.widget.logger.Logger;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -52,10 +55,14 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
         }
 
         helper.setText(R.id.attention_des_tv, item.getContent());
-        helper.setText(R.id.attention_time_tv, item.getCreateTime());
+        helper.setText(R.id.attention_time_tv, switchCreateTime(item.getCreateTime()));
         helper.setText(R.id.attention_comment_num_tv, item.getTotalComment() + " ");
         helper.setText(R.id.attention_lick_num_tv, item.getTotalPraise() + "");
-        helper.setText(R.id.attention_game_name_tv, item.getMember().getAccompanyPlay().get(0).getTitle() + ". ￥" + item.getMember().getAccompanyPlay().get(0).getPrice() + "/小时");
+        try {
+            helper.setText(R.id.attention_game_name_tv, ""+item.getMember().getAccompanyPlay().get(0).getTitle() + ". ￥" + item.getMember().getAccompanyPlay().get(0).getPrice() + "/小时");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (item.isHavePraise()) {
             helper.getView(R.id.attention_fans_iv).setBackgroundResource(R.drawable.ap_dynamic_licked_num);
         } else {
@@ -151,5 +158,31 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
 
     public interface LickListener {
         void onLickListener(int position);
+    }
+
+    public String switchCreateTime(String createTime) {
+        String formatStr2 = null;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//注意格式化的表达式
+        try {
+            Date time = format.parse(createTime );
+            String date = time.toString();
+            //将西方形式的日期字符串转换成java.util.Date对象
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", java.util.Locale.US);
+            Date datetime = (Date) sdf.parse(date);
+            //再转换成自己想要显示的格式
+            formatStr2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(datetime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formatStr2;
+    }
+    private String activityStartTime;//活动开始时间
+
+    public String getActivityStartTime() {
+        return switchCreateTime(activityStartTime);
+    }
+
+    public void setActivityStartTime(String activityStartTime) {
+        this.activityStartTime = activityStartTime;
     }
 }

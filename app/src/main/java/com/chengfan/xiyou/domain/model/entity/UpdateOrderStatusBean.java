@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-24/01:05
  * @Description:
  */
-public class UpdateOrderStatusBean {
+public class UpdateOrderStatusBean implements Serializable {
     /**
      * uniformOrderId : 0
      * accompanyPlayId : 0

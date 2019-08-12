@@ -1,7 +1,9 @@
 package com.chengfan.xiyou.domain.model.entity;
 
 
-public class ReplyDetailBean {
+import java.io.Serializable;
+
+public class ReplyDetailBean  implements Serializable {
     private String nickName;
     private String userLogo;
     private int id;

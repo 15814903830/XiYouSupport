@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.ChatGroupCreateContract;
 import com.chengfan.xiyou.domain.model.entity.ChatCreateGroupEntity;
 import com.chengfan.xiyou.domain.model.entity.ChatCreteEntity;
@@ -82,6 +84,7 @@ public class ChatCreateGroupActivity
     private void initRv() {
         mSelectList = new ArrayList<>();
         mChatCreteEntityList = new ArrayList<>();
+        Log.e("listsize",""+mChatCreteEntityList.size());
         mChatCreateGroupAdapter = new ChatCreateGroupAdapter(R.layout.adapter_chat_create_group, mChatCreteEntityList);
         mChatCreateGroupRv.setLayoutManager(new LinearLayoutManager(this));
         mChatCreateGroupRv.setAdapter(mChatCreateGroupAdapter);
@@ -114,7 +117,6 @@ public class ChatCreateGroupActivity
                         public void run() {
                             String code = RongCreateGroup.CreateGroup(mSelectList, createGroupEntity.getData(), mStringBuffer.toString());
                             if (code.equals("200")) {
-                                ToastUtil.show(createGroupEntity.getMsg());
                                 finish();
                                 RongIM.getInstance().startGroupChat(ChatCreateGroupActivity.this, createGroupEntity.getData(), mStringBuffer.toString());
                             }

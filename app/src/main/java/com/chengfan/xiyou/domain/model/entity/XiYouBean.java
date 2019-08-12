@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-04/15:41
  * @Description:
  */
-public class XiYouBean {
+public class XiYouBean  implements Serializable {
 
     private int showDrawable;
     private String title;

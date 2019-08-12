@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-19/13:02
  * @Description: 创建陪玩
  */
-public class AccompanyPlayPushBean {
+public class AccompanyPlayPushBean implements Serializable {
 
     /**
      * id : 0

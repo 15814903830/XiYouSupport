@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-21/23:23
  * @Description: {@link com.chengfan.xiyou.ui.accompany.AccompanyConfirmOrderActivity}
  */
-public class AccompanyConfirmOrderBean {
+public class AccompanyConfirmOrderBean implements Serializable {
 
     /**
      * accompanyPlayId : 陪玩Id

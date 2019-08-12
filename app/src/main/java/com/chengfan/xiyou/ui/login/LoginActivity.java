@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -91,6 +92,7 @@ public class LoginActivity
     @Override
     public void loginLoad(LoginResponse loginResponse) {
 
+        Log.e("loginResponse",""+loginResponse.getData().getId());
         if (loginResponse.isSuc()) {
             UserStorage.getInstance().saveLoginInfo(loginResponse.getData());
             AppData.putString(AppData.Keys.AD_USER_ID, loginResponse.getData().getId() + "");
@@ -106,12 +108,10 @@ public class LoginActivity
         }
     }
 
-
     @OnClick({R.id.login_btn, R.id.login_forget_ll, R.id.login_go_reg_tv})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_btn:
-
                 String userName = mLoginUserNameEt.getText().toString().trim();
                 String password = mLoginPwEt.getText().toString().trim();
                 if (userName.length() == 0) {

@@ -16,7 +16,6 @@ public class APIContents {
     private APIContents() {
     }
 
-
     public static String HOST = "http://xy.gx11.cn";
     /*登录*/
     public static String LOGIN = HOST + "/api/Account/Login";

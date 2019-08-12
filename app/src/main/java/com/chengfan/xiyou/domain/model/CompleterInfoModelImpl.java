@@ -33,9 +33,7 @@ public class CompleterInfoModelImpl implements CompleterInfoContract.Model {
         xyUploadEntity.setFileName(uploadFile.getKey());
         xyUploadEntity.setSource("Member");
 
-      //  Logger.d("CompleterInfoModelImpl ===>>>" + new Gson().toJson(xyUploadEntity));
         Logger.d("mUploadFile ====>>>  " + uploadFile.getKey());
-
         return HttpRequest.post(APIContents.UPLOAD_FILE)
                 .paramsJsonString(new Gson().toJson(xyUploadEntity))
                 .execute(new AdaptResponse<UploadEntity>() {

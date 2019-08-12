@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.domain.model.entity;
 
+import java.io.Serializable;
+
 /**
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-19/11:31
  * @Description:
  */
-public class MemberInfoBean {
+public class MemberInfoBean  implements Serializable {
 
     /**
      * id : 会员Id（必选）
@@ -31,7 +33,7 @@ public class MemberInfoBean {
     private String areaName;
     private String exterior;
     private String job;
-    private String weiXinUId;
+    private String weiXin;
     private String genderVideo;
 
     public String getId() {
@@ -107,11 +109,11 @@ public class MemberInfoBean {
     }
 
     public String getWeiXinUId() {
-        return weiXinUId;
+        return weiXin;
     }
 
     public void setWeiXinUId(String weiXinUId) {
-        this.weiXinUId = weiXinUId;
+        this.weiXin = weiXinUId;
     }
 
     public String getGenderVideo() {
