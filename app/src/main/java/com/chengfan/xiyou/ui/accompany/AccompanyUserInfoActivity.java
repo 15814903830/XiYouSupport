@@ -4,8 +4,10 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -97,8 +99,10 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
 
 
         revBundle = getIntent().getExtras();
-        if (revBundle != null)
+        if (revBundle != null){
             currentMemberId = revBundle.getInt(APPContents.E_CURRENT_MEMBER_ID);
+              APPContents.E_CURRENT_MEMBER_IDS=currentMemberId;
+        }
         mBotNav.setTypeface(Typeface.createFromAsset(AccompanyUserInfoActivity.this.getAssets(), APPContents.FONTS_BOLD));
 
         Logger.e(" AccompanyUserInfoActivity  get  currentMemberId : " + currentMemberId);
@@ -124,7 +128,6 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
         mPresenter.userInfoParameter(currentMemberId);
 
     }
-
     @OnClick({R.id.detail_back, R.id.a_user_info_more_tv})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -184,11 +187,9 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
         // set adapter
         adapter = new VpAdapter(getSupportFragmentManager(), fragments);
         mFragmentNavigationVp.setAdapter(adapter);
-        mFragmentNavigationVp.setOffscreenPageLimit(3);
-
+        mFragmentNavigationVp.setOffscreenPageLimit(0);
         // binding with ViewPager
         mBotNav.setupWithViewPager(mFragmentNavigationVp);
-
     }
 
 
@@ -215,6 +216,7 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
             @Override
             public void onMemberShipListener() {
                 mPresenter.memberShipLoad(currentMemberId, false);
+                Log.e("currentMemberId",""+currentMemberId);
             }
         });
         mAUserInfoLickLl.setOnClickListener(new View.OnClickListener() {

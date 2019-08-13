@@ -47,7 +47,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/rc_file_path"/>
         </provider>
-
+        <activity android:name=".wxapi.WXEntryActivity"></activity>
+        <activity
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:name=".wxapi.WXPayEntryActivity"></activity>
         <activity
             android:name=".ui.WelComeActivity"
             android:screenOrientation="portrait">

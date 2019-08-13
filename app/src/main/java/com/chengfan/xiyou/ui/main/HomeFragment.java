@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -81,7 +82,6 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
 
     @BindView(R.id.search_address_tv)
     TextView mSearchAddressTv;
-
 
     Unbinder unbinder;
     int page;
@@ -194,9 +194,7 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
 
         mPresenter = new HomePresenterImpl();
         mPresenter.onAttach(getActivity(), this);
-
         mHomeBannerEntity = new HomeBannerEntity();
-
         mHandler.sendEmptyMessage(MSG_LOAD_DATA);
         // areaCode = UserStorage.getInstance().getLogin().getAreaCode();
         // areaName = UserStorage.getInstance().getLogin().getAreaName();
@@ -204,13 +202,10 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
         // mSearchAddressTv.setText(areaName);
         toBundle = new Bundle();
         mMemberBeanList = new ArrayList<>();
-
         iniView();
         iniBanner();
         initZrl();
-
         mSayHiDialog = new SayHiDialog(getActivity());
-
 
         return mView;
     }
@@ -437,5 +432,6 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
             ImageLoaderManager.getInstance().showImage(imageView, data);
         }
     }
+
 
 }

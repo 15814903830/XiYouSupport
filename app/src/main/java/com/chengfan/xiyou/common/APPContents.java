@@ -57,6 +57,7 @@ public class APPContents {
     public static String E_SUBJECT_ID = "subjectId";
     /*当前会员id*/
     public static String E_CURRENT_MEMBER_ID = "currentMemberId";
+    public static int E_CURRENT_MEMBER_IDS = 0;
 
     public static String E_ROYUN_ID = "";
     public static String E_ORDER_ID = "id";
@@ -80,6 +81,7 @@ public class APPContents {
     public static String TO_PLACE = "place";
 
     public static String TO_TAKING = "TAKING";
+    public static String TO_ALLSTR = "";
 
     //==========================================================
     public static String X_NAN = "nan";

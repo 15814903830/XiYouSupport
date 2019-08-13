@@ -8,11 +8,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
@@ -24,7 +27,11 @@ import com.chengfan.xiyou.domain.model.entity.MemberInfoBean;
 import com.chengfan.xiyou.domain.model.entity.SystemConfigEntity;
 import com.chengfan.xiyou.domain.model.entity.XYUploadEntity;
 import com.chengfan.xiyou.domain.presenter.MineEditInfoPresenterImpl;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.complete.CompleteVideoActivity;
+import com.chengfan.xiyou.ui.mine.order.FileBase;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.FileToBase64;
 import com.chengfan.xiyou.utils.GetJsonDataUtil;
@@ -63,6 +70,8 @@ import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 import com.zero.ci.widget.logger.Logger;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -83,7 +92,7 @@ import butterknife.OnClick;
  * @DATE : 2019-07-06/12:36
  * @Description: 编辑资料
  */
-public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View, MineEditInfoPresenterImpl> implements MineEditInfoContract.View {
+public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View, MineEditInfoPresenterImpl> implements MineEditInfoContract.View , HttpCallBack {
     @BindView(R.id.xy_middle_tv)
     MediumTextView mXyMiddleTv;
 
@@ -134,13 +143,13 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
     private CityPickerView mCityPickerView;
-
+    private FileBase  fileBase;//上传图片
     private ArrayList<String> shenGaoList = new ArrayList<>();
     private ArrayList<String> tiZhongList = new ArrayList<>();
     private ArrayList<String> faceList = new ArrayList<>();
 
     private ArrayList<String> job = new ArrayList<>();
-
+    private HttpCallBack mHttpCallBack;
     String nameStr, ageStr, cityStr, faceStr, wxStr, jobStr, sexStr;
     String areaName, areaCode;
     UploadFile mUploadFile;
@@ -180,6 +189,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_edit_info);
+        mHttpCallBack=this;
         UltimateBar.Companion.with(this)
                 .statusDrawable(new ColorDrawable(Color.WHITE))
                 .statusDark(true)
@@ -231,12 +241,9 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 ageStr = mEditAgeEt.getText().toString().trim();
                 wxStr = mEditWxEt.getText().toString().trim();
                 sexStr = mEditSexEt.getText().toString().trim();
-                if (mUploadFile != null)
-                    mPresenter.uploadParameter(mUploadFile);
-
                 MemberInfoBean bean = new MemberInfoBean();
                 bean.setId(AppData.getString(AppData.Keys.AD_USER_ID));
-               // bean.setAvatarUrl();
+                bean.setAvatarUrl(fileBase.getFilePath());
                 bean.setNickname(nameStr);
                 bean.setAge(ageStr);
                 if (sexStr.equals("男"))
@@ -266,7 +273,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
 
     @Override
     public void uploadLoad(BaseApiResponse baseApiResponse) {
-        ToastUtil.show(baseApiResponse.getMsg());
+        Log.e("sctp",""+baseApiResponse.getMsg());
     }
 
     @Override
@@ -307,12 +314,13 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
 
     private void notifyData(ArrayList<AlbumFile> result) {
         String path = mAlbumFiles.get(0).getPath();
-
         File tempFile = new File(path.trim());
-
         String fileName = tempFile.getName();
-
         mUploadFile = new UploadFile(0, tempFile, fileName);
+
+        Log.e("path",result.get(0).getPath());
+        postimg(best64(result.get(0).getPath()));
+        //mPresenter.uploadParameter(mUploadFile);
         ImageLoaderManager.getInstance().showImage(mEditHeadCiv, result.get(0).getPath());
     }
 
@@ -582,4 +590,82 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
             mHandler.removeCallbacksAndMessages(null);
         }
     }
+
+    @Override
+    public void onResponse(String response, int requestId) {
+        Message message = mHandlere.obtainMessage();
+        message.what = requestId;
+        message.obj = response;
+        mHandlere.sendMessage(message);
+    }
+
+    @Override
+    public void onHandlerMessageCallback(String response, int requestId) {
+        try {
+            fileBase= JSON.parseObject(response, FileBase.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void postimg(final String data) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("source", "AccompanyPlayNews");
+                    jsonObject.put("fileName", "png");
+                    jsonObject.put("fileData", data);
+                    OkHttpUtils.doPostJson(APIContents.UPLOAD_FILE , jsonObject.toString(), mHttpCallBack, 0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public static String best64(String file) {
+        InputStream is = null;
+        byte[] data = null;
+        String result = null;
+        try{
+            is = new FileInputStream(""+file);
+            //创建一个字符流大小的数组。
+            data = new byte[is.available()];
+            //写入数组
+            is.read(data);
+            //用默认的编码格式进行编码
+            result = Base64.encodeToString(data,Base64.DEFAULT);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if(null !=is){
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        return result;
+    }
+
+
+
+
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandlere = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int requestId = msg.what;
+            String response = (String) msg.obj;
+            onHandlerMessageCallback(response, requestId);
+        }
+    };
 }

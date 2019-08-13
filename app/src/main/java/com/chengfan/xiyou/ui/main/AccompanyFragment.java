@@ -88,12 +88,12 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     JazzyViewPager mAccompanyJvp;
     @BindView(R.id.bot_nav)
     BottomNavigationViewEx mBotNav;
-
     @BindView(R.id.accompany_rv)
     RecyclerView mAccompanyRv;
 
     Unbinder mUnbinder;
 
+    private boolean data=true;
 
     HomeBannerEntity mHomeBannerEntity;
 
@@ -203,34 +203,23 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         mView = inflater.inflate(R.layout.fragment_accompany, null);
         mUnbinder = ButterKnife.bind(this, mView);
-
-        mPresenter = new AccompanyPresenterImpl();
-        mPresenter.onAttach(getActivity(), this);
-
-
-        mSearchTv.setHint(R.string.accompany_search_txt);
-        mHandler.sendEmptyMessage(MSG_LOAD_DATA);
-
-        mAccompanyEntityList = new ArrayList<>();
-
-        //        areaCode = UserStorage.getInstance().getLogin().getAreaCode();
-        //        areaName = UserStorage.getInstance().getLogin().getAreaName();
-        //        mSearchAddressTv.setText(areaName);
-
-
-        mPresenter.accompanyPlayListParameter(1, true, "0");
-
-
-        mBotNav.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), APPContents.FONTS_BOLD));
-
         iniBanner();
         bottomInit();
         setAccompanyData();
         initAdapter();
         return mView;
+    }
+
+    private void getdata() {
+        mPresenter = new AccompanyPresenterImpl();
+        mPresenter.onAttach(getActivity(), this);
+        mSearchTv.setHint(R.string.accompany_search_txt);
+        mHandler.sendEmptyMessage(MSG_LOAD_DATA);
+        mAccompanyEntityList = new ArrayList<>();
+        mPresenter.accompanyPlayListParameter(1, true, "0");
+        mBotNav.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), APPContents.FONTS_BOLD));
     }
 
     private void setAccompanyData() {
@@ -496,4 +485,15 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            if (data){
+                getdata();
+            }else {
+                data=false;
+            }
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
 }

@@ -124,6 +124,7 @@ public class APIContents {
     public static String RemoveNews = HOST + "/api/MemberNews/RemoveNews";
     /*letter*/
     public static String SendPrivateLetter = HOST + "/Api/Member/SendPrivateLetter/";
+    public static String SendLIKEr = HOST + "/api/MemberNews/Praise";
 
     /*VIP order*/
     public static String CreateVIPOrder = HOST + "/api/Order/CreateVIPOrder";

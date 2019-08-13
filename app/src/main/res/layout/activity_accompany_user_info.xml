@@ -159,13 +159,11 @@
                     android:background="@drawable/xy_nice_pacht"
                     app:itemTextColor="@color/selector_item_accompany_color"
                     app:menu="@menu/menu_navigation_user_info_flag"/>
-
-
                 <com.chengfan.xiyou.view.WrapContentHeightViewPager
                     android:id="@+id/fragment_navigation_vp"
                     android:layout_width="match_parent"
                     android:background="@null"
-                    android:layout_height="match_parent"
+                    android:layout_height="fill_parent"
                     android:layout_below="@+id/bot_nav"/>
             </RelativeLayout>
 

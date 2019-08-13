@@ -103,8 +103,9 @@ public class ChatFriendFragment
         mChatFriendSrv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int adapterPosition) {
-                Log.e("adapterPosition",""+adapterPosition);
-                RongIM.getInstance().startPrivateChat(getActivity(), mChatFriendEntityList.get(adapterPosition).getMemberId() + "", mChatFriendEntityList.get(adapterPosition).getNickname());
+                Log.e("adapterPosition",""+mChatFriendEntityList.get(adapterPosition).getMemberId());
+                Log.e("adapterPosition",""+mChatFriendEntityList.get(adapterPosition).getId());
+                RongIM.getInstance().startPrivateChat(getActivity(), mChatFriendEntityList.get(adapterPosition).getId() + "", mChatFriendEntityList.get(adapterPosition).getNickname());
             }
         });
 

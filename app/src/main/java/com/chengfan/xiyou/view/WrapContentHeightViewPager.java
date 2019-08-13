@@ -3,7 +3,9 @@ package com.chengfan.xiyou.view;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 
 /**
  * @author: Zero Yuan
@@ -12,6 +14,11 @@ import android.view.View;
  * @Description:
  */
 public class WrapContentHeightViewPager extends ViewPager {
+    private int current;
+    private int height = 0;
+
+    private boolean scrollble = true;
+
     public WrapContentHeightViewPager(Context context) {
         super(context);
     }
@@ -23,15 +30,19 @@ public class WrapContentHeightViewPager extends ViewPager {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        int height = 0;
-        for (int i = 0; i < getChildCount(); i++) {
+        int childSize = getChildCount();
+        int maxHeight = 0;
+        for (int i = 0; i < childSize; i++) {
             View child = getChildAt(i);
             child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-            int h = child.getMeasuredHeight();
-            if (h > height) height = h;
+            if (child.getMeasuredHeight() > maxHeight) {
+                maxHeight = child.getMeasuredHeight();
+            }
         }
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (maxHeight > 0) {
+            setMeasuredDimension(getMeasuredWidth(), maxHeight);
+        }
     }
+
+
 }

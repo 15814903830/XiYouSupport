@@ -40,13 +40,11 @@ import io.rong.imlib.model.Conversation;
 public class ChatFragment extends BaseFragment {
     View mView;
     Unbinder unbinder;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         mView = inflater.inflate(R.layout.fragment_chat, null);
-
         initRong();
         unbinder = ButterKnife.bind(this, mView);
         return mView;

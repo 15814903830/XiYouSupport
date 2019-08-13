@@ -49,15 +49,13 @@ public class DynamicFragment extends BaseFragment {
     private List<Fragment> fragments;
     DynamicMineFragment mDynamicMineFragment;
     DynamicAttentionFragment mDynamicAttentionFragment;
-
-
+    private boolean data=true;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_dynamic, null);
         mUnbinder = ButterKnife.bind(this, mView);
         mBotNav.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), APPContents.FONTS_BOLD));
-        bottomInit();
         return mView;
     }
 
@@ -93,5 +91,17 @@ public class DynamicFragment extends BaseFragment {
     @OnClick(R.id.dynamic_go_issued_iv)
     public void onClick() {
         ForwardUtil.getInstance(getActivity()).forward(DynamicIssuedActivity.class);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            if (data){
+                bottomInit();
+            }else {
+                data=false;
+            }
+        }
+        super.setUserVisibleHint(isVisibleToUser);
     }
 }

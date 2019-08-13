@@ -223,9 +223,9 @@ public class MineMemberActivity extends BaseActivity<MineMemberContract.View, Mi
         Log.e("timeStamp",""+timeStamp);
         Log.e("sign",""+sign);
         PayReq request = new PayReq();
-        request.appId = Payutils.APP_ID;
-        request.partnerId = Payutils.PARTNERID;
-        request.prepayId = Payutils.PREPAYID;
+        request.appId = appId;
+        request.partnerId = partnerId;
+        request.prepayId = prepayId;
         request.packageValue = "Sign=WXPay";
         request.nonceStr = ""+nonceStr;
         request.timeStamp = ""+timeStamp;

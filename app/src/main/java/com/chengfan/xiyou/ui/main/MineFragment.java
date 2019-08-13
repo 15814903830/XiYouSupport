@@ -89,7 +89,7 @@ public class MineFragment extends BaseFragment {
     RecyclerView mMineRv;
 
     Unbinder mUnbinder;
-
+    private boolean data=true;
     List<XiYouBean> mXiYouBeanList;
     AttentionSelectListener mAttentionSelectListener;
     MineEntity mMineEntity;
@@ -114,9 +114,6 @@ public class MineFragment extends BaseFragment {
         mMineEntity = new MineEntity();
 
 
-        setMineData();
-
-        request();
         return mView;
     }
 
@@ -250,5 +247,16 @@ public class MineFragment extends BaseFragment {
         void onAttentionSelectListener();
     }
 
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser) {
+            if (data){
+                setMineData();
+                request();
+            }else {
+                data=false;
+            }
+        }
+        super.setUserVisibleHint(isVisibleToUser);
+    }
 }

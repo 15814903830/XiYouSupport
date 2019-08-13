@@ -5,6 +5,7 @@ import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.MineEditInfoContract;
 import com.chengfan.xiyou.domain.model.entity.GetMemberInfoEntity;
 import com.chengfan.xiyou.domain.model.entity.MemberInfoBean;
+import com.chengfan.xiyou.domain.model.entity.UploadEntity;
 import com.chengfan.xiyou.domain.model.entity.XYUploadEntity;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.FileToBase64;
@@ -47,6 +48,8 @@ public class MineEditInfoModelImpl implements MineEditInfoContract.Model {
                 });
 
     }
+
+
 
     @Override
     public Observable<BaseApiResponse> MEMBER_INFO_UPDATE_OBSERVABLE(MemberInfoBean bean) {

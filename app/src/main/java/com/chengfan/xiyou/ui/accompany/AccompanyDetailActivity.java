@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -97,6 +98,7 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
         revBundle = getIntent().getExtras();
         if (revBundle != null)
             currentMemberId = revBundle.getInt(APPContents.E_CURRENT_MEMBER_ID);
+
         Logger.e("AccompanyDetailActivity currentMemberId : " + currentMemberId);
 
         mAccompanyDetailEntity = new AccompanyDetailEntity();
@@ -149,6 +151,7 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
 
     @Override
     public void memberShipLoad(BaseApiResponse baseApiResponse, boolean isLike) {
+        Log.e("isLike",isLike+"");
         if (baseApiResponse.isSuc()) {
             if (isLike) {
                 mOrderFocusTv.setText("关注");
@@ -181,15 +184,10 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
         mOrderFocusTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOrderFocusTv.getText().equals("关注")){
-                    mOrderFocusTv.setText("已关注");
-                }else {
-                    Toast.makeText(AccompanyDetailActivity.this, "已关注", Toast.LENGTH_SHORT).show();
-                }
                 if (accompanyDetailEntity.isIsFans()) {
-                    mPresenter.memberShipLoad(currentMemberId, true);
+                    mPresenter.memberShipLoad(APPContents.E_CURRENT_MEMBER_IDS, true);
                 } else {
-                    mPresenter.memberShipLoad(currentMemberId, false);
+                    mPresenter.memberShipLoad(APPContents.E_CURRENT_MEMBER_IDS, false);
                 }
 
             }
