@@ -1,8 +1,11 @@
 package com.chengfan.xiyou.ui.mine;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -12,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.domain.contract.MineAddPlayContract;
@@ -21,10 +25,17 @@ import com.chengfan.xiyou.domain.model.entity.MineAddPlayEntity;
 import com.chengfan.xiyou.domain.model.entity.UpdateEntity;
 import com.chengfan.xiyou.domain.model.entity.XYUploadEntity;
 import com.chengfan.xiyou.domain.presenter.MineAddPlayPresenterImpl;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.okhttp.OkHttpUtils;
 import com.chengfan.xiyou.ui.dialog.MineDataDialog;
 import com.chengfan.xiyou.ui.dialog.MineTimeDialog;
+import com.chengfan.xiyou.ui.mine.order.FileBase;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.FileToBase64;
+import com.chengfan.xiyou.utils.dialog.BaseNiceDialog;
+import com.chengfan.xiyou.utils.dialog.NiceDialog;
+import com.chengfan.xiyou.utils.dialog.ViewConvertListener;
+import com.chengfan.xiyou.utils.dialog.ViewHolder;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.chengfan.xiyou.widget.pickerview.builder.OptionsPickerBuilder;
 import com.chengfan.xiyou.widget.pickerview.listener.OnOptionsSelectChangeListener;
@@ -48,6 +59,9 @@ import com.zero.ci.tool.ToastUtil;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 import com.zero.ci.widget.logger.Logger;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -63,7 +77,7 @@ import butterknife.OnClick;
  * @DATE : 2019-07-07/16:22
  * @Description: 新增陪玩
  */
-public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, MineAddPlayPresenterImpl> implements MineAddPlayContract.View {
+public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, MineAddPlayPresenterImpl> implements MineAddPlayContract.View , HttpCallBack {
     @BindView(R.id.xy_middle_tv)
     MediumTextView mXyMiddleTv;
     @BindView(R.id.xy_more_tv)
@@ -91,13 +105,26 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
 
     private ArrayList<AlbumFile> mAlbumFiles;
     UploadFile mUploadFile;
+    private FileBase fileBase;//上传图片
 
-
+    private HttpCallBack mHttpCallBack;
     List<MineAddPlayEntity> mAddPlayEntityList;
     MineDataDialog mMineDataDialog;
     MineTimeDialog mMineTimeDialog;
     String mString="";
     UpdateEntity response;
+    BaseNiceDialog mBaseNiceDialog;
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandlere = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int requestId = msg.what;
+            String response = (String) msg.obj;
+            onHandlerMessageCallback(response, requestId);
+        }
+    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +138,7 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
 
         mXyMiddleTv.setText("新增陪玩");
         mXyMoreTv.setText("完成");
-
+        mHttpCallBack=this;
         mAddPlayEntityList = new ArrayList<>();
 
 
@@ -147,7 +174,7 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
     public void mineAddLoad(BaseApiResponse response) {
         Log.e("mineAddLoad",response.getMsg());
         Toast.makeText(this, response.getMsg(), Toast.LENGTH_SHORT).show();
-        ToastUtil.show(response.getMsg());
+        finish();
     }
 
     @Override
@@ -155,6 +182,7 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
         this.response=response;
         Log.e("uploadLoad",response.getMsg());
         ToastUtil.show(response.getMsg());
+        mBaseNiceDialog.dismiss();
     }
 
     @OnClick({R.id.xy_back_btn, R.id.xy_more_tv, R.id.add_type_rl, R.id.add_data_rl, R.id.add_time_rl, R.id.add_update_ll})
@@ -186,7 +214,6 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
                     mineAddBean.setPrice(priceStr);
                     mineAddBean.setTitle(titleStr);
                     mineAddBean.setImages(response.getFilePath());
-                    Log.e("mUploadFile",response.getFileUrl());
                     mineAddBean.setRemark(remarkStr);
                     String str[]=weekStr.split(",");
                     for (int i = 0; i <str.length ; i++) {
@@ -316,12 +343,15 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
         mUploadFile = new UploadFile(0, tempFile, fileName);
         ImageLoaderManager.getInstance().showImage(mAddContentImage, result.get(0).getPath());
 
-        XYUploadEntity xyUploadEntity = new XYUploadEntity();
-        xyUploadEntity.setFileData(FileToBase64.best64(mUploadFile));
-        xyUploadEntity.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
-        xyUploadEntity.setFileName(mUploadFile.getKey());
-        xyUploadEntity.setSource("AccompanyPlayNews");
-        mPresenter.mineUploadParameter(xyUploadEntity);
+        showLoading();
+//        XYUploadEntity xyUploadEntity = new XYUploadEntity();
+//        xyUploadEntity.setFileData(FileToBase64.best64(mUploadFile));
+//        xyUploadEntity.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
+//        xyUploadEntity.setFileName("png");
+//        xyUploadEntity.setSource("AccompanyPlayNews");
+//        mPresenter.mineUploadParameter(xyUploadEntity);
+
+        postimg(FileToBase64.best64(mUploadFile));
 
     }
 
@@ -366,5 +396,58 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
                     }
                 });
     }
+    /**
+     * 显示loading
+     */
+    public void showLoading() {
+        NiceDialog.init()
+                .setLayoutId(R.layout.dialog_loading_layout)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                        mBaseNiceDialog = dialog;
+                    }
+                })
+                .setOutCancel(false)
+                .setWidth(48)
+                .setHeight(48)
+                .setShowBottom(false)
+                .show(getSupportFragmentManager());
+    }
 
+    @Override
+    public void onResponse(String response, int requestId) {
+        Message message = mHandlere.obtainMessage();
+        message.what = requestId;
+        message.obj = response;
+        mHandlere.sendMessage(message);
+    }
+
+    @Override
+    public void onHandlerMessageCallback(String response, int requestId) {
+        try {
+            fileBase = JSON.parseObject(response, FileBase.class);
+            ToastUtil.show(fileBase.getMsg());
+            mBaseNiceDialog.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void postimg(final String data) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("source", "AccompanyPlayNews");
+                    jsonObject.put("fileName", "png");
+                    jsonObject.put("fileData", data);
+                    OkHttpUtils.doPostJson(APIContents.UPLOAD_FILE, jsonObject.toString(), mHttpCallBack, 0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 }
