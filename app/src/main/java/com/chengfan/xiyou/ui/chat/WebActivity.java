@@ -1,5 +1,7 @@
 package com.chengfan.xiyou.ui.chat;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -7,29 +9,27 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
-
+import android.widget.Toast;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.github.zackratos.ultimatebar.UltimateBar;
-import com.zero.ci.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * @author: Zero Yuan
- * @Email: zero.yuan.xin@gmail.com
- * @DATE : 2019-07-09/16:48
- * @Description: 家族专区====》》》 家族网页地址
- */
-public class ChatFamilyActivity extends BaseActivity {
+
+public class WebActivity extends AppCompatActivity {
 
 
     @BindView(R.id.xy_middle_tv)
@@ -50,7 +50,7 @@ public class ChatFamilyActivity extends BaseActivity {
                 .statusDark(true)
                 .create()
                 .drawableBar();
-        initView();
+
         mXyMiddleTv.setText("家族专区");
         mChatFamilyWv.loadUrl("http://xy.gx11.cn/Wap/Family?id=" + AppData.getString(AppData.Keys.AD_USER_ID) + "&sort=0&page=1&limit=0");
     }
@@ -59,9 +59,9 @@ public class ChatFamilyActivity extends BaseActivity {
 
                                            @Override
                                            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                                               Intent intent = new Intent(ChatFamilyActivity.this, WebActivity.class);
-//                                                 intent.putExtra("url", url);
-//                                                 startActivity(intent);
+                                               //Intent intent = new Intent(ChatFamilyActivity.this, WebforActivity.class);
+                                               //  intent.putExtra("url", url);
+                                               //  startActivity(intent);
                                                return true;
                                            }
                                        }

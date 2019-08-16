@@ -236,7 +236,6 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
 
                 break;
             case R.id.order_user_lick_ll:
-
                 Bundle toBundles = new Bundle();
                 toBundles.putInt(APPContents.E_CURRENT_MEMBER_ID, mAccompanyDetailEntity.getMemberId());
                 ForwardUtil.getInstance(this).forward(AccompanyUserInfoActivity.class, toBundles);

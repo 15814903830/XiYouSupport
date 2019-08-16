@@ -112,6 +112,10 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
     private Handler mpayHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Log.e("mymsg",msg.toString());
+            String ddid=msg.toString().split("out_trade_no")[1].split(",")[0];
+            Log.e("mymsg2",ddid.split("\"")[2]);
+            APPContents.DDID=ddid.split("\"")[2];
             if (msg.toString().length()>200){
                 Intent intent=new Intent(AccompanyConfirmOrderActivity.this, AccompanyOrderSuccessActivity.class);
                 intent.putExtra("key","支付成功");
@@ -145,7 +149,6 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
         revBundle = getIntent().getExtras();
         if (revBundle != null) {
             mAccompanyDetailEntity = (AccompanyDetailEntity) revBundle.getSerializable(APPContents.BUNDLE_FRAGMENT);
-
             ImageLoaderManager.getInstance().showImage(mConfirmGamePicIv, APIContents.HOST + "/" + mAccompanyDetailEntity.getImages());
             mConfirmGameNameTv.setText(mAccompanyDetailEntity.getNickname());
             mConfirmGameTimeTv.setText(mAccompanyDetailEntity.getWeekDay() + "|" + mAccompanyDetailEntity.getServiceStartTime() + " " + mAccompanyDetailEntity.getServiceEndTime());
@@ -241,6 +244,7 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
                 confirmOrderBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
                 confirmOrderBean.setHour(time + "");
                 confirmOrderBean.setRemark(remarkStr);
+
                 if (selectStr.equals("3")){//支付宝
                     payzfb("" + mAccompanyDetailEntity.getId(), AppData.getString(AppData.Keys.AD_USER_ID), "" + time,  3, remarkStr);
                 }else if (selectStr.equals("2")){//微信

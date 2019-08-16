@@ -1,8 +1,11 @@
 package com.chengfan.xiyou.ui.main;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +22,9 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.model.entity.MineEntity;
 import com.chengfan.xiyou.domain.model.entity.XiYouBean;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.adapter.XiYouSelectAdapter;
 import com.chengfan.xiyou.ui.login.LoginActivity;
 import com.chengfan.xiyou.ui.mine.MineAboutActivity;
@@ -63,7 +69,7 @@ import io.rong.imlib.model.CSCustomServiceInfo;
  * @DATE : 2019-07-04/10:44
  * @Description: 我的
  */
-public class MineFragment extends BaseFragment {
+public class MineFragment extends BaseFragment{
     View mView;
     @BindView(R.id.mine_user_name_tv)
     BoldTextView mMineUserNameTv;
@@ -93,17 +99,14 @@ public class MineFragment extends BaseFragment {
     List<XiYouBean> mXiYouBeanList;
     AttentionSelectListener mAttentionSelectListener;
     MineEntity mMineEntity;
-
     public void setAttentionSelectListener(AttentionSelectListener attentionSelectListener) {
         mAttentionSelectListener = attentionSelectListener;
     }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_mine, null);
         mUnbinder = ButterKnife.bind(this, mView);
-
         UltimateBar.Companion.with(getActivity())
                 .statusDrawable(new ColorDrawable(Color.parseColor("#00000000")))
                 .statusDark(true)
@@ -112,10 +115,9 @@ public class MineFragment extends BaseFragment {
 
         mXiYouBeanList = new ArrayList<>();
         mMineEntity = new MineEntity();
-
-
         return mView;
     }
+
 
 
     @OnClick({R.id.mine_top_cl, R.id.mine_guan_ll, R.id.mine_fen_ll, R.id.mine_dong_ll, R.id.mine_order_ll, R.id.mine_game_ll, R.id.mine_money_ll})
@@ -236,12 +238,12 @@ public class MineFragment extends BaseFragment {
         } else {
             mMiniHuiyuanIv.setVisibility(View.GONE);
         }
-
         mMinePhoneTv.setText(mineEntity.getUserName());
         mMineGuanTv.setText(mineEntity.getTotalCare() + "");
         mMineFenTv.setText(mineEntity.getTotalFans() + "");
         mMineDongTv.setText(mineEntity.getTotalNews() + "");
     }
+
 
     public interface AttentionSelectListener {
         void onAttentionSelectListener();

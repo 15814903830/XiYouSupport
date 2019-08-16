@@ -11,7 +11,7 @@ import android.widget.TextView;
  * @DATE : 2019-07-28/17:06
  * @Description:
  */
-public class MediumTextView extends TextView {
+public class MediumTextView extends android.support.v7.widget.AppCompatTextView {
     public MediumTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }

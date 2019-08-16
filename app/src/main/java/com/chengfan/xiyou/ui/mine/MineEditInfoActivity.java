@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.ui.mine;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -8,32 +9,30 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.MineEditInfoContract;
-import com.chengfan.xiyou.domain.model.entity.DynamicDetailEntity;
 import com.chengfan.xiyou.domain.model.entity.GetMemberInfoEntity;
 import com.chengfan.xiyou.domain.model.entity.JsonBean;
 import com.chengfan.xiyou.domain.model.entity.MemberInfoBean;
 import com.chengfan.xiyou.domain.model.entity.SystemConfigEntity;
-import com.chengfan.xiyou.domain.model.entity.XYUploadEntity;
 import com.chengfan.xiyou.domain.presenter.MineEditInfoPresenterImpl;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
-import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.complete.CompleteVideoActivity;
+import com.chengfan.xiyou.ui.mine.order.AutonymActivity;
+import com.chengfan.xiyou.ui.mine.order.AutonymtrueforflaseActivity;
 import com.chengfan.xiyou.ui.mine.order.FileBase;
+import com.chengfan.xiyou.ui.mine.order.MinEBase;
 import com.chengfan.xiyou.utils.AppData;
-import com.chengfan.xiyou.utils.FileToBase64;
 import com.chengfan.xiyou.utils.GetJsonDataUtil;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.chengfan.xiyou.view.RegularEditText;
@@ -57,11 +56,8 @@ import com.yanzhenjie.album.AlbumFile;
 import com.yanzhenjie.album.api.widget.Widget;
 import com.zero.ci.base.BaseActivity;
 import com.zero.ci.base.BaseApiResponse;
-import com.zero.ci.base.adapter.BaseRVAdapter;
 import com.zero.ci.network.zrequest.request.HttpRequest;
 import com.zero.ci.network.zrequest.response.AbstractResponse;
-import com.zero.ci.network.zrequest.response.AbstractUploadResponse;
-import com.zero.ci.network.zrequest.response.AdaptResponse;
 import com.zero.ci.network.zrequest.response.UploadFile;
 import com.zero.ci.tool.ForwardUtil;
 import com.zero.ci.tool.ToastUtil;
@@ -75,7 +71,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -92,7 +87,7 @@ import butterknife.OnClick;
  * @DATE : 2019-07-06/12:36
  * @Description: 编辑资料
  */
-public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View, MineEditInfoPresenterImpl> implements MineEditInfoContract.View , HttpCallBack {
+public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View, MineEditInfoPresenterImpl> implements MineEditInfoContract.View, HttpCallBack {
     @BindView(R.id.xy_middle_tv)
     MediumTextView mXyMiddleTv;
 
@@ -126,10 +121,14 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
     @BindView(R.id.edit_check_tv)
     RegularTextView mEditCheckTv;
 
+    @BindView(R.id.edit_check_tvSS)
+    RegularTextView mEditCheckTvSS;
+
     @BindView(R.id.edit_sex_et)
     RegularEditText mEditSexEt;
 
 
+    private MinEBase minEBase;
     private ArrayList<AlbumFile> mAlbumFiles;
     private String myprovince;
     private String mycity;
@@ -143,7 +142,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
     private CityPickerView mCityPickerView;
-    private FileBase  fileBase;//上传图片
+    private FileBase fileBase;//上传图片
     private ArrayList<String> shenGaoList = new ArrayList<>();
     private ArrayList<String> tiZhongList = new ArrayList<>();
     private ArrayList<String> faceList = new ArrayList<>();
@@ -153,6 +152,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
     String nameStr, ageStr, cityStr, faceStr, wxStr, jobStr, sexStr;
     String areaName, areaCode;
     UploadFile mUploadFile;
+    private RelativeLayout mRelativeLayout;
 
 
     @SuppressLint("HandlerLeak")
@@ -189,7 +189,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mine_edit_info);
-        mHttpCallBack=this;
+        mHttpCallBack = this;
         UltimateBar.Companion.with(this)
                 .statusDrawable(new ColorDrawable(Color.WHITE))
                 .statusDark(true)
@@ -210,10 +210,11 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         requestSystemConfigTiZhong();
         requestSystemConfigJob();
         showpicker();
+        getdata();
     }
 
     @OnClick({R.id.xy_back_btn, R.id.complete_city_rl, R.id.complete_face_rl, R.id.complete_job_rl,
-            R.id.edit_info_check_rl, R.id.edit_info_save_btn, R.id.edit_head_rl})
+            R.id.edit_info_check_rl, R.id.edit_info_save_btn, R.id.edit_head_rl, R.id.edit_info_check_rl2})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.xy_back_btn:
@@ -221,6 +222,23 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 break;
             case R.id.complete_city_rl:
                 showPickerView();
+                break;
+            case R.id.edit_info_check_rl2:
+                //上传身份证信息
+                if (minEBase.getRealNameTag().equals("审核中")){
+                    Toast.makeText(this, "信息审核中", Toast.LENGTH_SHORT).show();
+                }else if (minEBase.getRealNameTag().equals("未认证")){
+                    startActivity(new Intent(this, AutonymActivity.class));
+                    finish();
+                }else {
+                     Intent intent=new Intent(this, AutonymtrueforflaseActivity.class);
+                                intent.putExtra("name",minEBase.getNickname());
+                                intent.putExtra("carsum",minEBase.getIdNo());
+                                intent.putExtra("img",minEBase.getIdImages());
+                                intent.putExtra("tv",minEBase.getRealNameTag());
+                                startActivity(intent);
+                                finish();
+                }
                 break;
             case R.id.edit_head_rl:
                 selectImage();
@@ -255,7 +273,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 bean.setExterior(faceStr);
                 bean.setWeiXinUId(wxStr);
 
-                Log.e("mEditWxEt",wxStr);
+                Log.e("mEditWxEt", wxStr);
                 bean.setJob(jobStr);
                 mPresenter.memberInfoUpdateParameter(bean);
                 break;
@@ -273,7 +291,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
 
     @Override
     public void uploadLoad(BaseApiResponse baseApiResponse) {
-        Log.e("sctp",""+baseApiResponse.getMsg());
+        Log.e("sctp", "" + baseApiResponse.getMsg());
     }
 
     @Override
@@ -318,7 +336,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         String fileName = tempFile.getName();
         mUploadFile = new UploadFile(0, tempFile, fileName);
 
-        Log.e("path",result.get(0).getPath());
+        Log.e("path", result.get(0).getPath());
         postimg(best64(result.get(0).getPath()));
         //mPresenter.uploadParameter(mUploadFile);
         ImageLoaderManager.getInstance().showImage(mEditHeadCiv, result.get(0).getPath());
@@ -568,7 +586,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         mEditCityTv.setText(getMemberInfoEntity.getAreaName());
         mEditFaceTv.setText(getMemberInfoEntity.getExterior());
         mEditWxEt.setText(getMemberInfoEntity.getWeiXin());
-        Log.e("mEditWxEt",""+getMemberInfoEntity.getWeiXin());
+        Log.e("mEditWxEt", "" + getMemberInfoEntity.getWeiXin());
         if (getMemberInfoEntity.getGender() == 1) {
             mEditSexEt.setText("男");
         } else {
@@ -601,13 +619,33 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-        try {
-            fileBase= JSON.parseObject(response, FileBase.class);
-        } catch (Exception e) {
-            e.printStackTrace();
+        switch (requestId) {
+            case 0:
+                try {
+                    fileBase = JSON.parseObject(response, FileBase.class);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 1:
+                Log.e("response1", response);
+                minEBase = JSON.parseObject(response, MinEBase.class);
+                mEditCheckTvSS.setText(minEBase.getRealNameTag());
+//                editCheckTv.setText(minEBase.getVerificationGenderStatusTag());
+                break;
         }
 
 
+    }
+
+    private void getdata() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.e("idrun", AppData.getString(AppData.Keys.AD_USER_ID));
+                OkHttpUtils.doGet(APIContents.HOST + "/api/Account/GetAccount/" + AppData.getString(AppData.Keys.AD_USER_ID), mHttpCallBack, 1);
+            }
+        }).start();
     }
 
     private void postimg(final String data) {
@@ -619,7 +657,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                     jsonObject.put("source", "AccompanyPlayNews");
                     jsonObject.put("fileName", "png");
                     jsonObject.put("fileData", data);
-                    OkHttpUtils.doPostJson(APIContents.UPLOAD_FILE , jsonObject.toString(), mHttpCallBack, 0);
+                    OkHttpUtils.doPostJson(APIContents.UPLOAD_FILE, jsonObject.toString(), mHttpCallBack, 0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -631,18 +669,18 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         InputStream is = null;
         byte[] data = null;
         String result = null;
-        try{
-            is = new FileInputStream(""+file);
+        try {
+            is = new FileInputStream("" + file);
             //创建一个字符流大小的数组。
             data = new byte[is.available()];
             //写入数组
             is.read(data);
             //用默认的编码格式进行编码
-            result = Base64.encodeToString(data,Base64.DEFAULT);
-        }catch (Exception e){
+            result = Base64.encodeToString(data, Base64.DEFAULT);
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(null !=is){
+        } finally {
+            if (null != is) {
                 try {
                     is.close();
                 } catch (IOException e) {
@@ -653,9 +691,6 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         }
         return result;
     }
-
-
-
 
 
     @SuppressLint("HandlerLeak")

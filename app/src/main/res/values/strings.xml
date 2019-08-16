@@ -227,8 +227,6 @@
     <string name="pickerview_seconds">秒</string>
 
 
-
-
     <string name="soft_update_no" translatable="false">已经是最新版本</string>
     <string name="soft_update_title" translatable="false">软件更新</string>
     <string name="soft_update_info" translatable="false">检测到新版本，立即更新</string>
@@ -236,7 +234,6 @@
     <string name="soft_update_later" translatable="false">稍后更新</string>
     <string name="soft_updating" translatable="false">正在更新</string>
     <string name="soft_update_cancel" translatable="false">取消</string>
-
 
 
     <!--JazzyViewPager-->

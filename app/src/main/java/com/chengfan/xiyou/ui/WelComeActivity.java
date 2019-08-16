@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.ui.login.LoginActivity;
@@ -57,6 +58,7 @@ public class WelComeActivity extends BaseActivity {
                     public void run() throws Exception {
                         String uid = AppData.getString(AppData.Keys.AD_USER_ID);
                         if (uid.equals("") || uid == null) {
+                            Log.e("uid",uid);
                             Logger.d("WelComeActivity ===>> go login");
                             ForwardUtil.getInstance(WelComeActivity.this).forward(LoginActivity.class);
                         } else {

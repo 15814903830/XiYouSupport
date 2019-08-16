@@ -82,6 +82,8 @@ public class APPContents {
 
     public static String TO_TAKING = "TAKING";
     public static String TO_ALLSTR = "";
+    public static String DDID = "";
+    public static String ID = "";
 
     //==========================================================
     public static String X_NAN = "nan";

@@ -399,7 +399,7 @@
         android:id="@+id/edit_info_check_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edit_line_view"
+        android:layout_below="@id/edit_info_check_rl2"
         android:background="@color/color_FFFFFF">
 
         <LinearLayout
@@ -440,7 +440,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="@dimen/padding_10"
-                android:text="@string/complete_change_txt"
                 android:textColor="@color/color_D1AE81"
                 android:textSize="@dimen/text_size_15"
                 />
@@ -452,6 +451,70 @@
                 android:background="@drawable/icon_row"/>
         </LinearLayout>
     </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/padding_10"
+        android:layout_below="@+id/edit_info_check_rl2"
+        android:background="@color/color_F5F5F5"/>
+    <RelativeLayout
+        android:id="@+id/edit_info_check_rl2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_line_view"
+        android:background="@color/color_FFFFFF">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/padding_20"
+            android:orientation="vertical">
+
+            <com.chengfan.xiyou.view.MediumTextView
+                android:id="@+id/edit_name_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="实名认证"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/text_size_18"/>
+
+            <com.chengfan.xiyou.view.RegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="认证后才可下单陪玩或接取订单"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/text_size_12"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padding_20">
+
+            <com.chengfan.xiyou.view.RegularTextView
+                android:id="@+id/edit_check_tvSS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/padding_10"
+                android:textColor="@color/color_D1AE81"
+                android:textSize="@dimen/text_size_15"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/icon_row"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
 
     <Button
         android:id="@+id/edit_info_save_btn"

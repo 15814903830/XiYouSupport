@@ -94,6 +94,7 @@ public class LoginActivity
 
         Log.e("loginResponse",""+loginResponse.getData().getId());
         if (loginResponse.isSuc()) {
+            APPContents.ID=""+loginResponse.getData().getId();
             UserStorage.getInstance().saveLoginInfo(loginResponse.getData());
             AppData.putString(AppData.Keys.AD_USER_ID, loginResponse.getData().getId() + "");
             if (loginResponse.getData().getAge() > 0) {

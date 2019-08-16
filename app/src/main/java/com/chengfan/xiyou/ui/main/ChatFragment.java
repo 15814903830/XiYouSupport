@@ -43,13 +43,11 @@ public class ChatFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         mView = inflater.inflate(R.layout.fragment_chat, null);
         initRong();
         unbinder = ButterKnife.bind(this, mView);
         return mView;
     }
-
 
     private void initRong() {
         ConversationListFragment fragment = new ConversationListFragment();

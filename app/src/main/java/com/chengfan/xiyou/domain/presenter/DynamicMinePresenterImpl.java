@@ -1,5 +1,7 @@
 package com.chengfan.xiyou.domain.presenter;
 
+import android.util.Log;
+
 import com.chengfan.xiyou.domain.contract.DynamicMineContract;
 import com.chengfan.xiyou.domain.model.DynamicMineModelImpl;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineDelBean;
@@ -34,6 +36,7 @@ public class DynamicMinePresenterImpl extends BasePresenter<DynamicMineContract.
 
             @Override
             public void onNetError(Throwable e) {
+                Log.e("onNetError",e.toString());
 
             }
         });

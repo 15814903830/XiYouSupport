@@ -5,10 +5,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -94,7 +96,8 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
     List<MineAddPlayEntity> mAddPlayEntityList;
     MineDataDialog mMineDataDialog;
     MineTimeDialog mMineTimeDialog;
-
+    String mString="";
+    UpdateEntity response;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,11 +145,15 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
 
     @Override
     public void mineAddLoad(BaseApiResponse response) {
+        Log.e("mineAddLoad",response.getMsg());
+        Toast.makeText(this, response.getMsg(), Toast.LENGTH_SHORT).show();
         ToastUtil.show(response.getMsg());
     }
 
     @Override
     public void uploadLoad(UpdateEntity response) {
+        this.response=response;
+        Log.e("uploadLoad",response.getMsg());
         ToastUtil.show(response.getMsg());
     }
 
@@ -178,21 +185,76 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
                     mineAddBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
                     mineAddBean.setPrice(priceStr);
                     mineAddBean.setTitle(titleStr);
-                    mineAddBean.setImages(mUploadFile.getKey());
+                    mineAddBean.setImages(response.getFilePath());
+                    Log.e("mUploadFile",response.getFileUrl());
                     mineAddBean.setRemark(remarkStr);
-                    mineAddBean.setWeekDay(weekStr);
+                    String str[]=weekStr.split(",");
+                    for (int i = 0; i <str.length ; i++) {
+                        switch (str[i]) {
+                            case "星期一":
+                                if (i==str.length-1){
+                                    str[i]="1";
+                                }else {
+                                    str[i]="1,";
+                                }
+                                break;
+                            case "星期二":
+                                if (i==str.length-1){
+                                    str[i]="2";
+                                }else {
+                                    str[i]="2,";
+                                }
+                                break;
+                            case "星期三":
+                                if (i==str.length-1){
+                                    str[i]="3";
+                                }else {
+                                    str[i]="3,";
+                                }
+                                break;
+                            case "星期四":
+                                if (i==str.length-1){
+                                    str[i]="4";
+                                }else {
+                                    str[i]="4,";
+                                }
+                                break;
+                            case "星期五":
+                                if (i==str.length-1){
+                                    str[i]="5";
+                                }else {
+                                    str[i]="5,";
+                                }
+                                break;
+                            case "星期六":
+                                if (i==str.length-1){
+                                    str[i]="6";
+                                }else {
+                                    str[i]="6,";
+                                }
+                                break;
+                            case "星期日":
+                                if (i==str.length-1){
+                                    str[i]="7";
+                                }else {
+                                    str[i]="7,";
+                                }
+                                break;
+                        }
+                    }
+
+                    // 遍历
+                    StringBuffer str5 = new StringBuffer();
+                    for (String s : str) {
+                        str5.append(s);
+                    }
+                    Log.e("mString",str5.toString());
+                    mineAddBean.setWeekDay(str5.toString());
                     mineAddBean.setSubjectId(subjectStr);
                     mineAddBean.setServiceStartTime(startTimeStr);
                     mineAddBean.setServiceEndTime(endTimeStr);
-                    Logger.d("MineAddPlayActivity ==>>> " + new Gson().toJson(mineAddBean));
                     mPresenter.mineAddParameter(mineAddBean);
 
-                    XYUploadEntity xyUploadEntity = new XYUploadEntity();
-                    xyUploadEntity.setFileData(FileToBase64.best64(mUploadFile));
-                    xyUploadEntity.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
-                    xyUploadEntity.setFileName(mUploadFile.getKey());
-                    xyUploadEntity.setSource("AccompanyPlayNews");
-                    mPresenter.mineUploadParameter(xyUploadEntity);
 
                 }
                 break;
@@ -253,6 +315,13 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
 
         mUploadFile = new UploadFile(0, tempFile, fileName);
         ImageLoaderManager.getInstance().showImage(mAddContentImage, result.get(0).getPath());
+
+        XYUploadEntity xyUploadEntity = new XYUploadEntity();
+        xyUploadEntity.setFileData(FileToBase64.best64(mUploadFile));
+        xyUploadEntity.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
+        xyUploadEntity.setFileName(mUploadFile.getKey());
+        xyUploadEntity.setSource("AccompanyPlayNews");
+        mPresenter.mineUploadParameter(xyUploadEntity);
 
     }
 
