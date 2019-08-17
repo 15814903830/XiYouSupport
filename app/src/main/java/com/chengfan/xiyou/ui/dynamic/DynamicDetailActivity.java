@@ -130,7 +130,6 @@ public class DynamicDetailActivity extends BaseActivity<DynamicDetailContract.Vi
         mDynamicDetailEntity = new DynamicDetailEntity();
         commentsList = new ArrayList<>();
 
-        Logger.d("DynamicDetailActivity === >>> " + dynamicID);
         mPresenter.dynamicDetailParameter(Integer.parseInt(dynamicID));
 
 

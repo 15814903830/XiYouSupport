@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
-import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.DynamicMineContract;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineDelBean;
@@ -180,7 +179,7 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
 
     @Override
     public void dynamicMineLoad(List<DynamicMineEntity> dynamicMineEntityList, boolean isPtr) {
-        Log.e("dynamicMineEntityList",dynamicMineEntityList.get(0).getImages());
+        Log.e("dynamicMineEntityList", dynamicMineEntityList.get(0).getImages());
         if (isPtr) {
             mDynamicMineAdapter.replaceData(mDynamicMineEntityList);
             mDynamicMineEntityList = dynamicMineEntityList;

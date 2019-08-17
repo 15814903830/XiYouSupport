@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -91,7 +90,7 @@ public class CompleteVideoActivity
     BaseNiceDialog mBaseNiceDialog;
 
     private HttpCallBack mHttpCallBack;
-    private String video="";
+    private String video = "";
 
     @SuppressLint("HandlerLeak")
     private Handler mHandlere = new Handler() {
@@ -103,6 +102,7 @@ public class CompleteVideoActivity
             onHandlerMessageCallback(response, requestId);
         }
     };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +114,7 @@ public class CompleteVideoActivity
                 .create()
                 .drawableBar();
         mXyMiddleTv.setText(getResources().getText(R.string.complete_video_title_txt));
-        mHttpCallBack=this;
+        mHttpCallBack = this;
         revBundle = getIntent().getExtras();
         if (revBundle != null)
             isShow = revBundle.getBoolean(APPContents.BUNDLE_BOOLEAN);
@@ -144,7 +144,7 @@ public class CompleteVideoActivity
     public void updateVideoLoad(UpdateEntity updateEntity) {
         mBaseNiceDialog.dismiss();
         if (updateEntity.isSuccess()) {
-            video=updateEntity.getFilePath();
+            video = updateEntity.getFilePath();
             //ForwardUtil.getInstance(this).forward(CompleteOverActivity.class);
         } else {
             ToastUtil.show(updateEntity.getMsg());
@@ -206,7 +206,7 @@ public class CompleteVideoActivity
             case R.id.complete_save_btn:
                 if (mUploadFile == null)
                     ToastUtil.show("请选择视频");
-                else{
+                else {
                     postvideo(video);
                 }
 
@@ -242,9 +242,9 @@ public class CompleteVideoActivity
             public void run() {
                 try {
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("id", ""+AppData.getString(AppData.Keys.AD_USER_ID));
+                    jsonObject.put("id", "" + AppData.getString(AppData.Keys.AD_USER_ID));
                     jsonObject.put("genderVideo", data);
-                    OkHttpUtils.doPostJson(APIContents.HOST+"/api/Account/VerificationGender", jsonObject.toString(), mHttpCallBack, 0);
+                    OkHttpUtils.doPostJson(APIContents.HOST + "/api/Account/VerificationGender", jsonObject.toString(), mHttpCallBack, 0);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -263,11 +263,11 @@ public class CompleteVideoActivity
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-        VodeoBase vodeoBase= JSON.parseObject(response,VodeoBase.class);
-        if (vodeoBase.isSuc()){
+        VodeoBase vodeoBase = JSON.parseObject(response, VodeoBase.class);
+        if (vodeoBase.isSuc()) {
             Toast.makeText(this, "认证信息提交成功", Toast.LENGTH_SHORT).show();
             finish();
-        }else {
+        } else {
             Toast.makeText(this, "认证信息提交异常", Toast.LENGTH_SHORT).show();
             finish();
         }

@@ -6,7 +6,6 @@ import android.widget.ImageView;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
-import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.model.entity.FinanceRecordEntity;
 import com.chengfan.xiyou.domain.model.entity.ImageEntity;
 import com.chengfan.xiyou.ui.dialog.ViewPagerDialog;
@@ -47,7 +46,8 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
     @Override
     protected void convert(final BaseViewHolder helper, FinanceRecordEntity item) {
         helper.setText(R.id.attention_des_tv, item.getMember().getNickname());
-        ImageLoaderManager.getInstance().showImage(helper.getView(R.id.attention_user_pic_civ), APIContents.HOST + "/" + item.getMember().getAvatarUrl());
+        ImageLoaderManager.getInstance().showImage(helper.getView(R.id.attention_user_pic_civ),
+                APIContents.HOST + "/" + item.getMember().getAvatarUrl());
         if (item.getMember().isVip()) {
             helper.getView(R.id.attention_is_hy_iv).setVisibility(View.VISIBLE);
         } else {
@@ -59,7 +59,9 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
         helper.setText(R.id.attention_comment_num_tv, item.getTotalComment() + " ");
         helper.setText(R.id.attention_lick_num_tv, item.getTotalPraise() + "");
         try {
-            helper.setText(R.id.attention_game_name_tv, ""+item.getMember().getAccompanyPlay().get(0).getTitle() + ". ￥" + item.getMember().getAccompanyPlay().get(0).getPrice() + "/小时");
+            helper.setText(R.id.attention_game_name_tv, "" +
+                    item.getMember().getAccompanyPlay().get(0).getTitle() + ". ￥" +
+                    item.getMember().getAccompanyPlay().get(0).getPrice() + "/小时");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -90,8 +92,6 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
                 Logger.d("DynamicAttentionAdapter ==>>>" + APIContents.HOST + "/" + str);
             }
         }
-
-        Logger.d("DynamicAttentionAdapter ===>>> " + imageEntityList.size());
 
         if (imageEntityList.size() > 1) {
             imageView.setVisibility(View.GONE);
@@ -164,7 +164,7 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
         String formatStr2 = null;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//注意格式化的表达式
         try {
-            Date time = format.parse(createTime );
+            Date time = format.parse(createTime);
             String date = time.toString();
             //将西方形式的日期字符串转换成java.util.Date对象
             SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", java.util.Locale.US);
@@ -176,6 +176,7 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
         }
         return formatStr2;
     }
+
     private String activityStartTime;//活动开始时间
 
     public String getActivityStartTime() {

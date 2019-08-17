@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_10"
-                android:layout_marginBottom="@dimen/padding_15"
-                android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/padding_10"
+    android:layout_marginBottom="@dimen/padding_15"
+    android:orientation="vertical">
 
 
     <com.zero.ci.widget.CircleImageView
@@ -12,8 +12,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/padding_20"
-        />
+        android:layout_marginLeft="@dimen/padding_20" />
 
 
     <LinearLayout
@@ -33,7 +32,7 @@
             android:layout_marginLeft="@dimen/padding_20"
             android:text="dsgdf"
             android:textColor="@color/color_333333"
-            android:textSize="@dimen/text_size_15"/>
+            android:textSize="@dimen/text_size_15" />
 
         <com.chengfan.xiyou.view.RegularTextView
             android:id="@+id/attention_xh_tv"
@@ -43,7 +42,7 @@
             android:background="@drawable/xy_mine_lick_add"
             android:text="@string/attention_xh_txt"
             android:textColor="@color/color_E5E5E5"
-            android:textSize="@dimen/text_size_12"/>
+            android:textSize="@dimen/text_size_12" />
 
     </LinearLayout>
 
@@ -53,6 +52,6 @@
         android:layout_height="1dp"
         android:layout_below="@+id/attention_z_ll"
         android:layout_marginLeft="@dimen/padding_60"
-        android:background="@color/color_E5E5E5"/>
+        android:background="@color/color_E5E5E5" />
 
 </RelativeLayout>

@@ -32,7 +32,6 @@ import com.zero.ci.base.BaseActivity;
 import com.zero.ci.base.BaseApiResponse;
 import com.zero.ci.network.zrequest.response.UploadFile;
 import com.zero.ci.tool.ToastUtil;
-import com.zero.ci.widget.logger.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,12 +64,12 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
     List<UploadEntity> mUploadEntityList;
     int requestNum = 1;
     private BaseNiceDialog mBaseNiceDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic_issued);
         ButterKnife.bind(this);
-
 
         UltimateBar.Companion.with(this)
                 .statusDrawable(new ColorDrawable(Color.WHITE))
@@ -99,7 +98,6 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
     @Override
     public void uploadLoad(UploadEntity result) {
         mUploadEntityList.add(result);
-        Logger.d("DynamicIssuedActivity==>>" + mUploadEntityList.size());
         if (mUploadEntityList.size() == mUploadFileList.size())
             mPresenter.publishParameter(content, mUploadEntityList);
     }
@@ -130,7 +128,13 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
         mIssuedNgv.setOnItemClickListener(new NineGridView.onItemClickListener() {
             @Override
             public void onNineGirdAddMoreClick(int cha) {
-                selectImage();
+                if (type == 0) {
+                    selectImage();
+                } else if (type == 1) {
+                    chooseVideo();
+                } else {
+                    showDynamicType();
+                }
             }
 
             @Override
@@ -141,31 +145,99 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
             @Override
             public void onNineGirdItemDeleted(int position, NineGridBean gridBean, NineGirdImageContainer imageContainer) {
                 mAlbumFiles.remove(position);
+                if (mAlbumFiles.isEmpty()) {
+                    type = -1;
+                }
             }
         });
+    }
+
+    private int type = -1;  //type0为图片，1为视频
+
+    /**
+     * 显示动态类型
+     */
+    private void showDynamicType() {
+        NiceDialog.init()
+                .setLayoutId(R.layout.dialog_issue_dynamic_type_layout)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    protected void convertView(ViewHolder holder, final BaseNiceDialog dialog) {
+                        TextView tv_video = holder.getView(R.id.tv_video_issue_dynamic_type_dialog);
+                        TextView tv_image = holder.getView(R.id.tv_image_issue_dynamic_type_dialog);
+                        TextView tv_cancel = holder.getView(R.id.tv_cancel_issue_dynamic_type_dialog);
+
+                        tv_video.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                chooseVideo();
+                                dialog.dismiss();
+                            }
+                        });
+                        tv_image.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                selectImage();
+                                dialog.dismiss();
+                            }
+                        });
+                        tv_cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                })
+                .setShowBottom(true)
+                .show(getSupportFragmentManager());
     }
 
     /**
      * Select picture, from album.
      */
     private void selectImage() {
+        type = 0;
         Album.image(this)
                 .multipleChoice()
                 .camera(true)
                 .columnCount(2)
                 .selectCount(9)
                 .checkedList(mAlbumFiles)
-                .widget(
-                        Widget.newDarkBuilder(this)
-                                //.title(mToolbar.getTitle().toString())
-                                .build()
-                )
+                .widget(Widget.newDarkBuilder(this).build())
                 .onResult(new Action<ArrayList<AlbumFile>>() {
                     @Override
                     public void onAction(@NonNull ArrayList<AlbumFile> result) {
                         mAlbumFiles = result;
                         notifyData(mAlbumFiles);
+                    }
+                })
+                .onCancel(new Action<String>() {
+                    @Override
+                    public void onAction(@NonNull String result) {
+                        ToastUtil.show("取消");
+                    }
+                })
+                .start();
+    }
 
+    private void chooseVideo() {
+        if (!mAlbumFiles.isEmpty()) {
+            return;
+        }
+        type = 1;
+        Album.video(this)
+                .multipleChoice()
+                .camera(true)
+                .columnCount(2)
+                .selectCount(1)
+                .checkedList(mAlbumFiles)
+                .widget(Widget.newDarkBuilder(this).build())
+                .onResult(new Action<ArrayList<AlbumFile>>() {
+                    @Override
+                    public void onAction(@NonNull ArrayList<AlbumFile> result) {
+                        mAlbumFiles = result;
+                        notifyData(mAlbumFiles);
                     }
                 })
                 .onCancel(new Action<String>() {
@@ -188,10 +260,7 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
                     .checkable(true)
                     .checkedList(mAlbumFiles)
                     .currentPosition(position)
-                    .widget(
-                            Widget.newDarkBuilder(this)
-                                    .build()
-                    )
+                    .widget(Widget.newDarkBuilder(this).build())
                     .onResult(new Action<ArrayList<AlbumFile>>() {
                         @Override
                         public void onAction(@NonNull ArrayList<AlbumFile> result) {
@@ -204,6 +273,9 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
     }
 
     private void notifyData(ArrayList<AlbumFile> result) {
+        if (result.isEmpty() && mAlbumFiles.isEmpty()) {
+            type = -1;
+        }
         resultList.clear();
         for (AlbumFile albumFile : result) {
             NineGridBean nineGirdData = new NineGridBean(albumFile.getPath());
@@ -222,8 +294,6 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
             String fileName = tempFile.getName();
             mUploadFileList.add(new UploadFile(0, tempFile, fileName));
         }
-
-
     }
 
     @OnClick({R.id.xy_back_btn, R.id.xy_more_tv})
@@ -233,13 +303,13 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
                 finish();
                 break;
             case R.id.xy_more_tv:
-                showLoading();
                 content = mIssuedDesEt.getText().toString().trim();
                 if (content.equals(""))
                     ToastUtil.show("与我们分享您的故事吧");
                 else if (mUploadFileList.size() < 0)
-                    ToastUtil.show("请选择图片");
+                    ToastUtil.show("请选择图片或视频");
                 else {
+                    showLoading();
                     for (UploadFile uploadFile : mUploadFileList) {
                         mPresenter.uploadParameter(uploadFile);
                         requestNum++;
@@ -258,7 +328,7 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
                 .setConvertListener(new ViewConvertListener() {
                     @Override
                     protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                         mBaseNiceDialog = dialog;
+                        mBaseNiceDialog = dialog;
                     }
                 })
                 .setOutCancel(false)

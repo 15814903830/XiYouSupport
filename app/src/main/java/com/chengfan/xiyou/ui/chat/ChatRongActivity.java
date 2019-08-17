@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APPContents;
-import com.chengfan.xiyou.ui.login.ForgetActivity;
-import com.chengfan.xiyou.view.MediumTextView;
 import com.github.zackratos.ultimatebar.UltimateBar;
 import com.zero.ci.base.BaseActivity;
 import com.zero.ci.tool.ForwardUtil;
@@ -39,7 +37,7 @@ import io.rong.imlib.model.UserInfo;
  */
 public class ChatRongActivity extends BaseActivity {
     @BindView(R.id.xy_middle_tv)
-    MediumTextView mXyMiddleTv;
+    TextView mXyMiddleTv;
     @BindView(R.id.xy_more_tv)
     TextView mXyMoreTv;
     /**

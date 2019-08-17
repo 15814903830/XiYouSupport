@@ -27,7 +27,11 @@ public class MineEditInfoPresenterImpl extends BasePresenter<MineEditInfoContrac
         append(mModel.MEMBER_INFO_OBSERVABLE(), new NetObserver<GetMemberInfoEntity>(this) {
             @Override
             public void onNetNext(GetMemberInfoEntity result) {
-                mView.memberInfoLoad(result);
+                try {
+                    mView.memberInfoLoad(result);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

@@ -631,7 +631,6 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 Log.e("response1", response);
                 minEBase = JSON.parseObject(response, MinEBase.class);
                 mEditCheckTvSS.setText(minEBase.getRealNameTag());
-//                editCheckTv.setText(minEBase.getVerificationGenderStatusTag());
                 break;
         }
 

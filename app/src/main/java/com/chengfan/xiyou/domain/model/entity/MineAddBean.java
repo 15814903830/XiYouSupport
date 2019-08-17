@@ -36,6 +36,45 @@ public class MineAddBean  implements Serializable {
     private String remark;
     private String status;
 
+    @Override
+    public String toString() {
+        return "MineAddBean{" +
+                "id='" + id + '\'' +
+                ", subjectId='" + subjectId + '\'' +
+                ", memberId='" + memberId + '\'' +
+                ", title='" + title + '\'' +
+                ", images='" + images + '\'' +
+                ", weekDay='" + weekDay + '\'' +
+                ", serviceStartTime='" + serviceStartTime + '\'' +
+                ", serviceEndTime='" + serviceEndTime + '\'' +
+                ", price='" + price + '\'' +
+                ", remark='" + remark + '\'' +
+                ", status='" + status + '\'' +
+                ", areaTitle='" + areaTitle + '\'' +
+                ", gradeTitle='" + gradeTitle + '\'' +
+                '}';
+    }
+
+    private String areaTitle;
+
+    public String getAreaTitle() {
+        return areaTitle;
+    }
+
+    public void setAreaTitle(String areaTitle) {
+        this.areaTitle = areaTitle;
+    }
+
+    public String getGradeTitle() {
+        return gradeTitle;
+    }
+
+    public void setGradeTitle(String gradeTitle) {
+        this.gradeTitle = gradeTitle;
+    }
+
+    private String gradeTitle;
+
     public String getId() {
         return id;
     }

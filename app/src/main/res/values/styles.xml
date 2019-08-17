@@ -107,14 +107,15 @@
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
     <style name="DefaultAnimation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/enter_anim</item>
         <item name="android:windowExitAnimation">@anim/exit_anim</item>
     </style>
 
     <declare-styleable name="SignKeyWordTextView">
-        <attr name="signText" format="string"/>
-        <attr name="signTextColor" format="color"/>
+        <attr name="signText" format="string" />
+        <attr name="signTextColor" format="color" />
     </declare-styleable>
 
     <style name="NiceDialog" parent="@android:style/Theme.Dialog">

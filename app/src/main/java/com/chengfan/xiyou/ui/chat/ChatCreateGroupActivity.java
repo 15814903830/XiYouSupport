@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
-import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.ChatGroupCreateContract;
 import com.chengfan.xiyou.domain.model.entity.ChatCreateGroupEntity;
 import com.chengfan.xiyou.domain.model.entity.ChatCreteEntity;
@@ -84,7 +83,7 @@ public class ChatCreateGroupActivity
     private void initRv() {
         mSelectList = new ArrayList<>();
         mChatCreteEntityList = new ArrayList<>();
-        Log.e("listsize",""+mChatCreteEntityList.size());
+        Log.e("listsize", "" + mChatCreteEntityList.size());
         mChatCreateGroupAdapter = new ChatCreateGroupAdapter(R.layout.adapter_chat_create_group, mChatCreteEntityList);
         mChatCreateGroupRv.setLayoutManager(new LinearLayoutManager(this));
         mChatCreateGroupRv.setAdapter(mChatCreateGroupAdapter);

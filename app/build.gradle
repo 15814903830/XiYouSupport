@@ -68,4 +68,12 @@ dependencies {
     implementation(name: 'alipaySdk-15.6.5-20190718211159-noUtdid', ext: 'aar')
     implementation 'com.alibaba:fastjson:1.2.12'
     api 'liji.library.dev:citypickerview:3.1.8'
+
+    //融云相关库
+    implementation files('libs/Amap_2DMap_V5.2.0_20170627.jar')
+    implementation files('libs/AMap_Channel_Location_V1.4.0_20160708.jar')
+    implementation files('libs/AMap_Search_V6.5.0_20180930.jar')
+    implementation files('libs/Android_Map3D_SDK_V6.5.0_20180930.jar')
+    //知乎图片、视频选择库
+    implementation 'com.zhihu.android:matisse:0.5.2-beta4'
 }
