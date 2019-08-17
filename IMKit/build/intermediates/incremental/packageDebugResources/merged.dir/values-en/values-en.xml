@@ -242,6 +242,7 @@
     <string name="rc_ext_search_no_result">No results</string>
     <string name="rc_ext_send">Send</string>
     <string name="rc_ext_warning">Prompt</string>
+    <string name="rc_extension_common_phrases">Universal</string>
     <string name="rc_file_not_exist">File does not exist</string>
     <string name="rc_forbidden_in_chatroom">You are banned to send message in current chatroom</string>
     <string name="rc_fr_file_category_title_audio">Audio</string>
@@ -336,6 +337,7 @@
     <string name="rc_picsel_catalog_allpic">All pictures</string>
     <string name="rc_picsel_catalog_number">%d</string>
     <string name="rc_picsel_pictype">Photos &amp; Videos</string>
+    <string name="rc_picsel_selected_max_gif_size_span_with_param">GIF image size too Iarge. Unable to send.</string>
     <string name="rc_picsel_selected_max_pic_count">You can only choose 9 pictures at most.</string>
     <string name="rc_picsel_selected_max_time_span">Can\'t share the video longer than 5 minutes.</string>
     <string name="rc_picsel_selected_max_time_span_with_param">Can\'t share the video longer than %d minutes.</string>
@@ -395,6 +397,7 @@
     <string name="rc_voice_rec">Slide up to cancel</string>
     <string name="rc_voice_short">Recording time is too short</string>
     <string name="rc_voice_too_long">Recording time is too long</string>
+    <string name="rc_voip_call_video_start_fail">Video call is on. Try again later.</string>
     <string name="rc_voip_cpu_error">Sorry, this feature does not support your device model at the moment.</string>
     <string name="rc_voip_occupying">The audio channel is being used, please try later</string>
     <string name="rc_waiting">Waiting…</string>
