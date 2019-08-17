@@ -1,5 +1,6 @@
 package com.chengfan.xiyou.ui.dynamic;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,12 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.DynamicMineContract;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineDelBean;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineEntity;
 import com.chengfan.xiyou.domain.model.entity.MemberShipBean;
 import com.chengfan.xiyou.domain.presenter.DynamicMinePresenterImpl;
+import com.chengfan.xiyou.ui.WebActivity;
 import com.chengfan.xiyou.ui.adapter.DynamicMineAdapter;
 import com.chengfan.xiyou.ui.dialog.DynamicMineDelDialog;
 import com.chengfan.xiyou.utils.AppData;
@@ -32,7 +35,6 @@ import com.zero.ci.refresh.api.RefreshLayout;
 import com.zero.ci.refresh.api.listener.OnRefreshLoadMoreListener;
 import com.zero.ci.tool.ForwardUtil;
 import com.zero.ci.tool.ToastUtil;
-import com.zero.ci.widget.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,10 +90,7 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
         mDynamicMineAdapter.setOnItemClickListener(new BaseRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseRVAdapter adapter, View view, int position) {
-                Bundle toBundle = new Bundle();
-                toBundle.putString(APPContents.BUNDLE_DYNAMIC_ID, mDynamicMineEntityList.get(position).getId() + "");
-                Logger.d("DynamicMineFragment === >>> " + mDynamicMineEntityList.get(position).getId());
-                ForwardUtil.getInstance(getActivity()).forward(DynamicDetailActivity.class, toBundle);
+                turnToDetail(position);
             }
         });
 
@@ -145,6 +144,21 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
                 mPresenter.dynamicMineDelParameter(dynamicMineDelBean);
             }
         });
+    }
+
+    private void turnToDetail(int position) {
+        if (mDynamicMineEntityList.get(position).getImages().contains(".mp4")) {
+            int id = mDynamicMineEntityList.get(position).getId();
+            String userId = AppData.getString(AppData.Keys.AD_USER_ID);
+            String url = APIContents.HOST + "/WapNews/MemberNewsVoidDetail?" + "id=" + id + "&memberId=" + userId;
+            Intent intent = new Intent(getActivity(), WebActivity.class);
+            intent.putExtra(WebActivity.KEY_URL, url);
+            startActivity(intent);
+        } else {
+            Bundle toBundle = new Bundle();
+            toBundle.putString(APPContents.BUNDLE_DYNAMIC_ID, mDynamicMineEntityList.get(position).getId() + "");
+            ForwardUtil.getInstance(getActivity()).forward(DynamicDetailActivity.class, toBundle);
+        }
     }
 
     private void initZrl() {

@@ -73,7 +73,6 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
         });
 
         helper.setText(R.id.attention_des_tv, item.getContent());
-        Log.e("time", switchCreateTime(item.getCreateTime()));
         helper.setText(R.id.attention_time_tv, switchCreateTime(item.getCreateTime()));
         helper.setText(R.id.attention_comment_num_tv, item.getTotalComment() + "");
         helper.setText(R.id.attention_lick_num_tv, item.getTotalPraise() + " ");
@@ -89,7 +88,7 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
         ImageView imageView = helper.getView(R.id.attention_iv);
         List<ImageEntity> imageEntityList = new ArrayList<>();
         List<NineGridBean> nineGridBeanList = new ArrayList<>();
-        String imageStr = (String) item.getImages();
+        String imageStr = item.getImages();
         if (imageStr != null) {
             String[] strArr = imageStr.split("\\|");
             for (String str : strArr) {
