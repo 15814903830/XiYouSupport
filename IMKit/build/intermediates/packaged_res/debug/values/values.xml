@@ -535,6 +535,11 @@
     <bool name="rc_wipe_out_notification_message">true</bool>
     <color name="rc_ad_file_list_no_select_file_text_state">#9fcdfd</color>
     <color name="rc_ad_file_list_select_file_text_state">#ffffff</color>
+    <color name="rc_common_phrases_bg_color">#f2f2f2</color>
+    <color name="rc_common_phrases_divider_color">#B4B6BA</color>
+    <color name="rc_common_phrases_list_item_color">#333333</color>
+    <color name="rc_common_phrases_stroke_color">#979797</color>
+    <color name="rc_common_phrases_title_color">#666666</color>
     <color name="rc_conversation_list_divider_color">#dfdfdd</color>
     <color name="rc_conversation_top_bg">#f2faff</color>
     <color name="rc_divider_color">#d9d9d9</color>
@@ -678,6 +683,7 @@
     <integer name="rc_custom_service_evaluation_interval">60</integer>
     <integer name="rc_extension_emoji_count_per_page">20</integer>
     <integer name="rc_extension_plugin_count_per_page">8</integer>
+    <integer name="rc_gifmsg_auto_download_size">1024</integer>
     <integer name="rc_message_recall_interval">180</integer>
     <integer name="rc_read_receipt_request_interval">120</integer>
     <string name="rc_ac_file_download_btn">开始下载</string>
@@ -937,6 +943,7 @@
     <string name="rc_ext_search_no_result">暂无结果</string>
     <string name="rc_ext_send">发送</string>
     <string name="rc_ext_warning">提示</string>
+    <string name="rc_extension_common_phrases">常用语</string>
     <string name="rc_file_not_exist">文件不存在</string>
     <string name="rc_forbidden_in_chatroom">你已被禁言，不能发送消息</string>
     <string name="rc_fr_file_category_title_audio">音频</string>
@@ -1033,6 +1040,7 @@
     <string name="rc_picsel_catalog_allpic">所有图片</string>
     <string name="rc_picsel_catalog_number">%d张</string>
     <string name="rc_picsel_pictype">图片和视频</string>
+    <string name="rc_picsel_selected_max_gif_size_span_with_param">该 GIF 图尺寸过大，无法发送</string>
     <string name="rc_picsel_selected_max_pic_count">您最多只能选择9张图片</string>
     <string name="rc_picsel_selected_max_time_span">不能分享超过5分钟的视频</string>
     <string name="rc_picsel_selected_max_time_span_with_param">不能分享超过%d分钟的视频</string>
@@ -1093,6 +1101,7 @@
     <string name="rc_voice_rec">手指上滑，取消发送</string>
     <string name="rc_voice_short">录音时间太短</string>
     <string name="rc_voice_too_long">录制时间超长</string>
+    <string name="rc_voip_call_video_start_fail">正在进行视频通话，请稍后再试</string>
     <string name="rc_voip_cpu_error">很抱歉，该功能暂时不支持您的机型</string>
     <string name="rc_voip_occupying">声音通道被占用，请稍后再试</string>
     <string name="rc_waiting">等待中</string>

@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 2019062821
-        versionName "2.9.19 Dev"
+        versionCode 2019081615
+        versionName "2.9.22 release"
     }
     buildTypes {
         release {
@@ -36,6 +36,7 @@ dependencies {
     api 'com.googlecode.mp4parser:isoparser:1.1.21'
     api 'com.android.support:exifinterface:26.1.0'
     api project (':IMLib')
+    api 'com.github.bumptech.glide:glide:4.9.0'
 }
 
 repositories {

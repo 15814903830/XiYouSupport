@@ -63,4 +63,7 @@
     <!--在线时是否自动下载高质量语音消息-->
     <bool name="rc_enable_automatic_download_voice_msg">true</bool>
 
+    <!--gif 自动下载的最大值， 超过就需点击手动下载（单位 KB）-->
+    <integer name="rc_gifmsg_auto_download_size">1024</integer>
+
 </resources>

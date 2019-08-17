@@ -51,7 +51,7 @@
             android:value="1179" /> <!--  -->
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="${applicationId}.FileProvider"
+            android:authorities="com.chengfan.xiyou.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
