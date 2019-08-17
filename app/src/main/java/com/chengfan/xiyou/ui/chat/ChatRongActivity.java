@@ -13,7 +13,6 @@ import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APPContents;
 import com.github.zackratos.ultimatebar.UltimateBar;
 import com.zero.ci.base.BaseActivity;
-import com.zero.ci.tool.ForwardUtil;
 import com.zero.ci.widget.logger.Logger;
 
 import java.util.Locale;
@@ -53,8 +52,6 @@ public class ChatRongActivity extends BaseActivity {
      */
     private Conversation.ConversationType mConversationType;
 
-    Bundle toBundle;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +72,6 @@ public class ChatRongActivity extends BaseActivity {
         mConversationType = Conversation.ConversationType.valueOf(intent.getData()
                 .getLastPathSegment().toUpperCase(Locale.US));
         Logger.e("mTargetId " + mTargetId);
-
-        toBundle = new Bundle();
-        toBundle.putString(APPContents.BUNDLE_GROUP_ID, mTargetId);
 
         setActionBarTitle(mConversationType, mTargetId);
     }
@@ -235,8 +229,30 @@ public class ChatRongActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.xy_more_tv:
-                ForwardUtil.getInstance(this).forward(ChatGroupDetailActivity.class, toBundle);
+                turnToDetail();
                 break;
+        }
+    }
+
+    /**
+     * 前往详情
+     */
+    private void turnToDetail() {
+        Intent intent = new Intent(this, ChatGroupDetailActivity.class);
+        intent.putExtra(APPContents.BUNDLE_GROUP_ID, mTargetId);
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 0) {
+            if (data != null) {
+                boolean needFinish = data.getBooleanExtra("needFinish", false);
+                if (needFinish) {
+                    finish();
+                }
+            }
         }
     }
 }

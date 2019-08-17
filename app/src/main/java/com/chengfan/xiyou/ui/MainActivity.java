@@ -20,7 +20,6 @@ import com.chengfan.xiyou.ui.main.DynamicFragment;
 import com.chengfan.xiyou.ui.main.HomeFragment;
 import com.chengfan.xiyou.ui.main.MineFragment;
 import com.chengfan.xiyou.utils.AppData;
-import com.chengfan.xiyou.utils.LocationUtils;
 import com.chengfan.xiyou.utils.RongGetToken;
 import com.chengfan.xiyou.utils.UpdateApk;
 import com.chengfan.xiyou.utils.UserStorage;
@@ -112,9 +111,15 @@ public class MainActivity extends BaseActivity {
 
         bottomInit();
 
-
+        getGroupChatInfo();
     }
 
+    /**
+     * 获取群组信息
+     */
+    private void getGroupChatInfo() {
+
+    }
 
 
     private void bottomInit() {
@@ -189,8 +194,8 @@ public class MainActivity extends BaseActivity {
              */
             @Override
             public void onSuccess(String userid) {
-                APPContents.E_ROYUN_ID=userid;
-                Log.e("ronyun",userid);
+                APPContents.E_ROYUN_ID = userid;
+                Log.e("ronyun", userid);
                 Logger.e("MainActivity ===>>>  connect rong--->>> onSuccess " + userid);
 
             }
@@ -201,7 +206,7 @@ public class MainActivity extends BaseActivity {
              */
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                Log.e("ronyunerrorCode",errorCode.getMessage());
+                Log.e("ronyunerrorCode", errorCode.getMessage());
             }
         });
     }

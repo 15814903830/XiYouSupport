@@ -4,30 +4,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
-import com.chengfan.xiyou.ui.UIApplication;
 import com.chengfan.xiyou.ui.chat.ChatFamilyActivity;
 import com.chengfan.xiyou.ui.chat.ChatFriendActivity;
 import com.zero.ci.base.BaseFragment;
 import com.zero.ci.tool.ForwardUtil;
-import com.zero.ci.widget.logger.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 
@@ -38,8 +28,10 @@ import io.rong.imlib.model.Conversation;
  * @Description:
  */
 public class ChatFragment extends BaseFragment {
+
     View mView;
     Unbinder unbinder;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

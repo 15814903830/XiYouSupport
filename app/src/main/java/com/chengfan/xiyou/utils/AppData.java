@@ -36,6 +36,7 @@ public class AppData {
         int AD_IS_PLACE_ORDER = 10 | DataType.BOOLEAN;
         int AD_USER_ID = 11 | DataType.STRING;
         int AD_SHOW_SAY_HI = 16 | DataType.BOOLEAN;
+        int AD_USER_IMAGE = 11 | DataType.STRING;
     }
 
     public static SyncKV data() {

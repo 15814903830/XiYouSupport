@@ -209,7 +209,7 @@
     <string name="dialog_del_txt" translatable="false">确定删除这条动态吗？</string>
     <string name="dialog_chat_friend_txt" translatable="false">确定删除该好友吗？</string>
     <string name="dialog_title_txt" translatable="false">提示</string>
-    <string name="dialog_member_txt" translatable="false">确认解释该群聊吗？\n 解散后不在接收此群的群聊信息</string>
+    <string name="dialog_member_txt" translatable="false">确认解散该群聊吗？\n 解散后不在接收此群的群聊信息</string>
     <string name="dialog_no_member_txt" translatable="false">确认退出该群聊吗？\n 退出后不再接收此群的信息</string>
     <string name="dialog_check_vip_txt" translatable="false">您暂无开通会员，\n 开通后即可下单陪玩</string>
     <string name="dialog_check_letter_txt" translatable="false">您暂未开通会员，\n只能与10位用户聊天</string>

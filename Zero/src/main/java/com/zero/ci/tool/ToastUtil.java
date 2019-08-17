@@ -6,7 +6,6 @@ import android.widget.Toast;
 import com.zero.ci.base.BaseApplication;
 
 
-
 public class ToastUtil {
 
     private static Toast toast;
@@ -21,12 +20,12 @@ public class ToastUtil {
             return;
         }
         if (toast == null) {
+            toast = Toast.makeText(BaseApplication.getZApplicationContext(), msg, Toast.LENGTH_SHORT);
         } else {
             //  toast.setGravity(Gravity.BOTTOM, 0, 0);
-            toast.setDuration(Toast.LENGTH_SHORT);
             toast.setText(msg);
-            toast.show();
         }
+        toast.show();
     }
 
     /**

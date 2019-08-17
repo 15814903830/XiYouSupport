@@ -16,13 +16,15 @@
         android:layout_below="@+id/detail_top"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/padding_50"
             android:layout_marginLeft="@dimen/padding_20"
             android:layout_marginRight="@dimen/padding_20"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <com.chengfan.xiyou.view.RegularTextView
                 android:layout_width="wrap_content"
@@ -32,10 +34,9 @@
                 android:textColor="@color/color_333333"
                 android:textSize="@dimen/text_size_15" />
 
-
             <LinearLayout
                 android:id="@+id/chat_group_name_ll"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
@@ -44,9 +45,11 @@
 
                 <com.chengfan.xiyou.view.RegularTextView
                     android:id="@+id/chat_group_detail_name_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_marginRight="@dimen/padding_10"
+                    android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:singleLine="true"
                     android:textColor="@color/color_333333"
@@ -58,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/icon_row" />
             </LinearLayout>
-        </RelativeLayout>
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -106,7 +109,8 @@
         android:id="@+id/chat_group_detail_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/detail_top" />
+        android:layout_below="@id/detail_name_ll"
+        android:layout_marginBottom="70dp" />
 
     <Button
         android:id="@+id/chat_group_submit_btn"

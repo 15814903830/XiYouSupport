@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_10"
-                android:layout_marginBottom="@dimen/padding_15"
-                android:orientation="vertical">
-
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="vertical">
 
     <com.zero.ci.widget.CircleImageView
         android:id="@+id/cgd_user_pic_civ"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/padding_20"
-        />
-
+        android:layout_marginLeft="@dimen/padding_20" />
 
     <LinearLayout
         android:id="@+id/family_z_ll"
@@ -25,15 +20,13 @@
         android:layout_toRightOf="@id/cgd_user_pic_civ"
         android:gravity="center_vertical">
 
-
         <com.chengfan.xiyou.view.MediumTextView
             android:id="@+id/cgb_name_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/padding_20"
-            android:text="dsgdf"
             android:textColor="@color/color_333333"
-            android:textSize="@dimen/text_size_15"/>
+            android:textSize="@dimen/text_size_15" />
 
         <TextView
             android:id="@+id/cgb_action_tv"
@@ -44,16 +37,16 @@
             android:text="群主"
             android:textColor="@color/color_E5E5E5"
             android:textSize="@dimen/text_size_12"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 
-
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/family_z_ll"
+        android:layout_height="0.5dp"
+        android:layout_alignBottom="@+id/family_z_ll"
         android:layout_marginLeft="@dimen/padding_60"
-        android:background="@color/color_E5E5E5"/>
+        android:layout_marginRight="20dp"
+        android:background="@color/color_E5E5E5" />
 
 </RelativeLayout>

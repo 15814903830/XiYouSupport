@@ -2,6 +2,7 @@ package com.chengfan.xiyou.ui.login;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputType;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.LoginContract;
 import com.chengfan.xiyou.domain.model.response.LoginResponse;
@@ -26,11 +28,12 @@ import com.github.zackratos.ultimatebar.UltimateBar;
 import com.zero.ci.base.BaseActivity;
 import com.zero.ci.tool.ForwardUtil;
 import com.zero.ci.tool.ToastUtil;
-import com.zero.ci.widget.logger.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * @author: Zero Yuan
@@ -92,10 +95,16 @@ public class LoginActivity
     @Override
     public void loginLoad(LoginResponse loginResponse) {
 
-        Log.e("loginResponse",""+loginResponse.getData().getId());
+        Log.e("loginResponse", "" + loginResponse.getData().getId());
         if (loginResponse.isSuc()) {
-            APPContents.ID=""+loginResponse.getData().getId();
+            APPContents.ID = "" + loginResponse.getData().getId();
             UserStorage.getInstance().saveLoginInfo(loginResponse.getData());
+
+            //设置当前用户信息
+            RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(loginResponse.getData().getId()),
+                    loginResponse.getData().getNickname(),
+                    Uri.parse(APIContents.HOST + "/" + loginResponse.getData().getAvatarUrl())));
+
             AppData.putString(AppData.Keys.AD_USER_ID, loginResponse.getData().getId() + "");
             if (loginResponse.getData().getAge() > 0) {
                 ForwardUtil.getInstance(this).forward(MainActivity.class);

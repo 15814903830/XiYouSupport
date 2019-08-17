@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.domain.contract.ChatGroupContract;
 import com.chengfan.xiyou.domain.model.entity.ChatGroupEntity;
 import com.chengfan.xiyou.domain.model.entity.RemoveTeamBean;
 import com.chengfan.xiyou.domain.model.entity.RemoveTeamMemberBean;
 import com.chengfan.xiyou.domain.presenter.ChatGroupPresenterImpl;
+import com.chengfan.xiyou.im.GroupChatInfo;
 import com.chengfan.xiyou.ui.adapter.ChatGroupAdapter;
 import com.chengfan.xiyou.ui.dialog.ChatGroupMemberDialog;
 import com.chengfan.xiyou.ui.dialog.ChatGroupNoMemberDialog;
@@ -119,7 +121,9 @@ public class ChatGroupFragment
         mChatGroupSrv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, final int adapterPosition) {
-                RongIM.getInstance().startGroupChat(getActivity(), mChatGroupEntityList.get(adapterPosition).getTeam().getId() + "", mChatGroupEntityList.get(adapterPosition).getTeam().getName());
+                RongIM.getInstance().startGroupChat(getActivity(),
+                        mChatGroupEntityList.get(adapterPosition).getTeam().getId() + "",
+                        mChatGroupEntityList.get(adapterPosition).getTeam().getName());
             }
         });
         mChatGroupSrv.setSwipeMenuCreator(swipeMenuCreator);
@@ -170,7 +174,8 @@ public class ChatGroupFragment
                     new Runnable() {
                         @Override
                         public void run() {
-                            RongDismiss.group(AppData.getString(AppData.Keys.AD_USER_ID), String.valueOf(mChatGroupEntityList.get(pos).getTeam().getId()));
+                            RongDismiss.group(AppData.getString(AppData.Keys.AD_USER_ID),
+                                    String.valueOf(mChatGroupEntityList.get(pos).getTeam().getId()));
                         }
                     }
             ).start();
@@ -190,7 +195,8 @@ public class ChatGroupFragment
                     new Runnable() {
                         @Override
                         public void run() {
-                            RongQuit.group(AppData.getString(AppData.Keys.AD_USER_ID), String.valueOf(mChatGroupEntityList.get(pos).getTeam().getId()));
+                            RongQuit.group(AppData.getString(AppData.Keys.AD_USER_ID),
+                                    String.valueOf(mChatGroupEntityList.get(pos).getTeam().getId()));
                         }
                     }
             ).start();
@@ -203,6 +209,16 @@ public class ChatGroupFragment
     public void listLoad(List<ChatGroupEntity> chatGroupEntityList) {
         mChatGroupEntityList = chatGroupEntityList;
         mChatGroupAdapter.setNewData(mChatGroupEntityList);
+
+        for (int i = 0; i < chatGroupEntityList.size(); i++) {
+            ChatGroupEntity object = chatGroupEntityList.get(i);
+            GroupChatInfo info = new GroupChatInfo();
+            info.setTargetId(String.valueOf(object.getTeam().getId()));
+            info.setName(object.getTeam().getName());
+            info.setImage(APIContents.HOST + "/" + object.getTeam().getAvatarUrl());
+            info.save();
+        }
+
     }
 
 

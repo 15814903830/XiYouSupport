@@ -1,10 +1,15 @@
 package com.chengfan.xiyou.ui.chat;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -99,7 +104,6 @@ public class ChatGroupDetailActivity
 
         mXyMiddleTv.setText("群详情");
 
-
         revBundle = getIntent().getExtras();
         if (revBundle != null) {
             teamId = revBundle.getString(APPContents.BUNDLE_GROUP_ID);
@@ -126,6 +130,7 @@ public class ChatGroupDetailActivity
                 bean.setMemberId(mGroupDetailEntity.getMemberId());
                 bean.setName(updateGroupName);
                 Logger.d("onChangeGroupName  :  " + new Gson().toJson(bean));
+                mChatGroupDetailNameTv.setText(updateGroupName);
                 mPresenter.groupNameParameter(bean);
             }
         });
@@ -203,9 +208,7 @@ public class ChatGroupDetailActivity
         public void onCreateMenu(SwipeMenu swipeLeftMenu, SwipeMenu swipeRightMenu, int position) {
             int width = getResources().getDimensionPixelSize(R.dimen.padding_80);
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
-
             {
-
                 SwipeMenuItem addItem = new SwipeMenuItem(ChatGroupDetailActivity.this).setBackground(R.color.color_F44336)
                         .setText("删除")
                         .setTextColor(Color.WHITE)
@@ -220,13 +223,33 @@ public class ChatGroupDetailActivity
         @Override
         public void onItemClick(SwipeMenuBridge menuBridge, int position) {
             menuBridge.closeMenu();
-            pos = position;
-            String userId = AppData.getString(AppData.Keys.AD_USER_ID);
-            String memberId = String.valueOf(mGroupDetailEntity.getTeamMember().get(position).getTeamMember().getMemberId());
-            mChatGroupDetailAdapter.remove(position);
 
+            String userId = AppData.getString(AppData.Keys.AD_USER_ID);
+            if (userId.equals(String.valueOf(mGroupDetailEntity.getMemberId()))) {  //如果是群主，才可以删除成员
+                pos = position;
+                String memberId = String.valueOf(mGroupDetailEntity.getTeamMember().get(position).getTeamMember().getMemberId());
+                exitOrDelete(memberId);
+            } else {
+                ToastUtil.show("您不是群主，不能删除群成员");
+            }
         }
     };
+
+    private void exitOrDelete(String memberId) {
+        String userId = AppData.getString(AppData.Keys.AD_USER_ID);
+
+        if (userId.equals(memberId)) {  //群主
+            //弹窗是否解散
+            mMemberDialog.show();
+        } else {
+            //删除
+            RemoveTeamMemberBean removeTeamMemberBean = new RemoveTeamMemberBean();
+            removeTeamMemberBean.setTeamId(String.valueOf(mGroupDetailEntity.getId()));
+            removeTeamMemberBean.setMemberId(memberId);
+            mPresenter.removeTeamMemberParameter(removeTeamMemberBean);
+        }
+    }
+
 
     @Override
     public void getGroupInfoLoad(BaseApiResponse baseApiResponse) {
@@ -253,12 +276,16 @@ public class ChatGroupDetailActivity
 
     @Override
     public void removeTeam(BaseApiResponse baseApiResponse) {
+        Log.e("TAG", "removeTeam");
         if (baseApiResponse.isSuc()) {
             new Thread(
                     new Runnable() {
                         @Override
                         public void run() {
-                            RongDismiss.group(AppData.getString(AppData.Keys.AD_USER_ID), String.valueOf(mGroupDetailEntity.getId()));
+                            String s = RongDismiss.group(AppData.getString(AppData.Keys.AD_USER_ID), String.valueOf(mGroupDetailEntity.getId()));
+                            if (s.equals("200")) {
+                                mHandler.sendEmptyMessage(0);
+                            }
                         }
                     }
             ).start();
@@ -269,7 +296,9 @@ public class ChatGroupDetailActivity
 
     @Override
     public void removeTeamMember(BaseApiResponse baseApiResponse) {
+        Log.e("TAG", "removeTeamMember");
         if (baseApiResponse.isSuc()) {
+            mChatGroupDetailAdapter.remove(pos);
             new Thread(
                     new Runnable() {
                         @Override
@@ -279,8 +308,6 @@ public class ChatGroupDetailActivity
                     }
             ).start();
         }
-
-        ToastUtil.show(baseApiResponse.getMsg());
     }
 
     @Override
@@ -291,6 +318,25 @@ public class ChatGroupDetailActivity
         }
     }
 
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    back();
+                    break;
+            }
+        }
+    };
+
+    private void back() {
+        Intent intent = new Intent();
+        intent.putExtra("needFinish", true);
+        setResult(0, intent);
+        finish();
+    }
 
     @OnClick({R.id.xy_back_btn, R.id.xy_more_tv, R.id.chat_group_name_ll})
     public void onClick(View view) {

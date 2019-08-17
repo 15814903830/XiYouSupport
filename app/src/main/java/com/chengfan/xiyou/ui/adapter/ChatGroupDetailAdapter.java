@@ -6,7 +6,6 @@ import android.view.View;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.domain.model.entity.ChatGroupDetailEntity;
-import com.chengfan.xiyou.domain.model.entity.ChatGroupEntity;
 import com.zero.ci.base.adapter.BaseRVAdapter;
 import com.zero.ci.base.adapter.BaseViewHolder;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
@@ -30,6 +29,8 @@ public class ChatGroupDetailAdapter extends BaseRVAdapter<ChatGroupDetailEntity.
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.cgd_user_pic_civ), APIContents.HOST + "/" + item.getTeamMember().getMember().getAvatarUrl());
         if (item.getTeamMember().getRole() == 1) {
             helper.getView(R.id.cgb_action_tv).setVisibility(View.VISIBLE);
+        } else {
+            helper.getView(R.id.cgb_action_tv).setVisibility(View.GONE);
         }
     }
 

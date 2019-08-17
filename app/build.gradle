@@ -86,4 +86,8 @@ dependencies {
     implementation files('libs/Android_Map3D_SDK_V6.5.0_20180930.jar')
     //知乎图片、视频选择库
     implementation 'com.zhihu.android:matisse:0.5.2-beta4'
+    //数据库
+    implementation 'org.litepal.android:java:3.0.0'
+    //合成多张图片
+    implementation 'com.github.Othershe:CombineBitmap:1.0.5'
 }
