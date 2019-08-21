@@ -27,6 +27,7 @@ import com.chengfan.xiyou.ui.main.HomeFragment;
 import com.chengfan.xiyou.ui.main.MineFragment;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.RongGetToken;
+import com.chengfan.xiyou.utils.UpdateApk;
 import com.chengfan.xiyou.utils.UserStorage;
 import com.github.zackratos.ultimatebar.UltimateBar;
 import com.google.gson.Gson;
@@ -49,6 +50,7 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
 
+
 public class MainActivity extends BaseActivity implements HttpCallBack {
 
     @BindView(R.id.bot_nav)
@@ -63,8 +65,7 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
     ChatFragment mChatFragment;
     MineFragment mMineFragment;
 
-    private HttpCallBack mHttpCallBack;
-
+    private  HttpCallBack mHttpCallBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,19 +78,21 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
                 .drawableBar();
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        mHttpCallBack = this;
+
+        mHttpCallBack=this;
+        UpdateApk manager = new UpdateApk(this);
+         //manager.checkUpdate();
+      //  commitanswers();
         HttpRequest.get(APIContents.Conter)
                 .params(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID))
                 .execute(new AbstractResponse<String>() {
                     @Override
                     public void onSuccess(String result) {
-                        if (result.isEmpty()) {
-                            return;
-                        }
                         Type type = new TypeToken<MineEntity>() {
                         }.getType();
                         final MineEntity mineEntity = new Gson().fromJson(result, type);
                         LoginEntity loginEntity = new LoginEntity();
+                        Log.e("result",result);
                         loginEntity.setId(mineEntity.getId());
                         loginEntity.setWeiXinUid(String.valueOf(mineEntity.getWeiXin()));
                         loginEntity.setNickname(mineEntity.getNickname());
@@ -113,7 +116,6 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
         bottomInit();
 
         getGroupChatInfo();
-
     }
 
     /**
@@ -232,17 +234,16 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
         }
         return super.onKeyDown(keyCode, event);
     }
-
     private void commitanswers() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<RequestParams> list = new ArrayList<>();
+                List<RequestParams> list=new ArrayList<>();
                 list.add(new RequestParams(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID)));
 
-                Log.e("commitanswers", APPContents.E_ID);
-                Log.e("commitanswers", AppData.getString(AppData.Keys.AD_USER_ID));
-                OkHttpUtils.doGet(APIContents.Conter, list, mHttpCallBack, 1);
+                Log.e("commitanswers",APPContents.E_ID);
+                Log.e("commitanswers",AppData.getString(AppData.Keys.AD_USER_ID));
+                OkHttpUtils.doGet(APIContents.Conter,list,mHttpCallBack,1);
 
             }
         }).start();
@@ -259,7 +260,7 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-        Log.e("response", response);
+        Log.e("response",response);
     }
 
     @SuppressLint("HandlerLeak")

@@ -1,5 +1,7 @@
 package com.chengfan.xiyou.ui.main;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -89,29 +92,22 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     JazzyViewPager mAccompanyJvp;
     @BindView(R.id.bot_nav)
     BottomNavigationViewEx mBotNav;
-    @BindView(R.id.accompany_rv)
-    RecyclerView mAccompanyRv;
+    @BindView(R.id.tal_recommendlist)
+    TabLayout mTabLayout;
+    @BindView(R.id.vp_accompany)
+    ViewPager mViewPager;
+
     private List<MyMultipleItem> dast = new ArrayList<>();
     Unbinder mUnbinder;
     private MultipleItemAdapter adapter;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private boolean data = true;
-
     HomeBannerEntity mHomeBannerEntity;
-
-    int page = 1;
     List<AccompanyEntity> mAccompanyEntityList;
-    AccompanyAdapter mAccompanyAdapter;
     @BindView(R.id.linear)
     LinearLayout mLinear;
-    private boolean b = true;
-    private Boolean over = false;
-    private boolean isErr = true;
-
     private CardPageTransformer mTransformer;
     private List<String> data_banner_string = new ArrayList<>();
-
-
     OptionsPickerView pvOptions;
     private List<JsonBean> mJsonBeanArrayList = new ArrayList<>();
     private ArrayList<ArrayList<JsonBean.CityBean>> mCityList = new ArrayList<>();
@@ -120,6 +116,9 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
 
+    private List<RecommendFragment> mRecommendFragmentList = new ArrayList<>();
+    private RecommendAdapter mRecommendAdapter;
+    List<String> mtitlelist=new ArrayList<>();
 
     private int areaCode;
     private String areaName;
@@ -211,19 +210,32 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         iniBanner();
         bottomInit();
         setAccompanyData();
-        initManager();
-
-
-
+        addvptab();
         return mView;
     }
 
-    private void initManager() {
-        //创建总布局管理
-        mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        mStaggeredGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mAccompanyRv.setLayoutManager(mStaggeredGridLayoutManager);
+    public void addvptab() {
+        mtitlelist.add("守望先锋");
+        mtitlelist.add("和平精英");
+        mtitlelist.add("王者荣耀");
+        mtitlelist.add("绝地求生");
+        mtitlelist.add("LOL");
+        mtitlelist.add("音乐");
+        mtitlelist.add("堡受之夜");
+        mtitlelist.add("陪聊倾诉");
+        mtitlelist.add("哄睡FM");
+        for (int i = 0; i < 9; i++) {
+            mRecommendFragmentList.add(new RecommendFragment("" + i));
+        }
+        mRecommendAdapter=new RecommendAdapter(getFragmentManager(),mRecommendFragmentList,mtitlelist);
+        mViewPager.setAdapter(mRecommendAdapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setOffscreenPageLimit(mRecommendFragmentList.size()-1);
+        mTabLayout.setSelectedTabIndicatorHeight(0);
     }
+
+
+
 
     private void getdata() {
         mPresenter = new AccompanyPresenterImpl();
@@ -231,7 +243,7 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         mSearchTv.setHint(R.string.accompany_search_txt);
         mHandler.sendEmptyMessage(MSG_LOAD_DATA);
         mAccompanyEntityList = new ArrayList<>();
-        mPresenter.accompanyPlayListParameter(1, true, "0");
+        //mPresenter.accompanyPlayListParameter(1, true, "0");
         mBotNav.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), APPContents.FONTS_BOLD));
     }
 
@@ -345,86 +357,6 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     }
 
 
-    private void initAdapter() {
-
-        for (int i = 0; i < mAccompanyEntityList.size(); i++) {
-            Log.e("mAccompanyEntityList", mAccompanyEntityList.get(i).getNickname());
-            dast.add(new MyMultipleItem(MyMultipleItem.FIRST_TYPE, mAccompanyEntityList.get(i)));
-        }
-        //创建适配器
-        adapter = new MultipleItemAdapter(dast);
-        //给RecyclerView设置适配器
-        mAccompanyRv.setAdapter(adapter);
-        adapter.bindToRecyclerView(mAccompanyRv);
-        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
-            @Override
-            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                //注意要到Adapter设置监听helper.addOnClickListener(view的id);//给item子类添加监听
-            }
-        });
-
-        //上拉加载（设置这个监听就表示有上拉加载功能了）
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
-            @Override
-            public void onLoadMoreRequested() {
-                //这里设置的监听但是没有使用,使用自己判断的上拉加载,调用BaseRecyclerview的监听是因为要使用它的加载中加载失败加载完毕的布局
-            }
-        }, mAccompanyRv);
-
-        mAccompanyRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (mAccompanyRv.canScrollVertically(1)) {
-                    // Log.i(TAG, "direction 1: true");
-                } else {
-                    //滑动到底部
-                    mAccompanyRv.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (over) {
-                                //数据全部加载完毕
-                                adapter.loadMoreEnd();
-                            } else {
-                                if (isErr) {
-                                    Log.e("page", "" + page);
-                                    //主动调用加载完成，停止加载
-                                } else {
-                                    //获取更多数据失败
-                                    isErr = true;
-                                    //同理，加载失败也要主动调用加载失败来停止加载（而且该方法会提示加载失败）
-                                    mPresenter.accompanyPlayListParameter(++page, true, "0");
-                                }
-                            }
-
-                        }
-
-                    }, 0);
-                }
-                if (mAccompanyRv.canScrollVertically(-1)) {
-                    //  Log.i(TAG, "direction -1: true");
-                } else {
-                    Log.e("滑动到", "顶部");
-                }
-
-            }
-        });
-
-
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Log.e("onItemChildClick", "" + position);//总布局RecycleView的Item监听
-                Bundle toBundle = new Bundle();
-                toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, mAccompanyEntityList.get(position).getMemberId());
-                ForwardUtil.getInstance(getActivity()).forward(AccompanyUserInfoActivity.class, toBundle);
-            }
-        });
-
-        adapter.loadMoreEnd();
-    }
-
-
     @Override
     public void accompanyBanner(HomeBannerEntity homeBannerEntity) {
         mHomeBannerEntity = homeBannerEntity;
@@ -444,7 +376,6 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         } else {
             mAccompanyEntityList.addAll(accompanyEntityList);
         }
-        initAdapter();
     }
 
     @OnClick({R.id.search_address_ll, R.id.search_ll})

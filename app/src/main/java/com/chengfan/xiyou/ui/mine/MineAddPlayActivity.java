@@ -390,20 +390,82 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
             mineAddBean.setTitle(titleStr);
             mineAddBean.setImages(fileBase.getFilePath());
             mineAddBean.setRemark(remarkStr);
+
+
+
             String str[] = weekStr.split(",");
+
+            for (int i = 0; i < str.length; i++) {
+                if (str[i]=="星期一"){
+                    if (i==str.length){
+                        str[i]="1";
+                    }else {
+                        str[i]="1,";
+                    }
+                }
+
+                if (str[i]=="星期二"){
+                    if (i==str.length){
+                        str[i]="2";
+                    }else {
+                        str[i]="2,";
+                    }
+                }
+
+                if (str[i]=="星期三"){
+                    if (i==str.length){
+                        str[i]="3";
+                    }else {
+                        str[i]="3,";
+                    }
+                }
+
+                if (str[i]=="星期四"){
+                    if (i==str.length){
+                        str[i]="4";
+                    }else {
+                        str[i]="4,";
+                    }
+                }
+
+                if (str[i]=="星期五"){
+                    if (i==str.length){
+                        str[i]="5";
+                    }else {
+                        str[i]="5,";
+                    }
+                }
+
+                if (str[i]=="星期六"){
+                    if (i==str.length){
+                        str[i]="6";
+                    }else {
+                        str[i]="6,";
+                    }
+                }
+                if (str[i]=="星期日"){
+                    if (i==str.length){
+                        str[i]="0";
+                    }else {
+                        str[i]="0,";
+                    }
+                }
+
+            }
             // 遍历
             StringBuffer str5 = new StringBuffer();
             for (String s : str) {
                 str5.append(s);
             }
             Log.e("mString", str5.toString());
-            mineAddBean.setWeekDay(str5.toString());
-            mineAddBean.setSubjectId(subjectStr);
-            mineAddBean.setServiceStartTime(startTimeStr);
-            mineAddBean.setServiceEndTime(endTimeStr);
-            mineAddBean.setAreaTitle(mAdd77.getText().toString());
-            mineAddBean.setGradeTitle(mAdd66.getText().toString());
-            mPresenter.mineAddParameter(mineAddBean);
+
+//            mineAddBean.setWeekDay(str5.toString());
+//            mineAddBean.setSubjectId(subjectStr);
+//            mineAddBean.setServiceStartTime(startTimeStr);
+//            mineAddBean.setServiceEndTime(endTimeStr);
+//            mineAddBean.setAreaTitle(mAdd77.getText().toString());
+//            mineAddBean.setGradeTitle(mAdd66.getText().toString());
+//            mPresenter.mineAddParameter(mineAddBean);
     }
     }
 

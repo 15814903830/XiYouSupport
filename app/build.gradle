@@ -92,5 +92,5 @@ dependencies {
     implementation 'com.github.adrielcafe:AndroidAudioConverter:0.0.8'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-    implementation 'com.qianwen:update-app:3.5.2'
+    implementation 'com.github.maning0303:MNUpdateAPK:V2.0.3'
 }
