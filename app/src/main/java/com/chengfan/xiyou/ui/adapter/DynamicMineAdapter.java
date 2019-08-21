@@ -5,7 +5,6 @@ import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -38,12 +37,18 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
     DelOnClickListener mDelOnClickListener;
     LikeListener mLikeListener;
 
+    private OnItemCommentClick onItemCommentClick;
+
     public void setLikeListener(LikeListener likeListener) {
         mLikeListener = likeListener;
     }
 
     public void setDelOnClickListener(DelOnClickListener delOnClickListener) {
         mDelOnClickListener = delOnClickListener;
+    }
+
+    public void setOnItemCommentClick(OnItemCommentClick onItemCommentClick) {
+        this.onItemCommentClick = onItemCommentClick;
     }
 
     public DynamicMineAdapter(int layoutResId, @Nullable List<DynamicMineEntity> data) {
@@ -62,7 +67,7 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
         }
 
 
-        Log.e("isHavePraise",""+item.isHavePraise());
+        Log.e("isHavePraise", "" + item.isHavePraise());
         if (item.isHavePraise()) {
             helper.getView(R.id.mine_like_iv).setBackgroundResource(R.drawable.ap_dynamic_licked_num);
         } else {
@@ -82,11 +87,21 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
         helper.setText(R.id.attention_comment_num_tv, item.getTotalComment() + "");
         helper.setText(R.id.attention_lick_num_tv, item.getTotalPraise() + " ");
         if (item.getMember().getAccompanyPlay().size() > 0)
-            helper.setText(R.id.attention_game_name_tv, item.getMember().getAccompanyPlay().get(0).getTitle() + ". ￥" + item.getMember().getAccompanyPlay().get(0).getPrice());
+            helper.setText(R.id.attention_game_name_tv,
+                    item.getMember().getAccompanyPlay().get(0).getTitle() + ". ￥" +
+                            item.getMember().getAccompanyPlay().get(0).getPrice());
         helper.getView(R.id.attention_del_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDelOnClickListener.onDelOnClickListener(helper.getAdapterPosition());
+            }
+        });
+        helper.getView(R.id.ll_comment_mine_dynamic_item).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemCommentClick != null) {
+                    onItemCommentClick.onCommentClick(helper.getAdapterPosition());
+                }
             }
         });
         CardView cardView = helper.getView(R.id.mycarview);
@@ -170,16 +185,19 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
 
     }
 
-
     public interface LikeListener {
         void onLikeListener(int position);
+    }
+
+    public interface OnItemCommentClick {
+        void onCommentClick(int position);
     }
 
     public String switchCreateTime(String createTime) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//注意格式化的表达式
         Date time = null;
         try {
-             time = format.parse(createTime);
+            time = format.parse(createTime);
             String date = time.toString();
         } catch (ParseException e) {
             e.printStackTrace();

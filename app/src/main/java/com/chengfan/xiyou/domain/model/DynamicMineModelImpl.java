@@ -5,6 +5,7 @@ import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.DynamicMineContract;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineDelBean;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineEntity;
+import com.chengfan.xiyou.domain.model.entity.PublishCommentBean;
 import com.chengfan.xiyou.utils.AppData;
 import com.google.gson.Gson;
 import com.zero.ci.base.BaseApiResponse;
@@ -37,6 +38,14 @@ public class DynamicMineModelImpl implements DynamicMineContract.Model {
     public Observable<BaseApiResponse> DYNAMIC_MINE_DEL_OBSERVABLE(DynamicMineDelBean mineDelBean) {
         return HttpRequest.post(APIContents.RemoveNews)
                 .paramsJsonString(new Gson().toJson(mineDelBean))
+                .execute(new AdaptResponse<BaseApiResponse>() {
+                });
+    }
+
+    @Override
+    public Observable<BaseApiResponse> PUBLISH_COMMENT_OBSERVABLE(PublishCommentBean bean) {
+        return HttpRequest.post(APIContents.PublishMemberNewsComment)
+                .paramsJsonString(new Gson().toJson(bean))
                 .execute(new AdaptResponse<BaseApiResponse>() {
                 });
     }

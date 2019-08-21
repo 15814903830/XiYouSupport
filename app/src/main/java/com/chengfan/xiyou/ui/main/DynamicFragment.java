@@ -55,6 +55,9 @@ public class DynamicFragment extends BaseFragment {
         mView = inflater.inflate(R.layout.fragment_dynamic, null);
         mUnbinder = ButterKnife.bind(this, mView);
         mBotNav.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), APPContents.FONTS_BOLD));
+
+        bottomInit();
+
         return mView;
     }
 
@@ -94,13 +97,13 @@ public class DynamicFragment extends BaseFragment {
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser) {
-            if (data) {
-                bottomInit();
-            } else {
-                data = false;
-            }
-        }
         super.setUserVisibleHint(isVisibleToUser);
+//        if (isVisibleToUser) {
+//            if (data) {
+//                bottomInit();
+//            } else {
+//                data = false;
+//            }
+//        }
     }
 }
