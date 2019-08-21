@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,20 +122,16 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                         thread.start();
                     }
                     break;
-
                 case MSG_LOAD_SUCCESS:
                     Logger.e("解析完成");
                     new Thread(
                             new Runnable() {
                                 @Override
                                 public void run() {
-
-
-
                                     Looper.prepare();
                                     Message message = new Message();
                                     Bundle bundle = new Bundle();
-                                    Handler handler = new Handler(){
+                                    Handler handler = new Handler() {
                                         @Override
                                         public void handleMessage(Message message) {
                                             super.handleMessage(message);
@@ -156,10 +151,7 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                                                                         Logger.d("areaCode = mCityList.get(i).get(a).getId() :" + areaCode);
                                                                     }
                                                                 }
-
-
                                                             }
-
                                                             mPresenter.homePageParameter(areaCode, 1);
 
                                                         }
@@ -172,12 +164,10 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                                     Looper.loop();
 
 
-
                                 }
                             }
                     ).start();
                     break;
-
                 case MSG_LOAD_FAILED:
                     Logger.e("解析失败");
                     break;
@@ -340,13 +330,13 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 String cityName = null;
                 int areaCode = 0;
-                if (options1==28){
-                    cityName="香港特别行政区";
-                }else if (options1==29){
-                    cityName="澳门特别行政区";
-                }else if (options1==27){
-                    cityName="台湾省";
-                }else {
+                if (options1 == 28) {
+                    cityName = "香港特别行政区";
+                } else if (options1 == 29) {
+                    cityName = "澳门特别行政区";
+                } else if (options1 == 27) {
+                    cityName = "台湾省";
+                } else {
                     cityName = mCityList.get(options1).get(options2).getName();
                     areaCode = mCityList.get(options1).get(options2).getId();
                 }

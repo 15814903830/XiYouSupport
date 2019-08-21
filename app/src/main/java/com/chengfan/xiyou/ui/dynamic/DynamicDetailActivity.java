@@ -1,7 +1,6 @@
 package com.chengfan.xiyou.ui.dynamic;
 
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -12,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
@@ -29,6 +28,7 @@ import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.DynamicDetailContract;
 import com.chengfan.xiyou.domain.model.entity.DynamicDetailEntity;
 import com.chengfan.xiyou.domain.model.entity.ImageEntity;
+import com.chengfan.xiyou.domain.model.entity.LikeBase;
 import com.chengfan.xiyou.domain.model.entity.MemberShipBean;
 import com.chengfan.xiyou.domain.model.entity.PublishCommentBean;
 import com.chengfan.xiyou.domain.presenter.DynamicDetailPresenterImpl;
@@ -39,10 +39,10 @@ import com.chengfan.xiyou.ui.adapter.DynamicDetailAdapter;
 import com.chengfan.xiyou.ui.adapter.ViewPagerDialogAdapter;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.UserStorage;
+import com.chengfan.xiyou.utils.status.StatusBarUtil;
 import com.chengfan.xiyou.view.CommentExpandableListView;
 import com.chengfan.xiyou.view.RegularTextView;
 import com.chengfan.xiyou.widget.viewpager.JazzyViewPager;
-import com.github.zackratos.ultimatebar.UltimateBar;
 import com.google.gson.Gson;
 import com.zero.ci.base.BaseActivity;
 import com.zero.ci.base.BaseApiResponse;
@@ -67,7 +67,9 @@ import butterknife.OnClick;
  * @DATE : 2019-07-04/23:27
  * @Description: 动态详情
  */
-public class DynamicDetailActivity extends BaseActivity<DynamicDetailContract.View, DynamicDetailPresenterImpl> implements DynamicDetailContract.View {
+public class DynamicDetailActivity extends
+        BaseActivity<DynamicDetailContract.View, DynamicDetailPresenterImpl>
+        implements DynamicDetailContract.View {
 
     @BindView(R.id.detail_page_userLogo)
     CircleImageView mDetailPageUserLogo;
@@ -93,6 +95,13 @@ public class DynamicDetailActivity extends BaseActivity<DynamicDetailContract.Vi
     @BindView(R.id.detail_img_num_tv)
     RegularTextView mDetailImgNumTv;
 
+    @BindView(R.id.tv_comment_count_dynamic_detail)
+    TextView tv_comment;
+    @BindView(R.id.iv_liker_count_dynamic_detail)
+    ImageView iv_liker;
+    @BindView(R.id.tv_liker_count_dynamic_detail)
+    TextView tv_liker;
+
     DynamicDetailAdapter mDynamicDetailAdapter;
     DynamicDetailEntity mDynamicDetailEntity;
 
@@ -109,31 +118,24 @@ public class DynamicDetailActivity extends BaseActivity<DynamicDetailContract.Vi
     DynamicDetailEntity.MemberNewsCommentBean mCommentBean = new DynamicDetailEntity.MemberNewsCommentBean();
     private BottomSheetDialog dialog;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_dynamic_detail);
+
+        //修改状态栏的文字颜色为黑色
+        int flag = StatusBarUtil.StatusBarLightMode(this);
+        StatusBarUtil.StatusBarLightMode(this, flag);
+
         ButterKnife.bind(this);
-        UltimateBar.Companion.with(this)
-                .statusDrawable(new ColorDrawable(Color.WHITE))
-                .statusDark(true)
-                .create()
-                .drawableBar();
-
-
         revBundle = getIntent().getExtras();
         if (revBundle != null)
             dynamicID = revBundle.getString(APPContents.BUNDLE_DYNAMIC_ID);
-
 
         mDynamicDetailEntity = new DynamicDetailEntity();
         commentsList = new ArrayList<>();
 
         mPresenter.dynamicDetailParameter(Integer.parseInt(dynamicID));
-
-
     }
 
     private void initAdapter() {
@@ -151,7 +153,6 @@ public class DynamicDetailActivity extends BaseActivity<DynamicDetailContract.Vi
 
     }
 
-
     @Override
     public void dynamicDetailLoad(DynamicDetailEntity dynamicDetailEntity) {
         mDynamicDetailEntity = dynamicDetailEntity;
@@ -168,17 +169,22 @@ public class DynamicDetailActivity extends BaseActivity<DynamicDetailContract.Vi
     }
 
     private void initView(final DynamicDetailEntity dynamicDetailEntity) {
-
         mImageEntityList = new ArrayList<>();
         String imageStr = dynamicDetailEntity.getImages();
         if (imageStr != null) {
             String[] strArr = imageStr.split("\\|");
             for (String str : strArr) {
-                Logger.d(APIContents.HOST + str);
                 mImageEntityList.add(new ImageEntity(APIContents.HOST + "/" + str));
             }
         }
         initImageToViewPager(mImageEntityList);
+
+        if (mImageEntityList.size() <= 1) {
+            mDetailImgNumTv.setVisibility(View.GONE);
+        } else {
+            mDetailImgNumTv.setVisibility(View.VISIBLE);
+            mDetailImgNumTv.setText(1 + " / " + mImageEntityList.size());
+        }
 
         mDetailPageUserName.setText(dynamicDetailEntity.getMember().getNickname());
         mDetailPageTime.setText(dynamicDetailEntity.getCreateTime());
@@ -200,6 +206,13 @@ public class DynamicDetailActivity extends BaseActivity<DynamicDetailContract.Vi
 
             }
         });
+
+        String commentCount = "评论(" + dynamicDetailEntity.getTotalComment() + ")";
+        tv_comment.setText(commentCount);
+
+        String likerCount = String.valueOf(dynamicDetailEntity.getTotalPraise());
+        tv_liker.setText(likerCount);
+
         initAdapter();
     }
 
@@ -265,7 +278,8 @@ public class DynamicDetailActivity extends BaseActivity<DynamicDetailContract.Vi
     }
 
 
-    @OnClick({R.id.detail_back, R.id.detail_page_focus, R.id.detail_page_do_comment, R.id.detail_go_user_info_ll})
+    @OnClick({R.id.detail_back, R.id.detail_page_focus, R.id.detail_page_do_comment,
+            R.id.detail_go_user_info_ll, R.id.ll_liker_count_dynamic_detail})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.detail_back:
@@ -282,7 +296,41 @@ public class DynamicDetailActivity extends BaseActivity<DynamicDetailContract.Vi
                 toBundles.putInt(APPContents.E_CURRENT_MEMBER_ID, mDynamicDetailEntity.getMemberId());
                 ForwardUtil.getInstance(this).forward(AccompanyUserInfoActivity.class, toBundles);
                 break;
+            case R.id.ll_liker_count_dynamic_detail:
+                clickLike();
+                break;
         }
+    }
+
+    /**
+     * 点赞
+     */
+    private void clickLike() {
+        LikeBase shipBean = new LikeBase();
+        shipBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
+        shipBean.setMemberNewsId(String.valueOf(mDynamicDetailEntity.getId()));
+        HttpRequest.post(APIContents.MEMBER_LIKE)
+                .paramsJsonString(new Gson().toJson(shipBean))
+                .execute(new AbstractResponse<BaseApiResponse>() {
+                    @Override
+                    public void onSuccess(BaseApiResponse result) {
+                        if (result.isSuc()) {
+                            int likerCount;
+                            if (mDynamicDetailEntity.isHavePraise()) {
+                                mDynamicDetailEntity.setHavePraise(false);
+                                likerCount = mDynamicDetailEntity.getTotalPraise() - 1;
+                                mDynamicDetailEntity.setTotalPraise(likerCount);
+                                iv_liker.setImageResource(R.drawable.ap_dynamic_lick_num);
+                            } else {
+                                likerCount = mDynamicDetailEntity.getTotalPraise() + 1;
+                                mDynamicDetailEntity.setHavePraise(true);
+                                mDynamicDetailEntity.setTotalPraise(likerCount);
+                                iv_liker.setImageResource(R.drawable.ap_dynamic_licked_num);
+                            }
+                            tv_liker.setText(String.valueOf(likerCount));
+                        }
+                    }
+                });
     }
 
 

@@ -6,11 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -18,7 +16,7 @@ import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.DynamicMineContract;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineDelBean;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineEntity;
-import com.chengfan.xiyou.domain.model.entity.MemberShipBean;
+import com.chengfan.xiyou.domain.model.entity.LikeBase;
 import com.chengfan.xiyou.domain.presenter.DynamicMinePresenterImpl;
 import com.chengfan.xiyou.ui.WebActivity;
 import com.chengfan.xiyou.ui.adapter.DynamicMineAdapter;
@@ -106,23 +104,19 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
         mDynamicMineAdapter.setLikeListener(new DynamicMineAdapter.LikeListener() {
             @Override
             public void onLikeListener(final int position) {
-                Toast.makeText(getContext(), "点赞", Toast.LENGTH_SHORT).show();
-                MemberShipBean shipBean = new MemberShipBean();
-                shipBean.setFriendId(AppData.getString(AppData.Keys.AD_USER_ID));
-                shipBean.setMemberId(mDynamicMineEntityList.get(position).getMemberId());
-                HttpRequest.post("/api/MemberNews/Praise")
+                LikeBase shipBean = new LikeBase();
+                shipBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
+                shipBean.setMemberNewsId(String.valueOf(mDynamicMineEntityList.get(position).getId()));
+                HttpRequest.post(APIContents.MEMBER_LIKE)
                         .paramsJsonString(new Gson().toJson(shipBean))
                         .execute(new AbstractResponse<BaseApiResponse>() {
                             @Override
                             public void onSuccess(BaseApiResponse result) {
                                 if (result.isSuc()) {
                                     if (mDynamicMineEntityList.get(position).isHavePraise()) {
-                                        Toast.makeText(getContext(), "false", Toast.LENGTH_SHORT).show();
-
                                         mDynamicMineEntityList.get(position).setHavePraise(false);
                                         mDynamicMineEntityList.get(position).setTotalPraise(mDynamicMineEntityList.get(position).getTotalPraise() - 1);
                                     } else {
-                                        Toast.makeText(getContext(), "true", Toast.LENGTH_SHORT).show();
                                         mDynamicMineEntityList.get(position).setHavePraise(true);
                                         mDynamicMineEntityList.get(position).setTotalPraise(mDynamicMineEntityList.get(position).getTotalPraise() + 1);
                                     }

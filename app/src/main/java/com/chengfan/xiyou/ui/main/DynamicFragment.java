@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APPContents;
-import com.chengfan.xiyou.ui.accompany.AccompanyUserInfoActivity;
 import com.chengfan.xiyou.ui.adapter.VpAdapter;
 import com.chengfan.xiyou.ui.dynamic.DynamicAttentionFragment;
 import com.chengfan.xiyou.ui.dynamic.DynamicIssuedActivity;
@@ -21,7 +20,6 @@ import com.chengfan.xiyou.utils.AppData;
 import com.zero.ci.base.BaseFragment;
 import com.zero.ci.navigation.BottomNavigationViewEx;
 import com.zero.ci.tool.ForwardUtil;
-import com.zero.ci.widget.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +47,8 @@ public class DynamicFragment extends BaseFragment {
     private List<Fragment> fragments;
     DynamicMineFragment mDynamicMineFragment;
     DynamicAttentionFragment mDynamicAttentionFragment;
-    private boolean data=true;
+    private boolean data = true;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -96,10 +95,10 @@ public class DynamicFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
-            if (data){
+            if (data) {
                 bottomInit();
-            }else {
-                data=false;
+            } else {
+                data = false;
             }
         }
         super.setUserVisibleHint(isVisibleToUser);

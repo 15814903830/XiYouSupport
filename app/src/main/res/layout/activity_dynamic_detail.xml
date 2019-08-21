@@ -1,162 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/detail_back"
-        android:layout_width="@dimen/padding_35"
-        android:layout_height="@dimen/padding_35"
-        android:layout_marginLeft="@dimen/padding_20"
-        android:layout_marginTop="@dimen/padding_40"
-        android:background="@drawable/xy_black_back"/>
-
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/main_content"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
-
-        <android.support.v4.widget.NestedScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="match_parent">
 
-            <RelativeLayout
+            <com.chengfan.xiyou.widget.viewpager.JazzyViewPager
+                android:id="@+id/detail_jazzy_vp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="@dimen/padding_375" />
 
-                <com.chengfan.xiyou.widget.viewpager.JazzyViewPager
-                    android:id="@+id/detail_jazzy_vp"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/padding_375"/>
+            <com.chengfan.xiyou.view.RegularTextView
+                android:id="@+id/detail_img_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/detail_jazzy_vp"
+                android:layout_alignBottom="@id/detail_jazzy_vp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/shape_dynamic_index_bg"
+                android:paddingLeft="10dp"
+                android:paddingTop="4dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="4dp"
+                android:textColor="#FFFFFF"
+                android:textSize="13sp" />
 
-                <com.chengfan.xiyou.view.RegularTextView
-                    android:id="@+id/detail_img_num_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="330dp"
-                    android:textColor="@color/color_333333"
-                    android:textSize="@dimen/text_size_20"/>
+            <LinearLayout
+                android:id="@+id/detail_page_above_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/detail_jazzy_vp"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:id="@+id/detail_page_above_container"
+                    android:id="@+id/detail_go_user_info_ll"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/detail_jazzy_vp"
-                    android:orientation="vertical">
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
+
+                    <com.zero.ci.widget.CircleImageView
+                        android:id="@+id/detail_page_userLogo"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/complete_nan"
+                        app:civ_border_color="@android:color/white"
+                        app:civ_border_width="1dp" />
 
                     <LinearLayout
-                        android:id="@+id/detail_go_user_info_ll"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.zero.ci.widget.CircleImageView
-                            android:id="@+id/detail_page_userLogo"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_marginLeft="16dp"
-                            android:src="@drawable/complete_nan"
-                            app:civ_border_color="@android:color/white"
-                            app:civ_border_width="1dp"/>
-
-                        <LinearLayout
+                        <com.chengfan.xiyou.view.RegularTextView
+                            android:id="@+id/detail_page_userName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="6dp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <com.chengfan.xiyou.view.RegularTextView
-                                android:id="@+id/detail_page_userName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="沐风"
-                                android:textColor="@color/color_333333"
-                                android:textSize="@dimen/text_size_13"/>
-
-                            <com.chengfan.xiyou.view.RegularTextView
-                                android:id="@+id/detail_page_time"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/padding_20"
-                                android:gravity="center"
-                                android:text="1小时前"
-                                android:textColor="@color/color_CCCCCC"
-                                android:textSize="@dimen/text_size_13"/>
-                        </LinearLayout>
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="沐风"
+                            android:textColor="@color/color_333333"
+                            android:textSize="@dimen/text_size_13" />
 
                         <com.chengfan.xiyou.view.RegularTextView
-                            android:id="@+id/detail_page_focus"
-                            android:layout_width="50dp"
-                            android:layout_height="@dimen/padding_20"
-                            android:layout_margin="12dp"
-                            android:background="@drawable/accompany_lick_bg"
+                            android:id="@+id/detail_page_time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_20"
                             android:gravity="center"
-                            android:text="关注"
-                            android:textColor="@color/color_D1AE81"
-                            android:textSize="12sp"/>
+                            android:text="1小时前"
+                            android:textColor="@color/color_CCCCCC"
+                            android:textSize="@dimen/text_size_13" />
                     </LinearLayout>
 
                     <com.chengfan.xiyou.view.RegularTextView
-                        android:id="@+id/detail_page_title"
+                        android:id="@+id/detail_page_focus"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="18dp"
-                        android:text="诗和远方"
-                        android:textColor="#363636"
-                        android:textSize="18sp"/>
-
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/detail_game_select_rv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padding_20"
-                        android:layout_marginRight="@dimen/padding_20"
-                        android:background="@drawable/accompany_item_bg"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginRight="16dp"
-                        android:background="#e6e6e6"/>
+                        android:layout_height="@dimen/padding_20"
+                        android:background="@drawable/accompany_lick_bg"
+                        android:gravity="center"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:text="关注"
+                        android:textColor="@color/color_D1AE81"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
+                <com.chengfan.xiyou.view.RegularTextView
+                    android:id="@+id/detail_page_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:lineSpacingMultiplier="1.6"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="诗和远方"
+                    android:textColor="#363636"
+                    android:textSize="18sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/detail_game_select_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/accompany_item_bg" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detail_page_comment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/detail_page_above_container"
+                android:layout_marginTop="33dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="16dp"
+                    android:background="#D1AE81" />
+
+                <TextView
+                    android:id="@+id/tv_comment_count_dynamic_detail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:text="评论(59)"
+                    android:textColor="#333333"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
-                    android:id="@+id/detail_page_comment_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/detail_page_above_container"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical">
+                    android:id="@+id/ll_liker_count_dynamic_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp">
 
-                    <com.chengfan.xiyou.view.CommentExpandableListView
-                        android:id="@+id/detail_page_lv_comment"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="64dp"
-                        android:divider="@null"
-                        android:listSelector="@android:color/transparent"
-                        android:scrollbars="none"/>
+                    <ImageView
+                        android:id="@+id/iv_liker_count_dynamic_detail"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ap_dynamic_lick_num" />
+
+                    <TextView
+                        android:id="@+id/tv_liker_count_dynamic_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="54"
+                        android:textColor="#d1ae81"
+                        android:textSize="15sp" />
 
                 </LinearLayout>
-            </RelativeLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.design.widget.CoordinatorLayout>
 
+            </LinearLayout>
+
+            <com.chengfan.xiyou.view.CommentExpandableListView
+                android:id="@+id/detail_page_lv_comment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/detail_page_comment_container"
+                android:divider="@null"
+                android:listSelector="@android:color/transparent"
+                android:paddingBottom="64dp"
+                android:scrollbars="none" />
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -179,9 +211,25 @@
             android:paddingLeft="18dp"
             android:text="说点什么吧..."
             android:textColor="#B6B6B6"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
     </LinearLayout>
 
+    <com.chengfan.xiyou.view.StatusBarHeightView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:use_type="use_padding_top">
+
+        <ImageView
+            android:id="@+id/detail_back"
+            android:layout_width="72dp"
+            android:layout_height="52dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/xy_black_back" />
+
+    </com.chengfan.xiyou.view.StatusBarHeightView>
 
 </RelativeLayout>

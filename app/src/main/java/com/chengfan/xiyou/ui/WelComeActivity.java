@@ -59,16 +59,13 @@ public class WelComeActivity extends BaseActivity {
                         String uid = AppData.getString(AppData.Keys.AD_USER_ID);
 
                         if (uid.equals("") || uid == null) {
-                            Log.e("uid",uid);
+                            Log.e("uid", uid);
                             Logger.d("WelComeActivity ===>> go login");
                             ForwardUtil.getInstance(WelComeActivity.this).forward(LoginActivity.class);
                         } else {
                             Logger.d("WelComeActivity ===>> go main");
                             ForwardUtil.getInstance(WelComeActivity.this).forward(MainActivity.class);
                         }
-
-
-
                     }
                 })
                 .subscribe();
