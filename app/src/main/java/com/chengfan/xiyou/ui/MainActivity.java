@@ -81,7 +81,7 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
 
         mHttpCallBack=this;
         UpdateApk manager = new UpdateApk(this);
-        // manager.checkUpdate();
+         //manager.checkUpdate();
       //  commitanswers();
         HttpRequest.get(APIContents.Conter)
                 .params(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID))
