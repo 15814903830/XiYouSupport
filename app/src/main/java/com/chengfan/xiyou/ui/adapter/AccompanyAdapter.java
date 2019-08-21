@@ -54,14 +54,14 @@ public class AccompanyAdapter extends BaseRVAdapter<AccompanyEntity, BaseViewHol
         helper.getView(R.id.ac_img_riv).setLayoutParams(params);
 
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.ac_img_riv), APIContents.HOST + "/" + item.getImages());
-        helper.setText(R.id.ac_title_tv, item.getTitle())
-                .setText(R.id.ac_user_name_tv, item.getNickname());
-        ImageLoaderManager.getInstance().showImage(helper.getView(R.id.ac_user_pic_civ), APIContents.HOST + "/" + item.getAvatarUrl());
+        helper.setText(R.id.tv_subject_tv, item.getTitle())
+                .setText(R.id.tv_name, item.getNickname());
+        ImageLoaderManager.getInstance().showImage(helper.getView(R.id.cirv_user_pic_civ), APIContents.HOST + "/" + item.getAvatarUrl());
         if (item.getSubjectId().equals("1")) {
-            helper.setText(R.id.ac_subject_tv, "游戏陪玩");
-            helper.setText(R.id.ac_price_tv, "￥" + item.getPrice() + "/小时");
+            helper.setText(R.id.tv_yxpw, "游戏陪玩");
+            helper.setText(R.id.jiage, "￥" + item.getPrice() + "/小时");
         } else {
-            helper.getView(R.id.ac_show_rl).setVisibility(View.GONE);
+            helper.getView(R.id.ll_dibu).setVisibility(View.GONE);
         }
 
 

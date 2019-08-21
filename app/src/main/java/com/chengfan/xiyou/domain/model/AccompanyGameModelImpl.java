@@ -25,6 +25,7 @@ public class AccompanyGameModelImpl implements AccompanyGameContract.Model {
                 .params(APPContents.E_SUBJECT_ID, subjectId)
                 .params(APPContents.E_PAGE, page)
                 .params(APPContents.E_LIMIT, "20")
+                .params("areaTitle","微信")
                 .params(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID))
                 .execute(new AdaptResponse<List<AccompanyGameEntity>>() {
                 });

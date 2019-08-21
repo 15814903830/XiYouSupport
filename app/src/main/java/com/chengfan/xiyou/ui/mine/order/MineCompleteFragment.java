@@ -110,7 +110,7 @@ public class MineCompleteFragment extends BaseFragment<MineCompleteContract.View
                 @Override
                 public void onItemClick(BaseRVAdapter adapter, View view, int position) {
                     Bundle toBundle = new Bundle();
-                    toBundle.putInt(APPContents.E_ID, mPlaceEntityList.get(position).getAccompanyPlayId());
+                    toBundle.putInt(APPContents.E_ID, mPlaceEntityList.get(position).getUniformOrderId());
                     ForwardUtil.getInstance(getActivity()).forward(MineOrderDetailActivity.class, toBundle);
                 }
             });
@@ -123,7 +123,7 @@ public class MineCompleteFragment extends BaseFragment<MineCompleteContract.View
                 @Override
                 public void onItemClick(BaseRVAdapter adapter, View view, int position) {
                     Bundle toBundle = new Bundle();
-                    toBundle.putInt(APPContents.E_ID, mTakingEntityList.get(position).getAccompanyPlayId());
+                    toBundle.putInt(APPContents.E_ID, mTakingEntityList.get(position).getUniformOrderId());
                     ForwardUtil.getInstance(getActivity()).forward(MineOrderDetailActivity.class, toBundle);
                 }
             });

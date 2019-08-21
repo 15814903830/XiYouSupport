@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -89,8 +90,9 @@ public class CompleteSexActivity extends BaseActivity {
                 AppData.putString(AppData.Keys.AD_SELECT_SEX, selectStr);
                 break;
             case R.id.complete_nex_btn:
-
                 Logger.d(selectStr);
+                String sex = AppData.getString(AppData.Keys.AD_SELECT_SEX);
+                Log.e("sex",sex);
                 ForwardUtil.getInstance(this).forward(CompleteInfoActivity.class);
                 break;
         }

@@ -3,6 +3,7 @@ package com.chengfan.xiyou.ui.adapter;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -43,6 +44,15 @@ public class HomeAdapter extends BaseRVAdapter<MemberBean, BaseViewHolder> {
         helper.setText(R.id.home_user_address_tv, item.getAreaName());
         helper.setText(R.id.home_user_age_tv, item.getAge() + "岁");
         helper.setText(R.id.home_user_fanse_num_tv, item.getTotalFans() + "粉丝");
+
+
+        ImageView seximg=helper.getView(R.id.home_user_sex_iv);
+
+        if (item.getGender()==1){
+            seximg.setImageResource(R.drawable.home_nan);
+        }else {
+            seximg.setImageResource(R.drawable.home_nv);
+        }
 
 
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.home_user_pic_civ), APIContents.HOST + "/" + item.getAvatarUrl());

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.ui.MainActivity;
+import com.chengfan.xiyou.ui.mine.MineOrderActivity;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.chengfan.xiyou.view.RegularTextView;
 import com.zero.ci.base.BaseActivity;
@@ -33,18 +34,20 @@ public class AccompanyOrderSuccessActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accompany_order_success);
         initView();
-        successMoneyTv.setText("$"+ APPContents.TO_ALLSTR);
+        successMoneyTv.setText("$"+ getIntent().getStringExtra("sum"));
         successGoMainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ForwardUtil.getInstance(AccompanyOrderSuccessActivity.this).forward(MainActivity.class);
+                finish();
             }
         });
 
         successGoDetailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ForwardUtil.getInstance(AccompanyOrderSuccessActivity.this).forward(AccompanyOrderDetailActivity.class);
+                finish();
+                ForwardUtil.getInstance(AccompanyOrderSuccessActivity.this).forward(MineOrderActivity.class);
             }
         });
     }

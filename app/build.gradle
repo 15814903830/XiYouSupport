@@ -89,4 +89,8 @@ dependencies {
     //合成多张图片
     implementation 'com.github.Othershe:CombineBitmap:1.0.5'
     implementation files('libs/tbs_sdk_thirdapp.jar')
+    implementation 'com.github.adrielcafe:AndroidAudioConverter:0.0.8'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    implementation 'com.github.maning0303:MNUpdateAPK:V2.0.3'
 }

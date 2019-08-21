@@ -46,6 +46,9 @@ public class MineTakingNoStartAdapter extends BaseRVAdapter<MineOrderTakingEntit
         helper.setText(R.id.order_money_tv, "合计：" + item.getHour() * item.getAccompanyPlay().getPrice());
 
 
+
+
+        helper.setText(R.id.order_user_name_tv, item.getMember().getNickname());
         if (item.getStatus() == 1) {
             helper.getView(R.id.tanking_no_start_ll).setVisibility(View.VISIBLE);
             helper.getView(R.id.taking_refuse_tv).setOnClickListener(new View.OnClickListener() {

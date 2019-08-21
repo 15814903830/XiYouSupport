@@ -5,73 +5,87 @@
               android:orientation="vertical">
     <include
         layout="@layout/layout_top"/>
-    <!--<LinearLayout-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<LinearLayout-->
-            <!--android:id="@+id/ll_sort_game1"-->
-            <!--android:gravity="center"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="50dp">-->
-            <!--<TextView-->
-                <!--android:text="智能排序"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-            <!--<ImageView-->
-                <!--android:layout_marginLeft="@dimen/padding_5"-->
-                <!--android:src="@drawable/home_row"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-        <!--</LinearLayout>-->
-        <!--<LinearLayout-->
-            <!--android:id="@+id/ll_sort_game2"-->
-            <!--android:gravity="center"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="50dp">-->
-            <!--<TextView-->
-                <!--android:text="智能排序"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-            <!--<ImageView-->
-                <!--android:layout_marginLeft="@dimen/padding_5"-->
-                <!--android:src="@drawable/home_row"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-        <!--</LinearLayout>-->
-        <!--<LinearLayout-->
-            <!--android:id="@+id/ll_sort_game3"-->
-            <!--android:gravity="center"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="50dp">-->
-            <!--<TextView-->
-                <!--android:text="智能排序"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-            <!--<ImageView-->
-                <!--android:layout_marginLeft="@dimen/padding_5"-->
-                <!--android:src="@drawable/home_row"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content" />-->
-        <!--</LinearLayout>-->
-    <!--</LinearLayout>-->
-
-    <com.zero.ci.refresh.ZRefreshLayout
-        android:id="@+id/accompany_game_zrl"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/ll_sort_game1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/text1"
+                android:text="智能排序"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_marginLeft="@dimen/padding_5"
+                android:src="@drawable/home_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_sort_game2"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/text2"
+                android:text="大区"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_marginLeft="@dimen/padding_5"
+                android:src="@drawable/home_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_sort_game3"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/text3"
+                android:text="段位"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_marginLeft="@dimen/padding_5"
+                android:src="@drawable/home_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:background="#E6E6E6"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/accompany_game_user_rv"
+        <com.zero.ci.refresh.ZRefreshLayout
+            android:id="@+id/accompany_game_zrl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    </com.zero.ci.refresh.ZRefreshLayout>
+            android:layout_height="match_parent">
+            <ListView
+                android:id="@+id/list_mylistview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></ListView>
+        </com.zero.ci.refresh.ZRefreshLayout>
+        <ListView
+            android:divider="#00000000"
+            android:background="#55000000"
+            android:visibility="gone"
+            android:id="@+id/listview_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></ListView>
+    </FrameLayout>
 </LinearLayout>

@@ -272,7 +272,6 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 bean.setAreaName(mEditCityTv.getText().toString().trim());
                 bean.setExterior(faceStr);
                 bean.setWeiXinUId(wxStr);
-
                 Log.e("mEditWxEt", wxStr);
                 bean.setJob(jobStr);
                 mPresenter.memberInfoUpdateParameter(bean);

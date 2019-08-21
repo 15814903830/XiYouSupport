@@ -9,6 +9,8 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
@@ -27,6 +30,9 @@ import com.chengfan.xiyou.domain.model.entity.MemberInfoBean;
 import com.chengfan.xiyou.domain.model.entity.SystemConfigEntity;
 import com.chengfan.xiyou.domain.model.entity.UploadEntity;
 import com.chengfan.xiyou.domain.presenter.CompleterInfoPresenterImpl;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.ui.mine.order.FileBase;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.FontHelper;
 import com.chengfan.xiyou.utils.GetJsonDataUtil;
@@ -54,8 +60,13 @@ import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 import com.zero.ci.widget.logger.Logger;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +82,7 @@ import butterknife.OnClick;
  */
 public class CompleteInfoActivity
         extends BaseActivity<CompleterInfoContract.View, CompleterInfoPresenterImpl>
-        implements CompleterInfoContract.View {
+        implements CompleterInfoContract.View , HttpCallBack {
     @BindView(R.id.xy_middle_tv)
     MediumTextView mXyMiddleTv;
     @BindView(R.id.complete_head_civ)
@@ -132,6 +143,7 @@ public class CompleteInfoActivity
     private static final int MSG_LOAD_DATA = 0x0001;
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
+    private FileBase fileBase;
 
 
     private ArrayList<String> shenGaoList = new ArrayList<>();
@@ -144,6 +156,7 @@ public class CompleteInfoActivity
     UploadFile mUploadFile;
     String areaName, areaCode;
 
+    private HttpCallBack mHttpCallBack;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -192,6 +205,7 @@ public class CompleteInfoActivity
         mHandler.sendEmptyMessage(MSG_LOAD_DATA);
 
         String sex = AppData.getString(AppData.Keys.AD_SELECT_SEX);
+        Log.e("sex",sex);
         if (sex.equals("1")) {
             mCompleteHeadCiv.setBackgroundResource(R.drawable.complete_nan);
         } else {
@@ -209,6 +223,8 @@ public class CompleteInfoActivity
 
         requestSystemConfig();
         requestSystemConfigJob();
+
+        mHttpCallBack=this;
     }
 
     @OnClick({R.id.xy_back_btn, R.id.complete_save_btn, R.id.complete_head_rl,
@@ -235,9 +251,11 @@ public class CompleteInfoActivity
                 else if (mUploadFile == null)
                     ToastUtil.show("请选择您的头像");
                 else {
-
                     MemberInfoBean bean = new MemberInfoBean();
                     bean.setAge(ageStr);
+                    bean.setAvatarUrl(fileBase.getFilePath());
+                    Log.e("setAvatarUrl",bean.getAvatarUrl());
+                    bean.setGender(AppData.getString(AppData.Keys.AD_SELECT_SEX));
                     bean.setNickname(nameStr);
                     bean.setAreaName(areaName);
                     bean.setAreaCode(areaCode);
@@ -246,7 +264,6 @@ public class CompleteInfoActivity
                     bean.setJob(jobStr);
                     bean.setId(AppData.getString(AppData.Keys.AD_USER_ID));
                     mPresenter.saveInfoParameter(bean);
-                    mPresenter.uploadFileParameter(mUploadFile);
                 }
                 break;
             case R.id.complete_head_rl:
@@ -297,13 +314,56 @@ public class CompleteInfoActivity
 
     private void notifyData(ArrayList<AlbumFile> result) {
         String path = mAlbumFiles.get(0).getPath();
-
         File tempFile = new File(path.trim());
-
         String fileName = tempFile.getName();
+        postimg(best64(result.get(0).getPath()));
 
         mUploadFile = new UploadFile(0, tempFile, fileName);
         ImageLoaderManager.getInstance().showImage(mCompleteHeadCiv, result.get(0).getPath());
+    }
+
+    private void postimg(final String data) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("source", "AccompanyPlayNews");
+                    jsonObject.put("fileName", "png");
+                    jsonObject.put("fileData", data);
+                    OkHttpUtils.doPostJson(APIContents.UPLOAD_FILE, jsonObject.toString(), mHttpCallBack, 0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public static String best64(String file) {
+        InputStream is = null;
+        byte[] data = null;
+        String result = null;
+        try {
+            is = new FileInputStream("" + file);
+            //创建一个字符流大小的数组。
+            data = new byte[is.available()];
+            //写入数组
+            is.read(data);
+            //用默认的编码格式进行编码
+            result = Base64.encodeToString(data, Base64.DEFAULT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (null != is) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        return result;
     }
 
 
@@ -492,14 +552,8 @@ public class CompleteInfoActivity
             loginEntity.setAreaCode(Integer.parseInt(areaCode));
             loginEntity.setAreaName(areaName);
             UserStorage.getInstance().saveLoginInfo(loginEntity);
-
-
             int areaCode = UserStorage.getInstance().getLogin().getAreaCode();
             String areaName = UserStorage.getInstance().getLogin().getAreaName();
-            Logger.d("CompleteInfoActivity ===>>> " + UserStorage.getInstance().getLogin());
-            Logger.d("CompleteInfoActivity  === >>>>  areaCode " + areaCode + "   areaName : " + areaName);
-
-
             ForwardUtil.getInstance(this).forward(CompleteVideoActivity.class);
         } else {
             ToastUtil.show(baseApiResponse.getMsg());
@@ -521,4 +575,36 @@ public class CompleteInfoActivity
             mHandler.removeCallbacksAndMessages(null);
         }
     }
+
+    @Override
+    public void onResponse(String response, int requestId) {
+        Message message = mHandlere.obtainMessage();
+        message.what = requestId;
+        message.obj = response;
+        mHandlere.sendMessage(message);
+    }
+
+    @Override
+    public void onHandlerMessageCallback(String response, int requestId) {
+        Log.e("response",response);
+        switch (requestId) {
+            case 0:
+                try {
+                    fileBase = JSON.parseObject(response, FileBase.class);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        }
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandlere = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int requestId = msg.what;
+            String response = (String) msg.obj;
+            onHandlerMessageCallback(response, requestId);
+        }
+    };
 }

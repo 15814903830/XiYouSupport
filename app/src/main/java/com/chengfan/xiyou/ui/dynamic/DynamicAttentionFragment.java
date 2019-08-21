@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.DynamicAttentionContract;
 import com.chengfan.xiyou.domain.model.entity.FinanceRecordEntity;
+import com.chengfan.xiyou.domain.model.entity.LikeBase;
 import com.chengfan.xiyou.domain.model.entity.MemberShipBean;
 import com.chengfan.xiyou.domain.presenter.DynamicAttentionPresenterImpl;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.ui.adapter.DynamicAttentionAdapter;
 import com.chengfan.xiyou.utils.AppData;
 import com.google.gson.Gson;
@@ -43,7 +46,7 @@ import butterknife.Unbinder;
  * @DATE : 2019-07-06/18:53
  * @Description: 我的关注
  */
-public class DynamicAttentionFragment extends BaseFragment<DynamicAttentionContract.View, DynamicAttentionPresenterImpl> implements DynamicAttentionContract.View {
+public class DynamicAttentionFragment extends BaseFragment<DynamicAttentionContract.View, DynamicAttentionPresenterImpl> implements DynamicAttentionContract.View, HttpCallBack {
     View mView;
     @BindView(R.id.attention_rv)
     RecyclerView mAttentionRv;
@@ -55,6 +58,7 @@ public class DynamicAttentionFragment extends BaseFragment<DynamicAttentionContr
     List<FinanceRecordEntity> mFinanceRecordEntityList;
     DynamicAttentionAdapter mDynamicAttentionAdapter;
 
+    HttpCallBack mHttpCallBack;
     int page = 1;
 
     @Nullable
@@ -64,17 +68,13 @@ public class DynamicAttentionFragment extends BaseFragment<DynamicAttentionContr
         mUnbinder = ButterKnife.bind(this, mView);
         mPresenter = new DynamicAttentionPresenterImpl();
         mPresenter.onAttach(getActivity(), this);
-
-
         mFinanceRecordEntityList = new ArrayList<>();
+        mHttpCallBack=this;
         initRv();
         initZrl();
         mPresenter.listParameter(1, true);
-
         return mView;
     }
-
-
     private void initZrl() {
         mAttentionZrl.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -107,21 +107,22 @@ public class DynamicAttentionFragment extends BaseFragment<DynamicAttentionContr
 
     @Override
     public void listLoad(List<FinanceRecordEntity> financeRecordEntityList, boolean isPtr) {
-        if (financeRecordEntityList != null) {
 
+        Log.e("financeRecordEntityList",""+financeRecordEntityList.size());
+        if (financeRecordEntityList != null) {
             if (isPtr) {
                 mDynamicAttentionAdapter.replaceData(mFinanceRecordEntityList);
                 mFinanceRecordEntityList = financeRecordEntityList;
             } else {
                 mFinanceRecordEntityList.addAll(financeRecordEntityList);
             }
+            Log.e("mFinanceRecordEntity",""+mFinanceRecordEntityList.size());
             mDynamicAttentionAdapter.setNewData(mFinanceRecordEntityList);
         }
     }
 
 
     private void initRv() {
-
         mDynamicAttentionAdapter = new DynamicAttentionAdapter(R.layout.adapter_dynamic_attention, mFinanceRecordEntityList);
         mAttentionRv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAttentionRv.setAdapter(mDynamicAttentionAdapter);
@@ -130,7 +131,6 @@ public class DynamicAttentionFragment extends BaseFragment<DynamicAttentionContr
             public void onItemClick(BaseRVAdapter adapter, View view, int position) {
                 Bundle toBundle = new Bundle();
                 toBundle.putString(APPContents.BUNDLE_DYNAMIC_ID, mFinanceRecordEntityList.get(position).getId() + "");
-
                 Logger.d("DynamicAttentionFragment === >>> " + mFinanceRecordEntityList.get(position).getId());
                 ForwardUtil.getInstance(getActivity()).forward(DynamicDetailActivity.class, toBundle);
             }
@@ -140,10 +140,10 @@ public class DynamicAttentionFragment extends BaseFragment<DynamicAttentionContr
         mDynamicAttentionAdapter.setLickListener(new DynamicAttentionAdapter.LickListener() {
             @Override
             public void onLickListener(final int position) {
-                MemberShipBean shipBean = new MemberShipBean();
-                shipBean.setFriendId(AppData.getString(AppData.Keys.AD_USER_ID));
-                shipBean.setMemberId(mFinanceRecordEntityList.get(position).getMemberId());
-                HttpRequest.post(APIContents.MEMBER_SHIP)
+                LikeBase shipBean = new LikeBase();
+                shipBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
+                shipBean.setMemberNewsId(""+mFinanceRecordEntityList.get(position).getId());
+                HttpRequest.post(APIContents.MEMBER_LIKE)
                         .paramsJsonString(new Gson().toJson(shipBean))
                         .execute(new AbstractResponse<BaseApiResponse>() {
                             @Override
@@ -157,11 +157,21 @@ public class DynamicAttentionFragment extends BaseFragment<DynamicAttentionContr
                                         mFinanceRecordEntityList.get(position).setTotalPraise(mFinanceRecordEntityList.get(position).getTotalPraise() + 1);
                                     }
                                     mDynamicAttentionAdapter.setNewData(mFinanceRecordEntityList);
-
+                                    mDynamicAttentionAdapter.notifyDataSetChanged();
                                 }
                             }
                         });
             }
         });
+    }
+
+    @Override
+    public void onResponse(String response, int requestId) {
+
+    }
+
+    @Override
+    public void onHandlerMessageCallback(String response, int requestId) {
+
     }
 }

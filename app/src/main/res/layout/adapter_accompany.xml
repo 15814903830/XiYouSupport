@@ -8,7 +8,7 @@
     android:layout_marginLeft="@dimen/padding_5"
     android:layout_marginTop="@dimen/padding_10"
     android:layout_marginRight="@dimen/padding_5"
-    android:background="@color/color_FFFFFF">
+    android:background="@drawable/bang">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/ac_top_cl"
@@ -47,18 +47,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ac_top_cl"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="@dimen/padding_10"
-        android:layout_marginRight="@dimen/padding_10"
         android:layout_marginBottom="@dimen/padding_10"
         android:gravity="center"
         android:orientation="horizontal">
 
         <com.zero.ci.widget.CircleImageView
             android:id="@+id/ac_user_pic_civ"
-            android:layout_width="@dimen/padding_25"
-            android:layout_height="25dp"
-            />
+            android:layout_width="25dp"
+            android:layout_height="35dp" />
 
         <com.chengfan.xiyou.view.RegularTextView
             android:id="@+id/ac_user_name_tv"
@@ -96,5 +92,4 @@
             android:textColor="@color/color_D1AE81"
             android:textSize="@dimen/text_size_11"/>
     </RelativeLayout>
-
 </RelativeLayout>

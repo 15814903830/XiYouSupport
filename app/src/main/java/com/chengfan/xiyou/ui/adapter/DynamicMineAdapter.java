@@ -1,9 +1,11 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -11,6 +13,7 @@ import com.chengfan.xiyou.domain.model.entity.DynamicMineEntity;
 import com.chengfan.xiyou.domain.model.entity.ImageEntity;
 import com.chengfan.xiyou.ui.dialog.ViewPagerDialog;
 import com.chengfan.xiyou.utils.GlideImageLoader;
+import com.chengfan.xiyou.utils.Timeutils;
 import com.chengfan.xiyou.widget.ninegridview.NineGirdImageContainer;
 import com.chengfan.xiyou.widget.ninegridview.NineGridBean;
 import com.chengfan.xiyou.widget.ninegridview.NineGridView;
@@ -59,6 +62,7 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
         }
 
 
+        Log.e("isHavePraise",""+item.isHavePraise());
         if (item.isHavePraise()) {
             helper.getView(R.id.mine_like_iv).setBackgroundResource(R.drawable.ap_dynamic_licked_num);
         } else {
@@ -73,6 +77,7 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
         });
 
         helper.setText(R.id.attention_des_tv, item.getContent());
+        helper.setText(R.id.attention_name_tv, item.getMember().getNickname());
         helper.setText(R.id.attention_time_tv, switchCreateTime(item.getCreateTime()));
         helper.setText(R.id.attention_comment_num_tv, item.getTotalComment() + "");
         helper.setText(R.id.attention_lick_num_tv, item.getTotalPraise() + " ");
@@ -84,6 +89,7 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
                 mDelOnClickListener.onDelOnClickListener(helper.getAdapterPosition());
             }
         });
+        CardView cardView = helper.getView(R.id.mycarview);
         NineGridView nineGridView = helper.getView(R.id.attention_ngv);
         ImageView imageView = helper.getView(R.id.attention_iv);
         List<ImageEntity> imageEntityList = new ArrayList<>();
@@ -99,12 +105,14 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
         }
         if (imageEntityList.size() > 1) {
             imageView.setVisibility(View.GONE);
+            cardView.setVisibility(View.GONE);
             nineGridView.setVisibility(View.VISIBLE);
             setPhoneNgV(nineGridView);
             nineGridView.addData(nineGridBeanList);
         } else {
             nineGridView.setVisibility(View.GONE);
             imageView.setVisibility(View.VISIBLE);
+            cardView.setVisibility(View.VISIBLE);
             Log.e("imgurl", "" + imageEntityList.get(0).getImgUrl());
             ImageLoaderManager.getInstance().showImage(imageView, imageEntityList.get(0).getImgUrl());
             //ImageLoaderManager.getInstance().showImage(imageView, "https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a9e671b9a551f3dedcb2bf64a4eff0ec/4610b912c8fcc3cef70d70409845d688d53f20f7.jpg");
@@ -168,20 +176,15 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
     }
 
     public String switchCreateTime(String createTime) {
-        String formatStr2 = null;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//注意格式化的表达式
+        Date time = null;
         try {
-            Date time = format.parse(createTime);
+             time = format.parse(createTime);
             String date = time.toString();
-            //将西方形式的日期字符串转换成java.util.Date对象
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", java.util.Locale.US);
-            Date datetime = (Date) sdf.parse(date);
-            //再转换成自己想要显示的格式
-            formatStr2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(datetime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return formatStr2;
+        return Timeutils.getTimeFormatText(time);
     }
 
     private String activityStartTime;//活动开始时间

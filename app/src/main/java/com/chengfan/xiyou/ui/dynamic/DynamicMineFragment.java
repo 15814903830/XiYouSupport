@@ -107,8 +107,6 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
             @Override
             public void onLikeListener(final int position) {
                 Toast.makeText(getContext(), "点赞", Toast.LENGTH_SHORT).show();
-
-
                 MemberShipBean shipBean = new MemberShipBean();
                 shipBean.setFriendId(AppData.getString(AppData.Keys.AD_USER_ID));
                 shipBean.setMemberId(mDynamicMineEntityList.get(position).getMemberId());
@@ -193,7 +191,6 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
 
     @Override
     public void dynamicMineLoad(List<DynamicMineEntity> dynamicMineEntityList, boolean isPtr) {
-        Log.e("dynamicMineEntityList", dynamicMineEntityList.get(0).getImages());
         if (isPtr) {
             mDynamicMineAdapter.replaceData(mDynamicMineEntityList);
             mDynamicMineEntityList = dynamicMineEntityList;

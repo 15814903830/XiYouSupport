@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:maxHeight="250dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00000000"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="10dp"
+        cardElevation="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/ac_img_riv"
+            android:background="#BD4747"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_subject_tv"
+            android:layout_marginBottom="@dimen/padding_15"
+            android:layout_marginHorizontal="10dp"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_gravity="bottom"
+            android:text="66666666"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+    <LinearLayout
+        android:layout_margin="@dimen/padding_10"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cirv_user_pic_civ"
+            android:src="@drawable/confirm_zfb"
+            android:layout_width="@dimen/padding_25"
+            android:layout_height="@dimen/padding_25" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_marginLeft="@dimen/padding_10"
+            android:layout_gravity="center_vertical"
+            android:textSize="13sp"
+            android:textColor="#333333"
+            android:text="可爱的佳儿"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+            <View
+                android:background="#F5F5F5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:id="@+id/ll_dibu"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+        <TextView
+            android:id="@+id/tv_yxpw"
+            android:layout_marginLeft="15dp"
+            android:textSize="11sp"
+            android:text="游戏陪玩"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/jiage"
+            android:layout_marginRight="15dp"
+            android:gravity="right"
+            android:textColor="#D1AE81"
+            android:textSize="11sp"
+            android:text="￥20/小时"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

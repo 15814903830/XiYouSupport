@@ -1,8 +1,11 @@
 package com.chengfan.xiyou.ui;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -13,6 +16,9 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.model.entity.LoginEntity;
 import com.chengfan.xiyou.domain.model.entity.MineEntity;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.adapter.VpAdapter;
 import com.chengfan.xiyou.ui.main.AccompanyFragment;
 import com.chengfan.xiyou.ui.main.ChatFragment;
@@ -44,7 +50,8 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
 
-public class MainActivity extends BaseActivity {
+
+public class MainActivity extends BaseActivity implements HttpCallBack {
 
     @BindView(R.id.bot_nav)
     BottomNavigationViewEx mBotNav;
@@ -58,6 +65,7 @@ public class MainActivity extends BaseActivity {
     ChatFragment mChatFragment;
     MineFragment mMineFragment;
 
+    private  HttpCallBack mHttpCallBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,22 +79,20 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
+        mHttpCallBack=this;
         UpdateApk manager = new UpdateApk(this);
         // manager.checkUpdate();
-
-
+      //  commitanswers();
         HttpRequest.get(APIContents.Conter)
                 .params(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID))
                 .execute(new AbstractResponse<String>() {
                     @Override
                     public void onSuccess(String result) {
-
                         Type type = new TypeToken<MineEntity>() {
                         }.getType();
                         final MineEntity mineEntity = new Gson().fromJson(result, type);
-
                         LoginEntity loginEntity = new LoginEntity();
+                        Log.e("result",result);
                         loginEntity.setId(mineEntity.getId());
                         loginEntity.setWeiXinUid(String.valueOf(mineEntity.getWeiXin()));
                         loginEntity.setNickname(mineEntity.getNickname());
@@ -95,9 +101,7 @@ public class MainActivity extends BaseActivity {
                         loginEntity.setAreaName(mineEntity.getAreaName());
                         loginEntity.setAreaCode(mineEntity.getAreaCode());
                         loginEntity.setJob(mineEntity.getJob());
-
                         UserStorage.getInstance().saveLoginInfo(loginEntity);
-
                         new Thread(
                                 new Runnable() {
                                     @Override
@@ -230,4 +234,43 @@ public class MainActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+    private void commitanswers() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<RequestParams> list=new ArrayList<>();
+                list.add(new RequestParams(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID)));
+
+                Log.e("commitanswers",APPContents.E_ID);
+                Log.e("commitanswers",AppData.getString(AppData.Keys.AD_USER_ID));
+                OkHttpUtils.doGet(APIContents.Conter,list,mHttpCallBack,1);
+
+            }
+        }).start();
+    }
+
+
+    @Override
+    public void onResponse(String response, int requestId) {
+        Message message = mHandler.obtainMessage();
+        message.what = requestId;
+        message.obj = response;
+        mHandler.sendMessage(message);
+    }
+
+    @Override
+    public void onHandlerMessageCallback(String response, int requestId) {
+        Log.e("response",response);
+    }
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int requestId = msg.what;
+            String response = (String) msg.obj;
+            onHandlerMessageCallback(response, requestId);
+        }
+    };
 }

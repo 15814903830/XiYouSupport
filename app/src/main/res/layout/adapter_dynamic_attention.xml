@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="@dimen/padding_20"
     android:layout_marginTop="@dimen/padding_20"
     android:layout_marginRight="@dimen/padding_20"
@@ -21,8 +22,8 @@
 
             <com.zero.ci.widget.CircleImageView
                 android:id="@+id/attention_user_pic_civ"
-                android:layout_width="24dp"
-                android:layout_height="24dp" />
+                android:layout_width="30dp"
+                android:layout_height="@dimen/album_dp_30" />
 
             <com.chengfan.xiyou.view.RegularTextView
                 android:id="@+id/attention_name_tv"
@@ -33,10 +34,11 @@
                 android:textSize="@dimen/text_size_15" />
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/attention_is_hy_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/padding_15"
+                android:layout_marginLeft="@dimen/padding_5"
                 android:background="@drawable/home_huiyuan" />
 
         </LinearLayout>
@@ -54,6 +56,7 @@
 
 
     <com.chengfan.xiyou.view.RegularTextView
+        android:layout_marginHorizontal="@dimen/padding_10"
         android:id="@+id/attention_des_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,21 +65,31 @@
         android:textSize="@dimen/text_size_15" />
 
     <com.chengfan.xiyou.widget.ninegridview.NineGridView
+        android:layout_marginBottom="@dimen/padding_20"
         android:id="@+id/attention_ngv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_10" />
+        android:layout_marginTop="@dimen/padding_15" />
 
-    <ImageView
-        android:id="@+id/attention_iv"
+    <android.support.v7.widget.CardView
+        android:id="@+id/mycarview"
         android:layout_width="220dp"
         android:layout_height="220dp"
-        android:layout_marginTop="@dimen/padding_10" />
+        app:cardCornerRadius="@dimen/padding_10"
+        app:cardElevation="@dimen/padding_10"
+        app:cardUseCompatPadding="true">
+    <ImageView
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:id="@+id/attention_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         />
+    </android.support.v7.widget.CardView>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
         android:gravity="center_vertical">
 
         <com.chengfan.xiyou.view.RegularTextView

@@ -72,7 +72,6 @@
                     android:layout_marginLeft="@dimen/padding_20"
                     android:layout_marginRight="@dimen/padding_20"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     >
 
                     <TextView
@@ -115,7 +114,6 @@
                     android:layout_marginLeft="@dimen/padding_20"
                     android:layout_marginRight="@dimen/padding_20"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     >
 
                     <TextView
@@ -126,7 +124,6 @@
                         android:textColor="@color/color_333333"
                         android:textSize="@dimen/text_size_15"
                         />
-
                     <TextView
                         android:id="@+id/add_type_tv"
                         android:layout_width="wrap_content"
@@ -138,8 +135,6 @@
                         android:hint="@string/add_plat_hint_type_txt"
                         android:singleLine="true"
                         android:textSize="@dimen/text_size_15"/>
-
-
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -157,6 +152,107 @@
                     android:background="@color/color_E5E5E5"/>
 
 
+
+
+
+
+
+                <RelativeLayout
+                    android:id="@+id/add_type_rl66"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_50"
+                    android:layout_marginLeft="@dimen/padding_20"
+                    android:layout_marginRight="@dimen/padding_20"
+                    android:focusable="true"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="大区"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/text_size_15"
+                        />
+                    <TextView
+                        android:id="@+id/add_type_tv66"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/padding_80"
+                        android:layout_marginRight="@dimen/padding_20"
+                        android:background="@android:color/transparent"
+                        android:hint="请输入对应内容"
+                        android:singleLine="true"
+                        android:textSize="@dimen/text_size_15"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_row"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="@dimen/padding_20"
+                    android:layout_marginRight="@dimen/padding_20"
+                    android:background="@color/color_E5E5E5"/>
+
+
+
+
+                <RelativeLayout
+                    android:id="@+id/add_type_rl77"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/padding_50"
+                    android:layout_marginLeft="@dimen/padding_20"
+                    android:layout_marginRight="@dimen/padding_20"
+                    android:focusable="true"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="段位"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/text_size_15"
+                        />
+                    <TextView
+                        android:id="@+id/add_type_tv77"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/padding_80"
+                        android:layout_marginRight="@dimen/padding_20"
+                        android:background="@android:color/transparent"
+                        android:hint="请输入对应内容"
+                        android:singleLine="true"
+                        android:textSize="@dimen/text_size_15"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/icon_row"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="@dimen/padding_20"
+                    android:layout_marginRight="@dimen/padding_20"
+                    android:background="@color/color_E5E5E5"/>
+
+
+
+
+
+
+
                 <RelativeLayout
                     android:id="@+id/add_data_rl"
                     android:layout_width="match_parent"
@@ -164,7 +260,6 @@
                     android:layout_marginLeft="@dimen/padding_20"
                     android:layout_marginRight="@dimen/padding_20"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     >
 
                     <TextView
@@ -214,7 +309,6 @@
                     android:layout_marginLeft="@dimen/padding_20"
                     android:layout_marginRight="@dimen/padding_20"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     >
 
                     <TextView
@@ -260,7 +354,6 @@
                     android:layout_marginLeft="@dimen/padding_20"
                     android:layout_marginRight="@dimen/padding_20"
                     android:focusable="true"
-                    android:focusableInTouchMode="true"
                     >
 
                     <TextView
@@ -281,7 +374,6 @@
                         android:layout_marginRight="@dimen/padding_20"
                         android:background="@android:color/transparent"
                         android:hint="@string/add_play_hint_price_txt"
-                        android:inputType="number"
                         android:singleLine="true"
                         android:textSize="@dimen/text_size_15"/>
 
@@ -313,7 +405,119 @@
                     android:gravity="left|top"
                     android:layout_marginTop="@dimen/padding_10"
                     android:hint="@string/add_play_hine_introduce_txt"/>
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_marginBottom="@dimen/padding_20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/album_dp_10"
+                android:background="@color/color_FFFFFF">
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp">
+                        <LinearLayout
+                            android:id="@+id/ll_one"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+                            <TextView
+                                android:id="@+id/tv_secondstart"
+                                android:text="3"
+                                android:textColor="#D1AE81"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="60dp" />
+                            <TextView
+                                android:id="@+id/tv_luying"
+                                android:textColor="#D1AE81"
+                                android:text="点击录制语音介绍（限30s）"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="60dp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/ll_two"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+                            <LinearLayout
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/tv_recordstart"
+                                    android:text="正在录制，完成请点击 "
+                                    android:textColor="#D1AE81"
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="60dp" />
+                                <TextView
+                                    android:id="@+id/tv_secondover"
+                                    android:text="0s"
+                                    android:textColor="#D1AE81"
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="60dp" />
+                            </LinearLayout>
+                            <ProgressBar
+                                android:layout_gravity="bottom"
+                                android:progressDrawable="@drawable/pbstay"
+                                android:id="@+id/pb_plan"
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/padding_5" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginLeft="@dimen/padding_20"
+                            android:visibility="gone"
+                            android:id="@+id/ll_three"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+                            <ImageView
+                                android:id="@+id/iv_bfzt"
+                                android:layout_gravity="center"
+                                android:background="@drawable/img_bfzt_drawable"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp" />
+                            <TextView
+                                android:layout_marginLeft="@dimen/album_dp_10"
+                                android:id="@+id/tv_finish"
+                                android:text="录制完成"
+                                android:textColor="#D1AE81"
+                                android:gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="60dp" />
+                            <LinearLayout
+                                android:gravity="right"
+                                android:layout_weight="1"
+                                android:layout_width="0dp"
+                                android:layout_height="60dp">
+                            <TextView
+                                android:layout_marginRight="@dimen/padding_20"
+                                android:id="@+id/tv_new"
+                                android:text="重录"
+                                android:textColor="#D1AE81"
+                                android:gravity="right|center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="60dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -16,5 +16,4 @@
     <item
         android:id="@+id/i_juedi"
         android:title="绝地求生"/>
-
 </menu>

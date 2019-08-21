@@ -96,7 +96,7 @@
 
             <com.chengfan.xiyou.view.RegularEditText
                 android:id="@+id/edit_name_et"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/padding_80"
@@ -139,7 +139,7 @@
 
             <com.chengfan.xiyou.view.RegularEditText
                 android:id="@+id/edit_age_et"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/padding_80"
@@ -181,8 +181,9 @@
                 />
 
             <com.chengfan.xiyou.view.RegularEditText
+                android:enabled="false"
                 android:id="@+id/edit_sex_et"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/padding_80"
@@ -297,6 +298,7 @@
             android:background="@color/color_E5E5E5"/>
 
         <RelativeLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="@dimen/padding_40"
             android:layout_marginLeft="@dimen/padding_20"
@@ -316,7 +318,7 @@
 
             <com.chengfan.xiyou.view.RegularEditText
                 android:id="@+id/edit_wx_et"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/padding_80"

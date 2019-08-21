@@ -1,6 +1,9 @@
 package com.chengfan.xiyou.ui.accompany;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
@@ -17,6 +20,9 @@ import com.chengfan.xiyou.domain.contract.AccompanyDetailContract;
 import com.chengfan.xiyou.domain.model.entity.AccompanyDetailEntity;
 import com.chengfan.xiyou.domain.model.entity.CheckLetterEntity;
 import com.chengfan.xiyou.domain.presenter.AccompanyDetailPresenterImpl;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.adapter.AccompanyDetailAdapter;
 import com.chengfan.xiyou.ui.dialog.CheckLetterDialog;
 import com.chengfan.xiyou.ui.dialog.CheckVIPDialog;
@@ -32,6 +38,9 @@ import com.zero.ci.widget.CircleImageView;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 import com.zero.ci.widget.logger.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -43,7 +52,7 @@ import io.rong.imkit.RongIM;
  * @DATE : 2019-07-05/17:12
  * @Description: 陪玩详情
  */
-public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContract.View, AccompanyDetailPresenterImpl> implements AccompanyDetailContract.View {
+public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContract.View, AccompanyDetailPresenterImpl> implements AccompanyDetailContract.View, HttpCallBack {
 
     @BindView(R.id.order_pic_iv)
     ImageView mOrderPicIv;
@@ -73,28 +82,48 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
 
     Bundle revBundle;
     int currentMemberId;
-
     AccompanyDetailEntity mAccompanyDetailEntity;
     CheckLetterEntity checkLetterEntity;
     String CheckVIP;
-
     CheckLetterDialog mCheckLetterDialog;
     CheckVIPDialog mCheckVIPDialog;
-
     AccompanyDetailAdapter mAccompanyDetailAdapter;
+    @BindView(R.id.order_time_tvbb)
+    RegularTextView orderTimeTvbb;
+    @BindView(R.id.search_game_name_llbb)
+    LinearLayout searchGameNameLlbb;
+    @BindView(R.id.order_time_tvllcc)
+    RegularTextView orderTimeTvllcc;
+    @BindView(R.id.search_game_name_llcc)
+    LinearLayout searchGameNameLlcc;
+    @BindView(R.id.order_time_tvdd)
+    RegularTextView orderTimeTvdd;
+    @BindView(R.id.search_game_name_lldd)
+    LinearLayout searchGameNameLldd;
+    private HttpCallBack mHttpCallBack;
+    private DetailBase detailBase;
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int requestId = msg.what;
+            String response = (String) msg.obj;
+            onHandlerMessageCallback(response, requestId);
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accompany_order);
         ButterKnife.bind(this);
-
         UltimateBar.Companion.with(this)
                 .applyNavigation(false)
                 .statusDark(true)
                 .create()
                 .immersionBar();
-
+        mHttpCallBack = this;
         revBundle = getIntent().getExtras();
         if (revBundle != null)
             currentMemberId = revBundle.getInt(APPContents.E_CURRENT_MEMBER_ID);
@@ -128,9 +157,20 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
                 ForwardUtil.getInstance(AccompanyDetailActivity.this).forward(MineMemberActivity.class);
             }
         });
-
+        getdata();
     }
 
+    private void getdata() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<RequestParams> list = new ArrayList<>();
+                list.add(new RequestParams("id", "" + currentMemberId));
+                list.add(new RequestParams("currentMemberId", AppData.getString(AppData.Keys.AD_USER_ID)));
+                OkHttpUtils.doGet(APIContents.ACCOMPANY_DETAIL, list, mHttpCallBack, 0);
+            }
+        }).start();
+    }
 
     @Override
     public void accompanyDetailLoad(AccompanyDetailEntity accompanyDetailEntity) {
@@ -151,7 +191,7 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
 
     @Override
     public void memberShipLoad(BaseApiResponse baseApiResponse, boolean isLike) {
-        Log.e("isLike",isLike+"");
+        Log.e("isLike", isLike + "");
         if (baseApiResponse.isSuc()) {
             if (isLike) {
                 mOrderFocusTv.setText("关注");
@@ -163,15 +203,12 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
 
     @Override
     public void sayHiLoad(BaseApiResponse baseApiResponse) {
-        if (baseApiResponse.isSuc()) {
             RongIM.getInstance().startPrivateChat(AccompanyDetailActivity.this, mAccompanyDetailEntity.getId() + "", mAccompanyDetailEntity.getNickname());
-        }
     }
 
     private void initView(final AccompanyDetailEntity accompanyDetailEntity) {
         mOrderGameNameTv.setText(accompanyDetailEntity.getTitle());
         ImageLoaderManager.getInstance().showImage(mOrderPicIv, APIContents.HOST + "/" + accompanyDetailEntity.getImages());
-        mOrderTypeTv.setText(accompanyDetailEntity.getSubjectTitle());
         mOrderTimeTv.setText(accompanyDetailEntity.getWeekDay());
         ImageLoaderManager.getInstance().showImage(mOrderUserLogoCiv, APIContents.HOST + "/" + accompanyDetailEntity.getAvatarUrl());
 
@@ -214,24 +251,20 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
                 finish();
                 break;
             case R.id.order_info_tv:
-                if (checkLetterEntity.isSuc()) {
                     mPresenter.sayHiParameter(currentMemberId);
-                } else {
-                    mCheckLetterDialog.show();
-                }
                 break;
             case R.id.order_xiadan_tv:
-//                if ("true".equals(CheckVIP)) {
-//                    Bundle toBundle = new Bundle();
-//                    toBundle.putSerializable(APPContents.BUNDLE_FRAGMENT, mAccompanyDetailEntity);
-//                    ForwardUtil.getInstance(this).forward(AccompanyConfirmOrderActivity.class, toBundle);
-//                } else {
-//                    mCheckVIPDialog.show();
-//                }
+                //                if ("true".equals(CheckVIP)) {
+                //                    Bundle toBundle = new Bundle();
+                //                    toBundle.putSerializable(APPContents.BUNDLE_FRAGMENT, mAccompanyDetailEntity);
+                //                    ForwardUtil.getInstance(this).forward(AccompanyConfirmOrderActivity.class, toBundle);
+                //                } else {
+                //                    mCheckVIPDialog.show();
+                //                }
 
-                    Bundle toBundle = new Bundle();
-                    toBundle.putSerializable(APPContents.BUNDLE_FRAGMENT, mAccompanyDetailEntity);
-                    ForwardUtil.getInstance(this).forward(AccompanyConfirmOrderActivity.class, toBundle);
+                Bundle toBundle = new Bundle();
+                toBundle.putSerializable(APPContents.BUNDLE_FRAGMENT, mAccompanyDetailEntity);
+                ForwardUtil.getInstance(this).forward(AccompanyConfirmOrderActivity.class, toBundle);
 
 
                 break;
@@ -244,4 +277,24 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
     }
 
 
+    @Override
+    public void onResponse(String response, int requestId) {
+        Message message = mHandler.obtainMessage();
+        message.what = requestId;
+        message.obj = response;
+        mHandler.sendMessage(message);
+    }
+
+    @Override
+    public void onHandlerMessageCallback(String response, int requestId) {
+        try {
+            detailBase = JSON.parseObject(response, DetailBase.class);
+            orderTimeTvbb.setText(detailBase.getServiceStartTime()+"至"+detailBase.getServiceEndTime()+"可陪玩");//陪玩时间
+            orderTimeTvllcc.setText(detailBase.getAreaTitle().equals("")?"暂无大区":"大区—"+detailBase.getAreaTitle());
+            orderTimeTvdd.setText(detailBase.getGradeTitle().equals("")?"暂无段位":"段位—"+detailBase.getGradeTitle());
+            mOrderTypeTv.setText(detailBase.getSubject().getTitle());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

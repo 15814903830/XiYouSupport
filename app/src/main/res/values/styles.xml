@@ -14,7 +14,10 @@
         <item name="windowNoTitle">true</item>
 
     </style>
-
+    <style name="PracticeModeAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/bottom_out</item>
+    </style>
     <style name="TranslucentStatusTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
     </style>

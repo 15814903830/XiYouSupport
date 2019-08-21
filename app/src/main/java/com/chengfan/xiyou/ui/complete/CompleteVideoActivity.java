@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.ui.complete;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +26,8 @@ import com.chengfan.xiyou.domain.model.entity.UpdateEntity;
 import com.chengfan.xiyou.domain.presenter.CompleteVideoPresenterImpl;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.ui.mine.order.AutonymtrueforflaseActivity;
+import com.chengfan.xiyou.ui.mine.order.AutonymtrueforflaseActivity2;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.FontHelper;
 import com.chengfan.xiyou.utils.dialog.BaseNiceDialog;
@@ -143,9 +147,9 @@ public class CompleteVideoActivity
     @Override
     public void updateVideoLoad(UpdateEntity updateEntity) {
         mBaseNiceDialog.dismiss();
+        Log.e("updateEntity",updateEntity.getFilePath());
         if (updateEntity.isSuccess()) {
             video = updateEntity.getFilePath();
-            //ForwardUtil.getInstance(this).forward(CompleteOverActivity.class);
         } else {
             ToastUtil.show(updateEntity.getMsg());
         }
@@ -209,7 +213,6 @@ public class CompleteVideoActivity
                 else {
                     postvideo(video);
                 }
-
                 break;
             case R.id.complete_update_ll:
                 selectVideo();
@@ -263,10 +266,17 @@ public class CompleteVideoActivity
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
+        Log.e("response",response);
         VodeoBase vodeoBase = JSON.parseObject(response, VodeoBase.class);
         if (vodeoBase.isSuc()) {
-            Toast.makeText(this, "认证信息提交成功", Toast.LENGTH_SHORT).show();
-            finish();
+            if (mXyMoreTv.getText().equals("")){
+                Toast.makeText(this, "认证信息提交成功", Toast.LENGTH_SHORT).show();
+                finish();
+            }else {
+                Intent intent=new Intent(this, AutonymtrueforflaseActivity2.class);
+                startActivity(intent);
+            }
+
         } else {
             Toast.makeText(this, "认证信息提交异常", Toast.LENGTH_SHORT).show();
             finish();

@@ -59,24 +59,24 @@
 
 
     <string name="main_home_txt" translatable="false">首页</string>
-    <string name="main_accompany_txt" translatable="false">陪玩</string>
+    <string name="main_accompany_txt" translatable="false">陪练</string>
     <string name="main_chat_txt" translatable="false">聊天</string>
     <string name="main_dynamic_txt" translatable="false">动态</string>
     <string name="main_mine_txt" translatable="false">我的</string>
-    <string name="main_pei_game_txt" translatable="false">游戏陪玩</string>
+    <string name="main_pei_game_txt" translatable="false">游戏陪练</string>
 
     <string name="home_search_txt" translatable="false">输入内容或ID搜索</string>
     <string name="accompany_search_txt" translatable="false">请输入您要搜索的关键词</string>
     <string name="accompany_id_txt" translatable="false">ID</string>
     <string name="accompany_sex_txt" translatable="false">性别</string>
-    <string name="accompany_more_title_txt" translatable="false">更多陪玩</string>
+    <string name="accompany_more_title_txt" translatable="false">更多陪练</string>
 
 
     <string name="order_info_txt" translatable="false">发私信</string>
     <string name="order_xiadan_txt" translatable="false">下单</string>
 
     <string name="confirm_title_txt" translatable="false">确认订单</string>
-    <string name="confirm_type_txt" translatable="false">陪玩类型</string>
+    <string name="confirm_type_txt" translatable="false">陪练类型</string>
     <string name="confirm_time_txt" translatable="false">选择时长</string>
     <string name="confirm_heji_txt" translatable="false">合计</string>
     <string name="confirm_beizhu_txt" translatable="false">备注</string>
@@ -86,15 +86,15 @@
     <string name="confirm_zfb_txt" translatable="false">支付宝</string>
     <string name="confirm_wx_txt" translatable="false">微信</string>
     <string name="confirm_submit_txt" translatable="false">立即提交</string>
-    <string name="confirm_success_txt" translatable="false">恭喜您,\n成功提交陪玩订单！</string>
+    <string name="confirm_success_txt" translatable="false">恭喜您,\n成功提交陪练订单！</string>
     <string name="confirm_go_banck_txt" translatable="false">返回首页</string>
     <string name="confirm_order_detail_txt" translatable="false">订单详情</string>
 
     <string name="mine_guanzhu_txt" translatable="false">关注</string>
     <string name="mine_fensi_txt" translatable="false">粉丝</string>
     <string name="mine_dongtai_txt" translatable="false">动态</string>
-    <string name="mine_order_txt" translatable="false">陪玩订单</string>
-    <string name="mine_pei_txt" translatable="false">我的陪玩</string>
+    <string name="mine_order_txt" translatable="false">陪练订单</string>
+    <string name="mine_pei_txt" translatable="false">我的陪练</string>
     <string name="mine_qian_txt" translatable="false">我的钱包</string>
     <string name="mine_huiyuan_txt" translatable="false">我的会员</string>
     <string name="mine_yaoqing_txt" translatable="false">我的邀请</string>
@@ -120,31 +120,31 @@
 
     <string name="order_all_txt" translatable="false">全部</string>
     <string name="order_no_started_txt" translatable="false">待开始</string>
-    <string name="order_ongoing_txt" translatable="false">陪玩中</string>
+    <string name="order_ongoing_txt" translatable="false">陪练中</string>
     <string name="order_unproved_txt" translatable="false">待确认</string>
     <string name="order_complete_txt" translatable="false">完成</string>
     <string name="order_evaluate_txt" translatable="false">立即评价</string>
     <string name="order_proved_txt" translatable="false">确认结束</string>
-    <string name="order_ongoing_over_txt" translatable="false">陪玩结束</string>
+    <string name="order_ongoing_over_txt" translatable="false">陪练结束</string>
     <string name="order_no_start_refuse_txt" translatable="false">拒绝</string>
     <string name="order_no_start_takers_txt" translatable="false">接单</string>
 
-    <string name="game_title_txt" translatable="false">我的陪玩</string>
+    <string name="game_title_txt" translatable="false">我的陪练</string>
     <string name="game_add_txt" translatable="false">新增</string>
 
-    <string name="add_title_txt" translatable="false">新增陪玩</string>
+    <string name="add_title_txt" translatable="false">新增陪练</string>
     <string name="add_more_title_txt" translatable="false">完成</string>
-    <string name="add_play_title_txt" translatable="false">陪玩标题</string>
-    <string name="add_play_hint_title_txt" translatable="false">请输入您的陪玩标题</string>
-    <string name="add_play_type_txt" translatable="false">陪玩类型</string>
-    <string name="add_plat_hint_type_txt" translatable="false">请选择陪玩类型</string>
+    <string name="add_play_title_txt" translatable="false">陪练标题</string>
+    <string name="add_play_hint_title_txt" translatable="false">请输入您的陪练标题</string>
+    <string name="add_play_type_txt" translatable="false">陪练类型</string>
+    <string name="add_plat_hint_type_txt" translatable="false">请选择陪练类型</string>
     <string name="add_play_data_txt" translatable="false">接单日期</string>
     <string name="add_play_hint_data_txt" translatable="false">请选择接单日期</string>
     <string name="add_play_time_txt" translatable="false">接单时间</string>
     <string name="add_play_hint_time_txt" translatable="false">请选择接单时间</string>
     <string name="add_play_price_txt" translatable="false">单价</string>
     <string name="add_play_hint_price_txt" translatable="false">请输入每小时单价</string>
-    <string name="add_play_hine_introduce_txt" translatable="false">请简单输入您的陪玩介绍</string>
+    <string name="add_play_hine_introduce_txt" translatable="false">请简单输入您的陪练介绍</string>
     <string name="add_play_update_pic_txt" translatable="false">上传照片</string>
     <string name="add_play_update_new_pic_txt" translatable="false">重新上传</string>
 
@@ -211,7 +211,7 @@
     <string name="dialog_title_txt" translatable="false">提示</string>
     <string name="dialog_member_txt" translatable="false">确认解散该群聊吗？\n 解散后不在接收此群的群聊信息</string>
     <string name="dialog_no_member_txt" translatable="false">确认退出该群聊吗？\n 退出后不再接收此群的信息</string>
-    <string name="dialog_check_vip_txt" translatable="false">您暂无开通会员，\n 开通后即可下单陪玩</string>
+    <string name="dialog_check_vip_txt" translatable="false">您暂无开通会员，\n 开通后即可下单陪练</string>
     <string name="dialog_check_letter_txt" translatable="false">您暂未开通会员，\n只能与10位用户聊天</string>
 
     <string name="no_selected" translatable="false">请先选择.</string>

@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -59,9 +60,8 @@ public class ChatFamilyActivity extends BaseActivity {
 
                                            @Override
                                            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                                               Intent intent = new Intent(ChatFamilyActivity.this, WebActivity.class);
-//                                                 intent.putExtra("url", url);
-//                                                 startActivity(intent);
+                                               Log.e("urlurl",url);
+                                               mChatFamilyWv.loadUrl(url);
                                                return true;
                                            }
                                        }

@@ -98,8 +98,6 @@ public class AutonymtrueforflaseActivity extends AppCompatActivity implements Vi
         etIdnum.setText(getIntent().getStringExtra("carsum"));
         Glide.with(this).load(APIContents.HOST + "/" + getIntent().getStringExtra("img").split("\\|")[0]).into(ivIdcard1Auttonym);
         Glide.with(this).load(APIContents.HOST + "/" + getIntent().getStringExtra("img").split("\\|")[1]).into(ivIdcard2Auttonym);
-        Log.e("img", APIContents.HOST + "/" + getIntent().getStringExtra("img").split("\\|")[0]);
-        Log.e("img", APIContents.HOST + "/" + getIntent().getStringExtra("img").split("\\|")[1]);
         if (getIntent().getStringExtra("tv").equals("认证成功")) {
             tvImg.setSelected(true);
             mButton.setVisibility(View.GONE);

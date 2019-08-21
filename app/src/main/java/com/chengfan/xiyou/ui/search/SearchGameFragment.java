@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,6 +137,7 @@ public class SearchGameFragment extends BaseFragment {
                         } else {
                             Type type = new TypeToken<List<SearchGameEntity>>() {
                             }.getType();
+                            Log.e("result",result);
                             List<SearchGameEntity> searchGameEntityList = new Gson().fromJson(result, type);
                             if (searchGameEntityList.size() < 0) {
                                 return;

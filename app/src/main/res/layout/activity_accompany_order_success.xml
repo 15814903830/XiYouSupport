@@ -16,7 +16,8 @@
             android:layout_height="@dimen/padding_65"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="160dp"
-            android:background="@drawable/complete_go"/>
+            android:src="@drawable/complete_go"
+            />
 
         <com.chengfan.xiyou.view.RegularTextView
             android:id="@+id/complete_over_des_tv"

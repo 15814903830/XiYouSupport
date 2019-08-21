@@ -94,7 +94,6 @@ public class LoginActivity
 
     @Override
     public void loginLoad(LoginResponse loginResponse) {
-
         Log.e("loginResponse", "" + loginResponse.getData().getId());
         if (loginResponse.isSuc()) {
             APPContents.ID = "" + loginResponse.getData().getId();

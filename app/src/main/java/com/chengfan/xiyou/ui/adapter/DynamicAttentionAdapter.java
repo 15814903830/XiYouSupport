@@ -1,6 +1,8 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -10,6 +12,7 @@ import com.chengfan.xiyou.domain.model.entity.FinanceRecordEntity;
 import com.chengfan.xiyou.domain.model.entity.ImageEntity;
 import com.chengfan.xiyou.ui.dialog.ViewPagerDialog;
 import com.chengfan.xiyou.utils.GlideImageLoader;
+import com.chengfan.xiyou.utils.Timeutils;
 import com.chengfan.xiyou.widget.ninegridview.NineGirdImageContainer;
 import com.chengfan.xiyou.widget.ninegridview.NineGridBean;
 import com.chengfan.xiyou.widget.ninegridview.NineGridView;
@@ -53,8 +56,8 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
         } else {
             helper.getView(R.id.attention_is_hy_iv).setVisibility(View.GONE);
         }
-
         helper.setText(R.id.attention_des_tv, item.getContent());
+        helper.setText(R.id.attention_name_tv, item.getMember().getNickname());
         helper.setText(R.id.attention_time_tv, switchCreateTime(item.getCreateTime()));
         helper.setText(R.id.attention_comment_num_tv, item.getTotalComment() + " ");
         helper.setText(R.id.attention_lick_num_tv, item.getTotalPraise() + "");
@@ -65,6 +68,9 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        Log.e("isHavePraise","isHavePraise"+item.isHavePraise());
         if (item.isHavePraise()) {
             helper.getView(R.id.attention_fans_iv).setBackgroundResource(R.drawable.ap_dynamic_licked_num);
         } else {
@@ -81,6 +87,7 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
 
         NineGridView nineGridView = helper.getView(R.id.attention_ngv);
         ImageView imageView = helper.getView(R.id.attention_iv);
+        CardView cardView = helper.getView(R.id.mycarview);
         List<ImageEntity> imageEntityList = new ArrayList<>();
         List<NineGridBean> nineGridBeanList = new ArrayList<>();
         String imageStr = item.getImages();
@@ -95,12 +102,14 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
 
         if (imageEntityList.size() > 1) {
             imageView.setVisibility(View.GONE);
+            cardView.setVisibility(View.GONE);
             nineGridView.setVisibility(View.VISIBLE);
             setPhoneNgV(nineGridView);
             nineGridView.addData(nineGridBeanList);
         } else {
             nineGridView.setVisibility(View.GONE);
             imageView.setVisibility(View.VISIBLE);
+            cardView.setVisibility(View.VISIBLE);
             if (imageEntityList.size() > 0)
                 ImageLoaderManager.getInstance().showImage(imageView, imageEntityList.get(0).getImgUrl());
         }
@@ -161,20 +170,15 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
     }
 
     public String switchCreateTime(String createTime) {
-        String formatStr2 = null;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//注意格式化的表达式
+        Date time = null;
         try {
-            Date time = format.parse(createTime);
+            time = format.parse(createTime);
             String date = time.toString();
-            //将西方形式的日期字符串转换成java.util.Date对象
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", java.util.Locale.US);
-            Date datetime = (Date) sdf.parse(date);
-            //再转换成自己想要显示的格式
-            formatStr2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(datetime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return formatStr2;
+        return Timeutils.getTimeFormatText(time);
     }
 
     private String activityStartTime;//活动开始时间

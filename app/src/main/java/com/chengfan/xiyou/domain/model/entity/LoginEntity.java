@@ -50,7 +50,7 @@ public class LoginEntity implements Serializable {
 
     private int id;
     private int reference;
-    private int balance;
+    private Double balance;
     private String userName;
     private String password;
     private String weiXinUid;
@@ -99,11 +99,11 @@ public class LoginEntity implements Serializable {
         this.reference = reference;
     }
 
-    public int getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 

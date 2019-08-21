@@ -16,7 +16,7 @@ public class APIContents {
     private APIContents() {
     }
 
-    public static String HOST = "http://xy.gx11.cn";
+    public static String HOST = "http://api.maihui111.com";
     /*登录*/
     public static String LOGIN = HOST + "/api/Account/Login";
     /*注册*/
@@ -60,6 +60,7 @@ public class APIContents {
     public static String ACCOMPANY = HOST + "/api/Member/MemberHomePage";
     /*关注、取消关注*/
     public static String MEMBER_SHIP = HOST + "/api/Account/MemberShip";
+    public static String MEMBER_LIKE = HOST + "/api/MemberNews/Praise";
     /*陪玩详情*/
     public static String ACCOMPANY_DETAIL = HOST + "/api/AccompanyPlay/Detail";
     /*检查是否能发私信*/

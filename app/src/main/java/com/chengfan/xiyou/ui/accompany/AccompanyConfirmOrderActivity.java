@@ -33,6 +33,7 @@ import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
 import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.mine.MineMemberActivity;
+import com.chengfan.xiyou.ui.mine.MineOrderActivity;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.chengfan.xiyou.view.RegularTextView;
@@ -112,20 +113,17 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
     private Handler mpayHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Log.e("mymsg",msg.toString());
-            String ddid=msg.toString().split("out_trade_no")[1].split(",")[0];
-            Log.e("mymsg2",ddid.split("\"")[2]);
-            APPContents.DDID=ddid.split("\"")[2];
             if (msg.toString().length()>200){
                 Intent intent=new Intent(AccompanyConfirmOrderActivity.this, AccompanyOrderSuccessActivity.class);
                 intent.putExtra("key","支付成功");
+                intent.putExtra("sum",mConfirmHeTv.getText().toString());
                 startActivity(intent);
+                finish();
                 //成功
             }else {
 //                Intent intent=new Intent(AccompanyConfirmOrderActivity.this, AccompanyOrderSuccessActivity.class);
 //                intent.putExtra("key","支付失败");
 //                startActivity(intent);
-
                 Toast.makeText(AccompanyConfirmOrderActivity.this, "支付已取消", Toast.LENGTH_SHORT).show();
             }
         }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.zero.ci.network.http.NoHttp;
 import com.zero.ci.network.http.RequestMethod;
@@ -444,7 +445,7 @@ public class RequestManager {
                 tAbstractResponse.onResponseState(new ResponseModel(ResponseEnum.SUCCESS));
                 tAbstractResponse.onSuccess(response.get());
 
-
+                Log.e("responsess",response.toString());
                 if (networkConfig.getIDevelopMode() != null) {
                     networkConfig.getIDevelopMode().onRecord(params, response.get());
                 }

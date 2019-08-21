@@ -38,7 +38,7 @@ public class MineTakingOngoingAdapter extends BaseRVAdapter<MineOrderTakingEntit
         helper.setText(R.id.order_game_name_money_tv, item.getAccompanyPlay().getSubject().getTitle() + ". ￥" + item.getAccompanyPlay().getPrice() + "/小时");
         helper.setText(R.id.order_time_tv, "×" + item.getHour());
         helper.setText(R.id.order_money_tv, "合计：" + item.getHour() * item.getAccompanyPlay().getPrice());
-
+        helper.setText(R.id.order_user_name_tv, item.getMember().getNickname());
 
         if (item.getStatus() == 3) {
             helper.getView(R.id.taking_ongoing_tv).setVisibility(View.VISIBLE);

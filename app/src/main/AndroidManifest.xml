@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -32,6 +33,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
+        <activity android:name=".ui.chat.Web2Activity"></activity>
+        <activity android:name=".ui.mine.order.AutonymtrueforflaseActivity2"></activity>
         <activity
             android:name=".ui.WebActivity"
             android:theme="@style/TranslucentStatusTheme"
@@ -225,6 +228,7 @@
         <activity
             android:name=".ui.dynamic.DynamicDetailActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.chat.WebActivity" />
     </application>
 
 </manifest>

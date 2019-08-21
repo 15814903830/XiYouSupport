@@ -164,10 +164,8 @@ public class RegisterActivity
                     bean.setEntryway(phoneNum);
                     bean.setCode(verificationCode);
                     bean.setPassword(pw);
-
                     if (invitationCode.length() > 0)
                         bean.setReference(invitationCode);
-
                     Logger.d("Register " + new Gson().toJson(bean));
                     mPresenter.registerParameter(bean);
                 }
@@ -182,7 +180,7 @@ public class RegisterActivity
     @Override
     public void registerLoad(RegisterResponse response) {
 
-        Log.e("response",response.getData().toString());
+        Log.e("response", response.getData().toString());
         if (response.isSuc()) {
             UserStorage.getInstance().saveLoginInfo(response.getData());
             AppData.putString(AppData.Keys.AD_USER_ID, response.getData().getId() + "");

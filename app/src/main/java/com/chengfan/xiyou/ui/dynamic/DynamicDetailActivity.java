@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -277,7 +278,6 @@ public class DynamicDetailActivity extends BaseActivity<DynamicDetailContract.Vi
                 showCommentDialog();
                 break;
             case R.id.detail_go_user_info_ll:
-
                 Bundle toBundles = new Bundle();
                 toBundles.putInt(APPContents.E_CURRENT_MEMBER_ID, mDynamicDetailEntity.getMemberId());
                 ForwardUtil.getInstance(this).forward(AccompanyUserInfoActivity.class, toBundles);

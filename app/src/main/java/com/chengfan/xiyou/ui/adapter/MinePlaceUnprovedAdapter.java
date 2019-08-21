@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.chengfan.xiyou.R;
@@ -10,6 +11,8 @@ import com.zero.ci.base.adapter.BaseRVAdapter;
 import com.zero.ci.base.adapter.BaseViewHolder;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -38,11 +41,16 @@ public class MinePlaceUnprovedAdapter extends BaseRVAdapter<MineOrderPlaceEntity
         helper.setText(R.id.order_game_name_money_tv, item.getAccompanyPlay().getSubject().getTitle() + ". ￥" + item.getAccompanyPlay().getPrice() + "/小时");
         helper.setText(R.id.order_time_tv, "×" + item.getHour());
         helper.setText(R.id.order_money_tv, "合计：" + item.getHour() * item.getAccompanyPlay().getPrice());
+        helper.setText(R.id.order_user_name_tv, item.getAccompanyPlay().getMember().getNickname());
 
 
-        if (item.getStatus() == 4) {
+
+
+        Log.e("getStatus",""+item.getStatus());
+        if (item.getStatus() == 3) {
             helper.getView(R.id.place_ll).setVisibility(View.VISIBLE);
             helper.setText(R.id.place_time_tv, item.getFinishTime() + " ");
+
             helper.getView(R.id.order_unproved_tv).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

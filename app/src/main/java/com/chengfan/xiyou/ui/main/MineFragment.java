@@ -112,7 +112,6 @@ public class MineFragment extends BaseFragment{
                 .statusDark(true)
                 .create()
                 .drawableBar();
-
         mXiYouBeanList = new ArrayList<>();
         mMineEntity = new MineEntity();
         return mView;
@@ -229,6 +228,15 @@ public class MineFragment extends BaseFragment{
 
     private void initView(MineEntity mineEntity) {
 
+        if (mineEntity.getAvatarUrl()==null){
+            if (mineEntity.getGender()==1){
+                mMinePicCiv.setImageResource(R.drawable.complete_nan);
+            }else {
+                mMinePicCiv.setImageResource(R.drawable.complete_nv);
+            }
+        }else {
+            ImageLoaderManager.getInstance().showImage(mMinePicCiv, APIContents.HOST + "/" + mineEntity.getAvatarUrl());
+        }
         mMineUserNameTv.setText(mineEntity.getNickname());
         //  mMinePhoneTv.setText(mineEntity.);
        // Log.e("mMinePicCiv",""+mineEntity.getAvatarUrl());

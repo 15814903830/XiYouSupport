@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -19,12 +20,16 @@ import java.util.List;
  * @Description: 游戏陪玩
  */
 public class AccompanyGameAdapter extends BaseRVAdapter<AccompanyGameEntity, BaseViewHolder> {
+    List<AccompanyGameEntity> data;
     public AccompanyGameAdapter(int layoutResId, @Nullable List<AccompanyGameEntity> data) {
         super(layoutResId, data);
+        this.data=data;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, AccompanyGameEntity item) {
+        Log.e("ssssssssssss","ssssssssssss");
+        Log.e("ssssssssssss",""+data.size());
         helper.setText(R.id.accompany_game_name_tv, item.getNickname())
                 .setText(R.id.accompany_game_money_tv, "￥" + item.getPrice())
                 //.setText(R.id.accompany_game_address_tv, item.getAddress())

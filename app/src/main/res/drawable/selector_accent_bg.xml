@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/shimingrenzheng23x" android:state_selected="true" />
-
-    <item android:drawable="@drawable/shimingrenzheng13x" />
+    <item android:drawable="@drawable/shimingrenzheng13x" android:state_selected="true" />
+    <item android:drawable="@drawable/shimingrenzheng23x" />
 
 </selector>

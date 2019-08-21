@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.chengfan.xiyou.utils.StatusBarHeightView
+    app:use_type="use_padding_top"
+    xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
     <Button
         android:id="@+id/order_back_btn"
         android:layout_width="@dimen/padding_35"
         android:layout_height="@dimen/padding_35"
         android:layout_marginLeft="@dimen/padding_20"
-        android:layout_marginTop="@dimen/padding_40"
+        android:layout_marginTop="@dimen/padding_10"
         android:background="@drawable/xy_black_back"/>
 
     <android.support.v4.widget.NestedScrollView
@@ -29,10 +30,11 @@
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:adjustViewBounds="true"
                     android:id="@+id/order_pic_iv"
                     android:layout_width="match_parent"
                     android:layout_height="280dp"
-                    android:scaleType="center"/>
+                    android:scaleType="fitXY"/>
 
 
                 <RelativeLayout
@@ -46,6 +48,7 @@
 
 
                     <RelativeLayout
+                        android:layout_marginVertical="8dp"
                         android:id="@+id/order_name_rl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -53,6 +56,8 @@
 
 
                         <com.chengfan.xiyou.view.RegularTextView
+                            android:maxLength="10"
+                            android:ellipsize="end"
                             android:id="@+id/order_game_name_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -89,6 +94,7 @@
                             android:background="@drawable/search_game"/>
 
                         <com.chengfan.xiyou.view.RegularTextView
+                            android:text="游戏陪玩"
                             android:id="@+id/order_type_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -118,7 +124,73 @@
                             android:layout_marginLeft="@dimen/padding_10"
                             android:textColor="@color/color_999999"
                             android:textSize="@dimen/text_size_13"/>
+                    </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/search_game_name_llbb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/search_game_name_ll"
+                        android:layout_marginTop="@dimen/padding_10"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/icon_accompany_time"/>
+
+                        <com.chengfan.xiyou.view.RegularTextView
+                            android:id="@+id/order_time_tvbb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_10"
+                            android:textColor="@color/color_999999"
+                            android:textSize="@dimen/text_size_13"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/search_game_name_llcc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/search_game_name_llbb"
+                        android:layout_marginTop="@dimen/padding_10"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:background="@drawable/peiwanxiangqing33x"/>
+
+                        <com.chengfan.xiyou.view.RegularTextView
+                            android:text="暂无分区"
+                            android:id="@+id/order_time_tvllcc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_10"
+                            android:textColor="@color/color_999999"
+                            android:textSize="@dimen/text_size_13"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/search_game_name_lldd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/search_game_name_llcc"
+                        android:layout_marginTop="@dimen/padding_10"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:background="@drawable/peiwanxiangqing33x"/>
+
+                        <com.chengfan.xiyou.view.RegularTextView
+                            android:text="暂无段位"
+                            android:id="@+id/order_time_tvdd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/padding_10"
+                            android:textColor="@color/color_999999"
+                            android:textSize="@dimen/text_size_13"/>
                     </LinearLayout>
 
 
@@ -273,4 +345,4 @@
             android:textColor="@color/color_FFFFFF"
             android:textSize="@dimen/text_size_12"/>
     </LinearLayout>
-</RelativeLayout>
+</com.chengfan.xiyou.utils.StatusBarHeightView>

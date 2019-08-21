@@ -1,12 +1,10 @@
 package com.chengfan.xiyou.ui.accompany;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -16,7 +14,6 @@ import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.AccompanyOrderDetailContract;
 import com.chengfan.xiyou.domain.presenter.AccompanyOrderDetailPresenterImpl;
-import com.chengfan.xiyou.ui.chat.WebActivity;
 import com.chengfan.xiyou.utils.AppData;
 import com.zero.ci.base.BaseActivity;
 

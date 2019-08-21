@@ -1,5 +1,7 @@
 package com.chengfan.xiyou.domain.presenter;
 
+import android.util.Log;
+
 import com.chengfan.xiyou.domain.contract.DynamicAttentionContract;
 import com.chengfan.xiyou.domain.model.DynamicAttentionModelImpl;
 import com.chengfan.xiyou.domain.model.entity.FinanceRecordEntity;
@@ -31,7 +33,7 @@ public class DynamicAttentionPresenterImpl extends BasePresenter<DynamicAttentio
 
             @Override
             public void onNetError(Throwable e) {
-
+                Log.e("Throwable",e.toString());
             }
         });
     }

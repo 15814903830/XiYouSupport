@@ -57,6 +57,7 @@ public class WelComeActivity extends BaseActivity {
                     @Override
                     public void run() throws Exception {
                         String uid = AppData.getString(AppData.Keys.AD_USER_ID);
+
                         if (uid.equals("") || uid == null) {
                             Log.e("uid",uid);
                             Logger.d("WelComeActivity ===>> go login");
@@ -65,6 +66,8 @@ public class WelComeActivity extends BaseActivity {
                             Logger.d("WelComeActivity ===>> go main");
                             ForwardUtil.getInstance(WelComeActivity.this).forward(MainActivity.class);
                         }
+
+
 
                     }
                 })

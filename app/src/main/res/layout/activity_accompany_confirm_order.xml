@@ -401,7 +401,6 @@
                 android:layout_marginLeft="@dimen/padding_20"
                 android:layout_toEndOf="@id/co_he_tv"
                 android:layout_toRightOf="@id/co_he_tv"
-                android:text="200"
                 android:textColor="@color/color_F44336"/>
 
             <Button

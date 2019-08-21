@@ -1,11 +1,15 @@
 package com.chengfan.xiyou.ui.mine.order;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APPContents;
@@ -31,14 +35,18 @@ public class MineOrderDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_mine_order_detail);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         ButterKnife.bind(this);
         initWebSettings();
         revBundle = getIntent().getExtras();
         if (revBundle != null)
             id = revBundle.getInt(APPContents.E_ID);
-        mMineOrderDetailWv.loadUrl("http://xy.gx11.cn/WapFinance/AccompanyPlayOrderComment?id=" + id + "&memberId=" + AppData.getString(AppData.Keys.AD_USER_ID));
+        Log.e("id","---"+id);
+        Log.e("idsss","---"+AppData.getString(AppData.Keys.AD_USER_ID));
+        initweview();
+        mMineOrderDetailWv.loadUrl(" http://xy.gx11.cn/WapFinance/AccompanyPlayOrderDetail?id=" + id + "&memberId=" + AppData.getString(AppData.Keys.AD_USER_ID));
+        //mMineOrderDetailWv.loadUrl("http://xy.gx11.cn/WapFinance/AccompanyPlayOrderComment?id=" + id + "&memberId=" + AppData.getString(AppData.Keys.AD_USER_ID));
 
     }
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -63,5 +71,22 @@ public class MineOrderDetailActivity extends BaseActivity {
         webSettings.setDomStorageEnabled(true);
         webSettings.setAllowUniversalAccessFromFileURLs(true);
 
+    }
+
+    public void initweview(){
+        mMineOrderDetailWv.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.e("should", url);
+                if (url.contains("Api/Member/SendPrivateLetter")){
+                    Log.e("toMemberId", url.split("=")[1]);
+                }
+                return true;
+            }
+        });
+    }
+
+    public void onClickReturn(View view) {
+        finish();
     }
 }

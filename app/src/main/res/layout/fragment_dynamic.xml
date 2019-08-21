@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp"></View>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
@@ -21,6 +23,7 @@
             app:menu="@menu/menu_navigation_dynamic_fab" />
 
         <ImageView
+            android:layout_marginBottom="3dp"
             android:id="@+id/dynamic_go_issued_iv"
             android:layout_width="60dp"
             android:layout_height="45dp"
@@ -35,6 +38,7 @@
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager
+        android:layout_marginTop="@dimen/padding_5"
         android:id="@+id/fragment_navigation_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

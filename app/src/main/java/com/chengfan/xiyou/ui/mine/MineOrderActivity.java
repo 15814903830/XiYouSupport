@@ -42,7 +42,6 @@ public class MineOrderActivity extends BaseActivity {
     @BindView(R.id.fragment_navigation_vp)
     ViewPager mFragmentNavigationVp;
 
-
     private VpAdapter adapter;
     private List<Fragment> fragments;
     MinePlaceOrderFragment mMinePlaceOrderFragment;
@@ -79,16 +78,12 @@ public class MineOrderActivity extends BaseActivity {
         mBotNav.setLargeTextSize(20);
         mBotNav.setSmallTextSize(15);
         mBotNav.setIconSize(0, 0);
-
         // set adapter
         adapter = new VpAdapter(getSupportFragmentManager(), fragments);
         mFragmentNavigationVp.setAdapter(adapter);
         mFragmentNavigationVp.setOffscreenPageLimit(2);
-
         // binding with ViewPager
         mBotNav.setupWithViewPager(mFragmentNavigationVp);
-
-
         mBotNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
