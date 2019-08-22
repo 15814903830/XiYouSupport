@@ -2,6 +2,7 @@ package com.chengfan.xiyou.ui.accompany;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,10 +30,14 @@ import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.model.entity.AccompanyUserInfoEntity;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.ui.WebActivity;
 import com.chengfan.xiyou.ui.adapter.AccompanyDynamicAdapter;
+import com.chengfan.xiyou.ui.dynamic.DynamicDetailActivity;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.MyToastUtil;
 import com.zero.ci.base.BaseFragment;
+import com.zero.ci.base.adapter.BaseRVAdapter;
+import com.zero.ci.tool.ForwardUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,6 +103,12 @@ public class AccompanyDynamicFragment extends BaseFragment implements HttpCallBa
             mApDynamicRv.setLayoutManager(new LinearLayoutManager(getActivity()));
             mApDynamicRv.setAdapter(mAccompanyDynamicAdapter);
             mApDynamicRv.setFocusable(false);
+            mAccompanyDynamicAdapter.setOnItemClickListener(new BaseRVAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(BaseRVAdapter adapter, View view, int position) {
+                    turnToDetail(position);
+                }
+            });
             mAccompanyDynamicAdapter.setOnItemClickListen(new AccompanyDynamicAdapter.OnItemClickListen() {
                 @Override
                 public void onCommentClick(int position) {
@@ -111,6 +122,24 @@ public class AccompanyDynamicFragment extends BaseFragment implements HttpCallBa
             });
         }
         return mView;
+    }
+
+    private void turnToDetail(int position) {
+        if (position < 0 || position >= mAccompanyUserInfoEntity.getMemberNews().size()) {
+            return;
+        }
+        if (mAccompanyUserInfoEntity.getMemberNews().get(position).getImages().contains(".mp4")) {
+            int id = mAccompanyUserInfoEntity.getMemberNews().get(position).getId();
+            String userId = AppData.getString(AppData.Keys.AD_USER_ID);
+            String url = APIContents.HOST + "/WapNews/MemberNewsVoidDetail?" + "id=" + id + "&memberId=" + userId;
+            Intent intent = new Intent(getActivity(), WebActivity.class);
+            intent.putExtra(WebActivity.KEY_URL, url);
+            startActivity(intent);
+        } else {
+            Bundle toBundle = new Bundle();
+            toBundle.putString(APPContents.BUNDLE_DYNAMIC_ID, mAccompanyUserInfoEntity.getMemberNews().get(position).getId() + "");
+            ForwardUtil.getInstance(getActivity()).forward(DynamicDetailActivity.class, toBundle);
+        }
     }
 
     private void like(int position) {

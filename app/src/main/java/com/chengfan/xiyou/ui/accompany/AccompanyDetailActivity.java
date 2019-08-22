@@ -28,15 +28,15 @@ import com.chengfan.xiyou.ui.dialog.CheckLetterDialog;
 import com.chengfan.xiyou.ui.dialog.CheckVIPDialog;
 import com.chengfan.xiyou.ui.mine.MineMemberActivity;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.DataFormatUtil;
+import com.chengfan.xiyou.utils.status.StatusBarUtil;
 import com.chengfan.xiyou.view.BoldTextView;
 import com.chengfan.xiyou.view.RegularTextView;
-import com.github.zackratos.ultimatebar.UltimateBar;
 import com.zero.ci.base.BaseActivity;
 import com.zero.ci.base.BaseApiResponse;
 import com.zero.ci.tool.ForwardUtil;
 import com.zero.ci.widget.CircleImageView;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
-import com.zero.ci.widget.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +52,9 @@ import io.rong.imkit.RongIM;
  * @DATE : 2019-07-05/17:12
  * @Description: 陪玩详情
  */
-public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContract.View, AccompanyDetailPresenterImpl> implements AccompanyDetailContract.View, HttpCallBack {
+public class AccompanyDetailActivity extends
+        BaseActivity<AccompanyDetailContract.View, AccompanyDetailPresenterImpl>
+        implements AccompanyDetailContract.View, HttpCallBack {
 
     @BindView(R.id.order_pic_iv)
     ImageView mOrderPicIv;
@@ -118,20 +120,17 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accompany_order);
         ButterKnife.bind(this);
-        UltimateBar.Companion.with(this)
-                .applyNavigation(false)
-                .statusDark(true)
-                .create()
-                .immersionBar();
+
+        //修改状态栏的文字颜色为黑色
+        int flag = StatusBarUtil.StatusBarLightMode(this);
+        StatusBarUtil.StatusBarLightMode(this, flag);
+
         mHttpCallBack = this;
         revBundle = getIntent().getExtras();
         if (revBundle != null)
             currentMemberId = revBundle.getInt(APPContents.E_CURRENT_MEMBER_ID);
 
-        Logger.e("AccompanyDetailActivity currentMemberId : " + currentMemberId);
-
         mAccompanyDetailEntity = new AccompanyDetailEntity();
-
 
         mPresenter.accompanyDetailParameter(currentMemberId);
         mPresenter.checkLetterParameter(currentMemberId);
@@ -180,7 +179,6 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
 
     @Override
     public void checkLetterLoad(CheckLetterEntity checkLetterEntity) {
-
         this.checkLetterEntity = checkLetterEntity;
     }
 
@@ -203,13 +201,16 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
 
     @Override
     public void sayHiLoad(BaseApiResponse baseApiResponse) {
-            RongIM.getInstance().startPrivateChat(AccompanyDetailActivity.this, mAccompanyDetailEntity.getId() + "", mAccompanyDetailEntity.getNickname());
+        RongIM.getInstance().startPrivateChat(AccompanyDetailActivity.this,
+                mAccompanyDetailEntity.getId() + "", mAccompanyDetailEntity.getNickname());
     }
 
     private void initView(final AccompanyDetailEntity accompanyDetailEntity) {
         mOrderGameNameTv.setText(accompanyDetailEntity.getTitle());
         ImageLoaderManager.getInstance().showImage(mOrderPicIv, APIContents.HOST + "/" + accompanyDetailEntity.getImages());
-        mOrderTimeTv.setText(accompanyDetailEntity.getWeekDay());
+
+        mOrderTimeTv.setText(DataFormatUtil.formatWeekDay(accompanyDetailEntity.getWeekDay()));
+
         ImageLoaderManager.getInstance().showImage(mOrderUserLogoCiv, APIContents.HOST + "/" + accompanyDetailEntity.getAvatarUrl());
 
         if (accompanyDetailEntity.isIsFans()) {
@@ -234,13 +235,16 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
         mOrderUserNameTv.setText(accompanyDetailEntity.getNickname());
         mOrderMoneyTv.setText("￥" + accompanyDetailEntity.getPrice() + "/小时");
 
-
         mAccompanyDetailAdapter = new AccompanyDetailAdapter(R.layout.adapter_accompany_detail, accompanyDetailEntity.getOrder());
         mOrderRv.setLayoutManager(new LinearLayoutManager(this));
         mOrderRv.setAdapter(mAccompanyDetailAdapter);
         mOrderRv.setFocusableInTouchMode(false);
 
-
+        if (currentMemberId == DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID))) {
+            mOrderBottomLl.setVisibility(View.GONE);
+        } else {
+            mOrderBottomLl.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -251,7 +255,7 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
                 finish();
                 break;
             case R.id.order_info_tv:
-                    mPresenter.sayHiParameter(currentMemberId);
+                mPresenter.sayHiParameter(currentMemberId);
                 break;
             case R.id.order_xiadan_tv:
                 //                if ("true".equals(CheckVIP)) {
@@ -289,9 +293,9 @@ public class AccompanyDetailActivity extends BaseActivity<AccompanyDetailContrac
     public void onHandlerMessageCallback(String response, int requestId) {
         try {
             detailBase = JSON.parseObject(response, DetailBase.class);
-            orderTimeTvbb.setText(detailBase.getServiceStartTime()+"至"+detailBase.getServiceEndTime()+"可陪玩");//陪玩时间
-            orderTimeTvllcc.setText(detailBase.getAreaTitle().equals("")?"暂无大区":"大区—"+detailBase.getAreaTitle());
-            orderTimeTvdd.setText(detailBase.getGradeTitle().equals("")?"暂无段位":"段位—"+detailBase.getGradeTitle());
+            orderTimeTvbb.setText(detailBase.getServiceStartTime() + "至" + detailBase.getServiceEndTime() + "可陪玩");//陪玩时间
+            orderTimeTvllcc.setText(detailBase.getAreaTitle().equals("") ? "暂无大区" : "大区—" + detailBase.getAreaTitle());
+            orderTimeTvdd.setText(detailBase.getGradeTitle().equals("") ? "暂无段位" : "段位—" + detailBase.getGradeTitle());
             mOrderTypeTv.setText(detailBase.getSubject().getTitle());
         } catch (Exception e) {
             e.printStackTrace();

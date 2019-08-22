@@ -60,7 +60,7 @@ public class AccompanyDynamicAdapter extends BaseRVAdapter<AccompanyUserInfoEnti
         List<ImageEntity> imageEntityList = new ArrayList<>();
         List<NineGridBean> nineGridBeanList = new ArrayList<>();
 
-        String imageStr = (String) item.getImages();
+        String imageStr = item.getImages();
         if (imageStr != null) {
             String[] strArr = imageStr.split("\\|");
             for (String str : strArr) {

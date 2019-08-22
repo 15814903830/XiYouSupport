@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.domain.model.entity.AccompanyDetailEntity;
+import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.zero.ci.base.adapter.BaseRVAdapter;
 import com.zero.ci.base.adapter.BaseViewHolder;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
@@ -26,7 +27,7 @@ public class AccompanyDetailAdapter extends BaseRVAdapter<AccompanyDetailEntity.
     protected void convert(BaseViewHolder helper, AccompanyDetailEntity.OrderBean item) {
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.ac_detail_civ), APIContents.HOST + "/" + item.getAvatarUrl());
         helper.setText(R.id.ac_detail_nick_name_tv, item.getNickname());
-        helper.setText(R.id.ac_detail_time_tv, item.getCommentTime());
+        helper.setText(R.id.ac_detail_time_tv, DataFormatUtil.formatDate(item.getCommentTime()));
         helper.setText(R.id.ac_detail_content_tv, item.getComment());
 
     }

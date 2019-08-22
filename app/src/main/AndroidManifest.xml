@@ -105,7 +105,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:theme="@style/TranslucentStatusTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
 
             <!-- <intent-filter> -->
@@ -129,7 +131,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.accompany.AccompanyDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentStatusTheme" />
         <activity
             android:name=".ui.accompany.AccompanyUserInfoActivity"
             android:screenOrientation="portrait" />

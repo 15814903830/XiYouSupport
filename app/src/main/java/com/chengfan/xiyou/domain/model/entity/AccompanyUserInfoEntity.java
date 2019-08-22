@@ -284,7 +284,7 @@ public class AccompanyUserInfoEntity implements Serializable {
          */
 
         private int id;
-        private Object images;
+        private String images;
         private String content;
         private String createTime;
         private double totalHours;
@@ -300,11 +300,11 @@ public class AccompanyUserInfoEntity implements Serializable {
             this.id = id;
         }
 
-        public Object getImages() {
+        public String getImages() {
             return images;
         }
 
-        public void setImages(Object images) {
+        public void setImages(String images) {
             this.images = images;
         }
 

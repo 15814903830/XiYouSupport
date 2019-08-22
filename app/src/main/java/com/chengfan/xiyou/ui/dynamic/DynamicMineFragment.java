@@ -234,6 +234,9 @@ public class DynamicMineFragment extends
     }
 
     private void turnToDetail(int position) {
+        if (position < 0 || position >= mDynamicMineEntityList.size()) {
+            return;
+        }
         if (mDynamicMineEntityList.get(position).getImages().contains(".mp4")) {
             int id = mDynamicMineEntityList.get(position).getId();
             String userId = AppData.getString(AppData.Keys.AD_USER_ID);
