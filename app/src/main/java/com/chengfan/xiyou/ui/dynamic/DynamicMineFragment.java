@@ -59,7 +59,9 @@ import butterknife.Unbinder;
  * @DATE : 2019-07-06/18:54
  * @Description: 我的动态
  */
-public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, DynamicMinePresenterImpl> implements DynamicMineContract.View {
+public class DynamicMineFragment extends
+        BaseFragment<DynamicMineContract.View, DynamicMinePresenterImpl>
+        implements DynamicMineContract.View {
     View mView;
     @BindView(R.id.dynamic_mine_rv)
     RecyclerView mDynamicMineRv;

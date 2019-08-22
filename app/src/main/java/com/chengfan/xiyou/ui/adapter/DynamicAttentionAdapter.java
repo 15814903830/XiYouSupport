@@ -38,8 +38,14 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
 
     LickListener mLickListener;
 
+    private OnItemCommentClick onItemCommentClick;
+
     public void setLickListener(LickListener lickListener) {
         mLickListener = lickListener;
+    }
+
+    public void setOnItemCommentClick(OnItemCommentClick onItemCommentClick) {
+        this.onItemCommentClick = onItemCommentClick;
     }
 
     public DynamicAttentionAdapter(int layoutResId, @Nullable List<FinanceRecordEntity> data) {
@@ -70,7 +76,7 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
         }
 
 
-        Log.e("isHavePraise","isHavePraise"+item.isHavePraise());
+        Log.e("isHavePraise", "isHavePraise" + item.isHavePraise());
         if (item.isHavePraise()) {
             helper.getView(R.id.attention_fans_iv).setBackgroundResource(R.drawable.ap_dynamic_licked_num);
         } else {
@@ -84,6 +90,14 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
             }
         });
 
+        helper.getView(R.id.ll_comment_attention_dynamic_item).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemCommentClick != null) {
+                    onItemCommentClick.onCommentClick(helper.getAdapterPosition());
+                }
+            }
+        });
 
         NineGridView nineGridView = helper.getView(R.id.attention_ngv);
         ImageView imageView = helper.getView(R.id.attention_iv);
@@ -167,6 +181,10 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
 
     public interface LickListener {
         void onLickListener(int position);
+    }
+
+    public interface OnItemCommentClick {
+        void onCommentClick(int position);
     }
 
     public String switchCreateTime(String createTime) {

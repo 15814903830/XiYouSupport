@@ -4,14 +4,12 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -22,7 +20,9 @@ import com.chengfan.xiyou.domain.presenter.AccompanyUserInfoPresenterImpl;
 import com.chengfan.xiyou.ui.adapter.AccompanyUserInfoAdapter;
 import com.chengfan.xiyou.ui.adapter.VpAdapter;
 import com.chengfan.xiyou.ui.dialog.MemberShipDialog;
-import com.chengfan.xiyou.utils.FontHelper;
+import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.DataFormatUtil;
+import com.chengfan.xiyou.utils.MyToastUtil;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.chengfan.xiyou.view.RegularTextView;
 import com.chengfan.xiyou.view.WrapContentHeightViewPager;
@@ -33,7 +33,6 @@ import com.zero.ci.base.adapter.BaseRVAdapter;
 import com.zero.ci.navigation.BottomNavigationViewEx;
 import com.zero.ci.tool.ForwardUtil;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
-import com.zero.ci.widget.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +47,9 @@ import butterknife.OnClick;
  * @DATE : 2019-07-05/12:53
  * @Description: 个人详情
  */
-public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoContract.View, AccompanyUserInfoPresenterImpl> implements AccompanyUserInfoContract.View {
+public class AccompanyUserInfoActivity extends
+        BaseActivity<AccompanyUserInfoContract.View, AccompanyUserInfoPresenterImpl>
+        implements AccompanyUserInfoContract.View {
     @BindView(R.id.a_user_info_pic_iv)
     ImageView mAUserInfoPicIv;
     @BindView(R.id.a_user_info_name_tv)
@@ -71,7 +72,6 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
     BottomNavigationViewEx mBotNav;
     @BindView(R.id.fragment_navigation_vp)
     WrapContentHeightViewPager mFragmentNavigationVp;
-
 
     private VpAdapter adapter;
     private List<Fragment> fragments;
@@ -97,18 +97,14 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
                 .create()
                 .immersionBar();
 
-
         revBundle = getIntent().getExtras();
-        if (revBundle != null){
+        if (revBundle != null) {
             currentMemberId = revBundle.getInt(APPContents.E_CURRENT_MEMBER_ID);
-              APPContents.E_CURRENT_MEMBER_IDS=currentMemberId;
+            APPContents.E_CURRENT_MEMBER_IDS = currentMemberId;
         }
         mBotNav.setTypeface(Typeface.createFromAsset(AccompanyUserInfoActivity.this.getAssets(), APPContents.FONTS_BOLD));
 
-        Logger.e(" AccompanyUserInfoActivity  get  currentMemberId : " + currentMemberId);
-
         mMemberShipDialog = new MemberShipDialog(this);
-
 
         mAccompanyUserInfoEntity = new AccompanyUserInfoEntity();
         mUserInfoAdapter = new AccompanyUserInfoAdapter(R.layout.adapter_search_game, mAccompanyUserInfoEntity.getAccompanyPlay());
@@ -126,8 +122,8 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
         });
 
         mPresenter.userInfoParameter(currentMemberId);
-
     }
+
     @OnClick({R.id.detail_back, R.id.a_user_info_more_tv})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -154,17 +150,17 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
         if (baseApiResponse.isSuc()) {
             if (isLike) {
                 mAUserInfoLickLl.setBackgroundResource(R.drawable.user_licked_bg);
-                mAUserInfoLickIv.setBackgroundResource(R.drawable.icon_licked);
+                mAUserInfoLickIv.setImageResource(R.drawable.icon_licked);
                 mAUserInfoLickTv.setText("已关注");
                 mAccompanyUserInfoEntity.setIsFans(true);
-                Logger.d("AccompanyUserInfoActivity  ===>>>  mAUserInfoLickLl.setOnClickListener : 已关注");
             } else {
                 mAUserInfoLickLl.setBackgroundResource(R.drawable.user_lick_add);
-                mAUserInfoLickIv.setBackgroundResource(R.drawable.icon_lick_add);
+                mAUserInfoLickIv.setImageResource(R.drawable.icon_lick_add);
                 mAUserInfoLickTv.setText("关注");
                 mAccompanyUserInfoEntity.setIsFans(false);
-                Logger.d("AccompanyUserInfoActivity  ===>>>  mAUserInfoLickLl.setOnClickListener : 关注");
             }
+        } else {
+            MyToastUtil.showShortToast(AccompanyUserInfoActivity.this, baseApiResponse.getMsg());
         }
     }
 
@@ -192,23 +188,31 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
         mBotNav.setupWithViewPager(mFragmentNavigationVp);
     }
 
-
     private void initView(final AccompanyUserInfoEntity accompanyUserInfoEntity) {
         ImageLoaderManager.getInstance().showImage(mAUserInfoPicIv, APIContents.HOST + "/" + accompanyUserInfoEntity.getAvatarUrl());
         mAUserInfoNameTv.setText(accompanyUserInfoEntity.getNickname());
-        mAUserInfoAgeNumTv.setText(accompanyUserInfoEntity.getAge() + "|" + accompanyUserInfoEntity.getTotalFans() + "粉丝");
+        mAUserInfoAgeNumTv.setText(accompanyUserInfoEntity.getAge() + "岁 | " + accompanyUserInfoEntity.getTotalFans() + "粉丝");
 
-
-        if (accompanyUserInfoEntity.isIsFans()) {
-            mAUserInfoLickLl.setBackgroundResource(R.drawable.user_licked_bg);
-            mAUserInfoLickIv.setBackgroundResource(R.drawable.icon_licked);
-            mAUserInfoLickTv.setText("已关注");
+        if (accompanyUserInfoEntity.getId() ==
+                DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID))) {
+            mAUserInfoLickLl.setVisibility(View.GONE);
         } else {
-            mAUserInfoLickLl.setBackgroundResource(R.drawable.user_lick_add);
-            mAUserInfoLickIv.setBackgroundResource(R.drawable.icon_lick_add);
-            mAUserInfoLickTv.setText("关注");
+            if (accompanyUserInfoEntity.isIsFans()) {
+                mAUserInfoLickLl.setBackgroundResource(R.drawable.user_licked_bg);
+                mAUserInfoLickIv.setImageResource(R.drawable.icon_licked);
+                mAUserInfoLickTv.setText("已关注");
+            } else {
+                mAUserInfoLickLl.setBackgroundResource(R.drawable.user_lick_add);
+                mAUserInfoLickIv.setImageResource(R.drawable.icon_lick_add);
+                mAUserInfoLickTv.setText("关注");
+            }
         }
 
+        if (mAccompanyUserInfoEntity.getGender() == 1) {
+            mAUserInfoSexIv.setImageResource(R.drawable.home_nan);
+        } else {
+            mAUserInfoSexIv.setImageResource(R.drawable.home_nv);
+        }
 
         //mMemberShipDialog.setTitle(accompanyUserInfoEntity.getNickname());
 
@@ -216,7 +220,7 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
             @Override
             public void onMemberShipListener() {
                 mPresenter.memberShipLoad(currentMemberId, false);
-                Log.e("currentMemberId",""+currentMemberId);
+                Log.e("currentMemberId", "" + currentMemberId);
             }
         });
         mAUserInfoLickLl.setOnClickListener(new View.OnClickListener() {
@@ -224,13 +228,10 @@ public class AccompanyUserInfoActivity extends BaseActivity<AccompanyUserInfoCon
             public void onClick(View v) {
                 if (accompanyUserInfoEntity.isIsFans()) {
                     mMemberShipDialog.setTitle(mAccompanyUserInfoEntity.getNickname());
-                    Logger.d("AccompanyUserInfoActivity  ===>>>  mAUserInfoLickLl.setOnClickListener : 取消");
                 } else {
                     mPresenter.memberShipLoad(currentMemberId, true);
-                    Logger.d("AccompanyUserInfoActivity  ===>>>  mAUserInfoLickLl.setOnClickListener : 关注");
 
                 }
-                Logger.d("AccompanyUserInfoActivity  ===>>>  mAUserInfoLickLl.setOnClickListener : " + accompanyUserInfoEntity.isIsFans());
             }
         });
 

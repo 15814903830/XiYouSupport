@@ -19,7 +19,8 @@ import java.util.List;
  * @DATE : 2019-07-21/22:05
  * @Description: {@link com.chengfan.xiyou.ui.dynamic.DynamicMineFragment}
  */
-public class DynamicMinePresenterImpl extends BasePresenter<DynamicMineContract.View> implements DynamicMineContract.Presenter {
+public class DynamicMinePresenterImpl extends BasePresenter<DynamicMineContract.View>
+        implements DynamicMineContract.Presenter {
 
     DynamicMineContract.Model mModel;
 

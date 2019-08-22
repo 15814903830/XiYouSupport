@@ -54,6 +54,7 @@ import com.zero.ci.network.zrequest.response.AbstractResponse;
 import com.zero.ci.tool.ForwardUtil;
 import com.zero.ci.tool.ToastUtil;
 import com.zero.ci.widget.CircleImageView;
+import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 import com.zero.ci.widget.logger.Logger;
 
 import org.json.JSONException;
@@ -195,6 +196,8 @@ public class DynamicDetailActivity extends
             mDetailImgNumTv.setText(1 + " / " + mImageEntityList.size());
         }
 
+        ImageLoaderManager.getInstance().showImage(mDetailPageUserLogo,
+                APIContents.HOST + "/" + dynamicDetailEntity.getMember().getAvatarUrl());
         mDetailPageUserName.setText(dynamicDetailEntity.getMember().getNickname());
         mDetailPageTime.setText(DataFormatUtil.formatDate(dynamicDetailEntity.getCreateTime()));
         mDetailPageTitle.setText(dynamicDetailEntity.getContent());

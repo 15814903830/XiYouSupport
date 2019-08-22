@@ -3,6 +3,21 @@ package com.chengfan.xiyou.utils;
 public class DataFormatUtil {
 
     /**
+     * String转int
+     * 如果格式错误，返回-1
+     *
+     * @param value
+     * @return
+     */
+    public static int stringToInt(String value) {
+        try {
+            return Integer.valueOf(value);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /**
      * 格式化时间
      *
      * @param date
