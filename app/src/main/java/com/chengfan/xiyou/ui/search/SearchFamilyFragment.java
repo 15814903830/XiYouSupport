@@ -13,7 +13,6 @@ import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.model.entity.SearchFamilyEntity;
-import com.chengfan.xiyou.domain.model.entity.SearchGameEntity;
 import com.chengfan.xiyou.ui.adapter.SearchFamilyAdapter;
 import com.chengfan.xiyou.ui.chat.ChatFamilyDetailActivity;
 import com.chengfan.xiyou.utils.AppData;
@@ -27,7 +26,6 @@ import com.zero.ci.refresh.ZRefreshLayout;
 import com.zero.ci.refresh.api.RefreshLayout;
 import com.zero.ci.refresh.api.listener.OnRefreshLoadMoreListener;
 import com.zero.ci.tool.ForwardUtil;
-import com.zero.ci.widget.logger.Logger;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -54,7 +52,7 @@ public class SearchFamilyFragment extends BaseFragment {
     SearchFamilyAdapter mSearchFamilyAdapter;
     List<SearchFamilyEntity> mSearchFamilyEntityList;
 
-    String searchStr;
+    String searchStr = "";
     int page = 1;
 
     public static SearchFamilyFragment getInstance(String search) {
@@ -65,6 +63,15 @@ public class SearchFamilyFragment extends BaseFragment {
         return newsFragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle arguments = this.getArguments();
+        if (arguments != null) {
+            searchStr = arguments.getString(APPContents.BUNDLE_SEARCH);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,17 +80,21 @@ public class SearchFamilyFragment extends BaseFragment {
 
         mSearchFamilyEntityList = new ArrayList<>();
 
-
-        Bundle arguments = this.getArguments();
-        searchStr = arguments.getString(APPContents.BUNDLE_SEARCH);
-        Logger.d("SearchFamilyFragment ===>>> searchStr :" + searchStr);
-
         initAdapter();
         initZrl();
-        //  requestFamily(searchStr, 1, true);
+
         return mView;
     }
 
+    public void search(String searchKey) {
+        searchStr = searchKey;
+        if (mSearchFamilyAdapter == null) {
+            initAdapter();
+        }
+        mSearchFamilyAdapter.setSearchTxt(searchStr);
+        page = 1;
+        requestFamily(searchKey, 1, true);
+    }
 
     private void initAdapter() {
         mSearchFamilyAdapter = new SearchFamilyAdapter(R.layout.adapter_search_family, mSearchFamilyEntityList);
@@ -117,11 +128,10 @@ public class SearchFamilyFragment extends BaseFragment {
 
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-
-
                 mSearchFamilyZrl.getLayout().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        page = 1;
                         requestFamily(searchStr, 1, true);
                         mSearchFamilyZrl.finishRefresh();
                     }
@@ -149,10 +159,11 @@ public class SearchFamilyFragment extends BaseFragment {
                             } else {
                                 if (isPtr) {
                                     mSearchFamilyEntityList = searchFamilyEntityList;
+                                    mSearchFamilyAdapter.replaceData(mSearchFamilyEntityList);
                                 } else {
                                     mSearchFamilyEntityList.addAll(searchFamilyEntityList);
+                                    mSearchFamilyAdapter.addData(mSearchFamilyEntityList);
                                 }
-                                mSearchFamilyAdapter.addData(mSearchFamilyEntityList);
                             }
                         }
                     }

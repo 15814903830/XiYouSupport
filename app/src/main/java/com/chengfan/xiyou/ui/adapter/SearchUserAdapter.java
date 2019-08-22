@@ -22,7 +22,8 @@ import java.util.List;
  * @Description: 用户
  */
 public class SearchUserAdapter extends BaseRVAdapter<SearchUserEntity, BaseViewHolder> {
-    protected String searchStr;
+
+    private String searchStr;
 
     public SearchUserAdapter(int layoutResId, @Nullable List<SearchUserEntity> data) {
         super(layoutResId, data);

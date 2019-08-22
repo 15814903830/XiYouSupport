@@ -1,105 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="horizontal">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:orientation="vertical">
 
-    <com.zero.ci.widget.CircleImageView
-        android:id="@+id/search_user_civ"
-        android:layout_width="@dimen/padding_50"
-        android:layout_height="@dimen/padding_50"
-        android:layout_marginLeft="@dimen/padding_20"
-        android:layout_marginTop="@dimen/padding_20"
-        />
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padding_10"
-        android:layout_marginTop="@dimen/padding_20">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <com.zero.ci.widget.CircleImageView
+            android:id="@+id/search_user_civ"
+            android:layout_width="@dimen/padding_50"
+            android:layout_height="@dimen/padding_50" />
 
         <LinearLayout
-            android:id="@+id/search_user_name_ll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <com.chengfan.xiyou.view.SignKeyWordTextView
-                android:id="@+id/search_user_name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lines="1"
-                android:textColor="@color/color_333333"
-                android:textSize="@dimen/text_size_16"
-                app:signTextColor="@color/color_D1AE81"/>
-
-            <ImageView
-                android:id="@+id/search_user_sex_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/search_user_name_tv"
-                android:layout_toRightOf="@+id/search_user_name_tv"
-                android:background="@drawable/home_nan"/>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/search_user_id_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/search_user_name_ll"
-            android:layout_marginTop="@dimen/padding_15">
+            android:layout_marginLeft="@dimen/padding_10"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:id="@+id/search_user_name_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <com.chengfan.xiyou.view.SignKeyWordTextView
+                    android:id="@+id/search_user_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/color_333333"
+                    android:textSize="@dimen/text_size_16"
+                    app:signTextColor="@color/color_D1AE81" />
+
+                <ImageView
+                    android:id="@+id/search_user_sex_iv"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/home_nan" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_user_id_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/user_z_id_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ID"
+                    android:text="ID："
                     android:textColor="@color/color_999999"
-                    android:textSize="@dimen/text_size_13"/>
+                    android:textSize="@dimen/text_size_13" />
 
                 <TextView
                     android:id="@+id/search_user_id_num_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/padding_10"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textColor="@color/color_999999"
-                    android:textSize="@dimen/text_size_13"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true">
+                    android:textSize="@dimen/text_size_13" />
 
                 <TextView
                     android:id="@+id/user_z_num_tv"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="粉丝数："
                     android:textColor="@color/color_999999"
-                    android:textSize="@dimen/text_size_13"/>
+                    android:textSize="@dimen/text_size_13" />
 
                 <TextView
                     android:id="@+id/search_user_num_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/padding_20"
-                    android:textSize="@dimen/text_size_13"/>
+                    android:textColor="@color/color_999999"
+                    android:textSize="@dimen/text_size_13" />
+
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/search_user_id_ll"
-            android:layout_marginTop="@dimen/padding_20"
-            />
-    </RelativeLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="80dp"
+        android:background="#E5E5E5" />
+
 </LinearLayout>
