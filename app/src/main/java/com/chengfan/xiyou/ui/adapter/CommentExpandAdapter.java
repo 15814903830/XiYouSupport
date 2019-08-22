@@ -14,6 +14,7 @@ import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.domain.model.entity.DynamicDetailEntity;
 import com.chengfan.xiyou.domain.model.entity.ReplyDetailBean;
+import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.zero.ci.widget.CircleImageView;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 
@@ -98,7 +99,7 @@ public class CommentExpandAdapter extends BaseExpandableListAdapter {
         ImageLoaderManager.getInstance().showImage(groupHolder.logo, APIContents.HOST + "/" + commentBeanList.get(groupPosition).getAvatarUrl());
 
         groupHolder.tv_name.setText(commentBeanList.get(groupPosition).getNickname());
-        // groupHolder.tv_time.setText(commentBeanList.get(groupPosition).getCreateDate());
+        groupHolder.tv_time.setText(DataFormatUtil.formatDate(commentBeanList.get(groupPosition).getCreateTime()));
         groupHolder.tv_content.setText(commentBeanList.get(groupPosition).getContent());
 
 
@@ -118,9 +119,9 @@ public class CommentExpandAdapter extends BaseExpandableListAdapter {
 
         String replyUser = commentBeanList.get(groupPosition).getCommentMemberNewsComment().get(childPosition).getNickname();
         if (!TextUtils.isEmpty(replyUser)) {
-            childHolder.tv_name.setText(replyUser + ":");
+            childHolder.tv_name.setText(replyUser + "：");
         } else {
-            childHolder.tv_name.setText("无名" + ":");
+            childHolder.tv_name.setText("无名：");
         }
 
         childHolder.tv_content.setText(commentBeanList.get(groupPosition).getCommentMemberNewsComment().get(childPosition).getContent());

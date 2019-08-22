@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-    <Button
-        android:id="@+id/detail_back"
-        android:layout_width="@dimen/padding_35"
-        android:layout_height="@dimen/padding_35"
-        android:layout_marginLeft="@dimen/padding_20"
-        android:layout_marginTop="@dimen/padding_35"
-        android:background="@drawable/xy_black_back"/>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/a_user_info_top_rll"
@@ -31,91 +24,103 @@
                     android:id="@+id/a_user_info_pic_iv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="center"/>
+                    android:scaleType="centerCrop" />
 
-                <RelativeLayout
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/shape_alpha_black_bg" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="@dimen/padding_20"
-                    android:layout_marginRight="@dimen/padding_20"
-                    android:layout_marginBottom="@dimen/padding_20">
-
-
-                    <LinearLayout
-                        android:id="@+id/a_user_name_ll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center">
-
-                        <com.chengfan.xiyou.view.MediumTextView
-                            android:maxLines="1"
-                            android:maxEms="6"
-                            android:id="@+id/a_user_info_name_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/color_FFFFFF"
-                            android:textSize="@dimen/text_size_22"/>
-
-                        <ImageView
-                            android:id="@+id/a_user_info_hy_iv"
-                            android:layout_width="@dimen/padding_20"
-                            android:layout_height="@dimen/padding_20"
-                            android:layout_marginLeft="@dimen/padding_10"
-                            android:background="@drawable/home_huiyuan"/>
-
-                    </LinearLayout>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="20dp">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/a_user_name_ll"
-                        android:gravity="center">
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/a_user_info_sex_iv"
+                        <LinearLayout
+                            android:id="@+id/a_user_name_ll"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/padding_10"
-                            android:background="@drawable/home_nan"
-                            android:visibility="gone"/>
+                            android:gravity="center_vertical">
 
-                        <com.chengfan.xiyou.view.RegularTextView
-                            android:maxWidth="@dimen/album_dp_100"
-                            android:ellipsize="end"
-                            android:singleLine="true"
-                            android:id="@+id/a_user_info_age_num_tv"
+                            <com.chengfan.xiyou.view.MediumTextView
+                                android:id="@+id/a_user_info_name_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/color_FFFFFF"
+                                android:textSize="@dimen/text_size_22" />
+
+                            <ImageView
+                                android:id="@+id/a_user_info_hy_iv"
+                                android:layout_width="@dimen/padding_20"
+                                android:layout_height="@dimen/padding_20"
+                                android:layout_marginLeft="@dimen/padding_10"
+                                android:background="@drawable/home_huiyuan" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:textColor="@color/color_FFFFFF"/>
+                            android:layout_below="@+id/a_user_name_ll"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center_vertical">
 
+                            <ImageView
+                                android:id="@+id/a_user_info_sex_iv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/home_nan" />
+
+                            <com.chengfan.xiyou.view.RegularTextView
+                                android:id="@+id/a_user_info_age_num_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="7dp"
+                                android:ellipsize="end"
+                                android:maxWidth="@dimen/album_dp_100"
+                                android:singleLine="true"
+                                android:textColor="@color/color_FFFFFF" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/a_user_info_lick_ll"
-                        android:layout_width="@dimen/padding_80"
+                        android:layout_width="wrap_content"
                         android:layout_height="32dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:background="@drawable/user_licked_bg"
-                        android:gravity="center">
+                        android:gravity="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp">
 
                         <ImageView
                             android:id="@+id/a_user_info_lick_iv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/icon_licked"/>
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:src="@drawable/icon_licked" />
 
                         <com.chengfan.xiyou.view.RegularTextView
                             android:id="@+id/a_user_info_lick_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:text="已关注"
                             android:textColor="@color/color_FFFFFF"
-                            android:textSize="@dimen/text_size_15"/>
+                            android:textSize="@dimen/text_size_15" />
                     </LinearLayout>
-                </RelativeLayout>
+                </LinearLayout>
 
             </RelativeLayout>
 
@@ -123,50 +128,56 @@
                 android:id="@+id/a_user_info_game_select_rl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/a_user_info_top_rll"
                 android:layout_marginLeft="@dimen/padding_20"
-                android:layout_marginTop="@dimen/padding_20"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="@dimen/padding_20"
                 android:background="@drawable/accompany_item_bg">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/a_user_info_game_select_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
                 <com.chengfan.xiyou.view.RegularTextView
                     android:id="@+id/a_user_info_more_tv"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_below="@+id/a_user_info_game_select_rv"
-                    android:background="@color/color_F5F5F5"
+                    android:background="@drawable/shape_gray_bottom_bg"
                     android:gravity="center"
-                    android:text="查看更多陪玩>"
-                    android:textColor="@color/color_999999"/>
+                    android:text="查看更多陪玩  >"
+                    android:textColor="@color/color_999999" />
 
             </RelativeLayout>
 
-            <RelativeLayout
+            <com.zero.ci.navigation.BottomNavigationViewEx
+                android:id="@+id/bot_nav"
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                app:itemTextColor="@color/selector_item_accompany_color"
+                app:menu="@menu/menu_navigation_user_info_flag" />
+
+            <com.chengfan.xiyou.view.WrapContentHeightViewPager
+                android:id="@+id/fragment_navigation_vp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/a_user_info_game_select_rl">
+                android:layout_height="wrap_content"
+                android:background="@null" />
 
-
-                <com.zero.ci.navigation.BottomNavigationViewEx
-                    android:id="@+id/bot_nav"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@drawable/xy_nice_pacht"
-                    app:itemTextColor="@color/selector_item_accompany_color"
-                    app:menu="@menu/menu_navigation_user_info_flag"/>
-                <com.chengfan.xiyou.view.WrapContentHeightViewPager
-                    android:id="@+id/fragment_navigation_vp"
-                    android:layout_width="match_parent"
-                    android:background="@null"
-                    android:layout_height="fill_parent"
-                    android:layout_below="@+id/bot_nav"/>
-            </RelativeLayout>
-
-        </RelativeLayout>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</RelativeLayout>
+
+    <com.chengfan.xiyou.view.StatusBarHeightView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:use_type="use_padding_top">
+
+        <ImageView
+            android:id="@+id/detail_back"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:padding="20dp"
+            android:src="@drawable/xy_black_back" />
+
+    </com.chengfan.xiyou.view.StatusBarHeightView>
+
+</FrameLayout>

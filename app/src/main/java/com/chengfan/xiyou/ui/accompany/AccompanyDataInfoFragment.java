@@ -70,7 +70,9 @@ public class AccompanyDataInfoFragment extends BaseFragment {
             mDataInfoCityTv.setText(mAccompanyUserInfoEntity.getAreaName());
             mDataInfoFaceTv.setText(mAccompanyUserInfoEntity.getExterior());
             mDataInfoJobTv.setText(mAccompanyUserInfoEntity.getJob());
+
             mDataInfoWxTv.setText(mAccompanyUserInfoEntity.getWeiXin());
+
         }
         return mView;
     }

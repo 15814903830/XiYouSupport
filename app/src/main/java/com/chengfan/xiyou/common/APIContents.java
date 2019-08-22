@@ -60,6 +60,7 @@ public class APIContents {
     public static String ACCOMPANY = HOST + "/api/Member/MemberHomePage";
     /*关注、取消关注*/
     public static String MEMBER_SHIP = HOST + "/api/Account/MemberShip";
+    //点赞
     public static String MEMBER_LIKE = HOST + "/api/MemberNews/Praise";
     /*陪玩详情*/
     public static String ACCOMPANY_DETAIL = HOST + "/api/AccompanyPlay/Detail";

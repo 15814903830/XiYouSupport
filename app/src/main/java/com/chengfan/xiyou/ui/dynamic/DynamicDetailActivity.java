@@ -38,6 +38,8 @@ import com.chengfan.xiyou.ui.adapter.CommentExpandAdapter;
 import com.chengfan.xiyou.ui.adapter.DynamicDetailAdapter;
 import com.chengfan.xiyou.ui.adapter.ViewPagerDialogAdapter;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.DataFormatUtil;
+import com.chengfan.xiyou.utils.MyToastUtil;
 import com.chengfan.xiyou.utils.UserStorage;
 import com.chengfan.xiyou.utils.status.StatusBarUtil;
 import com.chengfan.xiyou.view.CommentExpandableListView;
@@ -52,7 +54,11 @@ import com.zero.ci.network.zrequest.response.AbstractResponse;
 import com.zero.ci.tool.ForwardUtil;
 import com.zero.ci.tool.ToastUtil;
 import com.zero.ci.widget.CircleImageView;
+import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 import com.zero.ci.widget.logger.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,7 +156,11 @@ public class DynamicDetailActivity extends
                 ForwardUtil.getInstance(DynamicDetailActivity.this).forward(AccompanyDetailActivity.class, toBundle);
             }
         });
-
+        if (mDynamicDetailEntity.getAccompanyPlay().isEmpty()) {
+            mDetailGameSelectRv.setVisibility(View.GONE);
+        } else {
+            mDetailGameSelectRv.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -186,30 +196,23 @@ public class DynamicDetailActivity extends
             mDetailImgNumTv.setText(1 + " / " + mImageEntityList.size());
         }
 
+        ImageLoaderManager.getInstance().showImage(mDetailPageUserLogo,
+                APIContents.HOST + "/" + dynamicDetailEntity.getMember().getAvatarUrl());
         mDetailPageUserName.setText(dynamicDetailEntity.getMember().getNickname());
-        mDetailPageTime.setText(dynamicDetailEntity.getCreateTime());
-        mDetailPageTitle.setText(dynamicDetailEntity.getContent() + "");
-        if (dynamicDetailEntity.isHavePraise()) {
+        mDetailPageTime.setText(DataFormatUtil.formatDate(dynamicDetailEntity.getCreateTime()));
+        mDetailPageTitle.setText(dynamicDetailEntity.getContent());
+        if (dynamicDetailEntity.getMember().isFans()) {
             mDetailPageFocus.setText("已关注");
         } else {
             mDetailPageFocus.setText("关注");
         }
 
-        mDetailPageFocus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dynamicDetailEntity.isHavePraise()) {
-                    requestLike(true);
-                } else {
-                    requestLike(false);
-                }
-
-            }
-        });
-
         String commentCount = "评论(" + dynamicDetailEntity.getTotalComment() + ")";
         tv_comment.setText(commentCount);
 
+        if (dynamicDetailEntity.isHavePraise()) {
+            iv_liker.setImageResource(R.drawable.ap_dynamic_licked_num);
+        }
         String likerCount = String.valueOf(dynamicDetailEntity.getTotalPraise());
         tv_liker.setText(likerCount);
 
@@ -266,15 +269,40 @@ public class DynamicDetailActivity extends
         MemberShipBean shipBean = new MemberShipBean();
         shipBean.setFriendId(AppData.getString(AppData.Keys.AD_USER_ID));
         shipBean.setMemberId(mDynamicDetailEntity.getMemberId());
-
-        HttpRequest.get(APIContents.ACCOMPANY)
+        HttpRequest.post(APIContents.MEMBER_SHIP)
                 .paramsJsonString(new Gson().toJson(shipBean))
                 .execute(new AbstractResponse<String>() {
                     @Override
                     public void onSuccess(String result) {
-                        Logger.e("dynamicDetail ===>> requestMemberShip" + result);
+                        dealWithResult(result);
                     }
                 });
+    }
+
+    /**
+     * 处理关注结果
+     *
+     * @param result
+     */
+    private void dealWithResult(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            boolean suc = jsonObject.optBoolean("suc", false);
+            if (suc) {
+                if (mDynamicDetailEntity.getMember().isFans()) {
+                    mDynamicDetailEntity.getMember().setFans(false);
+                    mDetailPageFocus.setText("关注");
+                } else {
+                    mDynamicDetailEntity.getMember().setFans(true);
+                    mDetailPageFocus.setText("已关注");
+                }
+            } else {
+                String msg = jsonObject.getString("msg");
+                MyToastUtil.showShortToast(DynamicDetailActivity.this, msg);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -349,7 +377,6 @@ public class DynamicDetailActivity extends
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int groupPosition, long l) {
                 boolean isExpanded = expandableListView.isGroupExpanded(groupPosition);
-                Logger.e("onGroupClick: 当前的评论id>>>" + commentList.get(groupPosition).getId());
 //                if(isExpanded){
 //                    expandableListView.collapseGroup(groupPosition);
 //                }else {
@@ -418,7 +445,6 @@ public class DynamicDetailActivity extends
                     commentBean.setContent(commentContent);
                     commentBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
 
-                    Logger.d("DynamicDetailActivity ====>>>>  detail_page_do_comment : " + new Gson().toJson(commentBean));
                     mPresenter.publishCommentParameter(commentBean, true);
 
 
@@ -515,24 +541,4 @@ public class DynamicDetailActivity extends
         dialog.show();
     }
 
-
-    private void requestLike(final boolean isLike) {
-        MemberShipBean shipBean = new MemberShipBean();
-        shipBean.setFriendId(AppData.getString(AppData.Keys.AD_USER_ID));
-        shipBean.setMemberId(mDynamicDetailEntity.getMemberId());
-        HttpRequest.post(APIContents.MEMBER_SHIP)
-                .paramsJsonString(new Gson().toJson(shipBean))
-                .execute(new AbstractResponse<BaseApiResponse>() {
-                    @Override
-                    public void onSuccess(BaseApiResponse result) {
-                        if (result.isSuc()) {
-                            if (isLike) {
-                                mDetailPageFocus.setText("已关注");
-                            } else {
-                                mDetailPageFocus.setText("关注");
-                            }
-                        }
-                    }
-                });
-    }
 }

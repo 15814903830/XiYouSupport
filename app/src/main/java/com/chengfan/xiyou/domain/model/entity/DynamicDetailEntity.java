@@ -142,12 +142,14 @@ public class DynamicDetailEntity implements Serializable {
          * nickname : test123
          * userName : 13800139000
          * avatarUrl : Img/touxiang.png
+         * isFans: false
          */
 
         private int gender;
         private String nickname;
         private String userName;
         private String avatarUrl;
+        private boolean isFans;
 
         public int getGender() {
             return gender;
@@ -179,6 +181,14 @@ public class DynamicDetailEntity implements Serializable {
 
         public void setAvatarUrl(String avatarUrl) {
             this.avatarUrl = avatarUrl;
+        }
+
+        public boolean isFans() {
+            return isFans;
+        }
+
+        public void setFans(boolean fans) {
+            isFans = fans;
         }
     }
 
@@ -298,6 +308,7 @@ public class DynamicDetailEntity implements Serializable {
         private int id;
         private String content;
         private int memberId;
+        private String createTime;
         private int gender;
         private String nickname;
         private String userName;
@@ -334,6 +345,14 @@ public class DynamicDetailEntity implements Serializable {
 
         public void setMemberId(int memberId) {
             this.memberId = memberId;
+        }
+
+        public String getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
 
         public int getGender() {

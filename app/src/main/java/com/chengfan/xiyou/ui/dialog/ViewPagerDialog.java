@@ -18,7 +18,6 @@ import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.domain.model.entity.ImageEntity;
 import com.chengfan.xiyou.ui.adapter.ViewPagerDialogAdapter;
 import com.chengfan.xiyou.widget.viewpager.JazzyViewPager;
-import com.zero.ci.widget.logger.Logger;
 
 import java.util.List;
 
@@ -82,10 +81,8 @@ public class ViewPagerDialog extends Dialog {
         // =============  初始化viewpager =========
         _view_pager = (JazzyViewPager) mView.findViewById(R.id.dialog_jazzy_vp);
         _view_pager.setTransitionEffect(effect);
-        Logger.e("setViewPager " + list);
         viewPagerAdapter = new ViewPagerDialogAdapter(context, list, _view_pager);
         _view_pager.setAdapter(viewPagerAdapter);
-
 
         _view_pager.setOnPageChangeListener(new MyPageChangeListener());
         _view_pager.setOnTouchListener(new View.OnTouchListener() {

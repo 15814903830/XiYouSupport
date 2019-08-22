@@ -1,27 +1,39 @@
 package com.chengfan.xiyou.ui.dynamic;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.DynamicMineContract;
+import com.chengfan.xiyou.domain.model.entity.DynamicDetailEntity;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineDelBean;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineEntity;
 import com.chengfan.xiyou.domain.model.entity.LikeBase;
+import com.chengfan.xiyou.domain.model.entity.PublishCommentBean;
 import com.chengfan.xiyou.domain.presenter.DynamicMinePresenterImpl;
 import com.chengfan.xiyou.ui.WebActivity;
 import com.chengfan.xiyou.ui.adapter.DynamicMineAdapter;
 import com.chengfan.xiyou.ui.dialog.DynamicMineDelDialog;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.UserStorage;
 import com.google.gson.Gson;
 import com.zero.ci.base.BaseApiResponse;
 import com.zero.ci.base.BaseFragment;
@@ -47,7 +59,9 @@ import butterknife.Unbinder;
  * @DATE : 2019-07-06/18:54
  * @Description: 我的动态
  */
-public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, DynamicMinePresenterImpl> implements DynamicMineContract.View {
+public class DynamicMineFragment extends
+        BaseFragment<DynamicMineContract.View, DynamicMinePresenterImpl>
+        implements DynamicMineContract.View {
     View mView;
     @BindView(R.id.dynamic_mine_rv)
     RecyclerView mDynamicMineRv;
@@ -64,6 +78,10 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
     int delId;
 
     int delPosition;
+
+    private BottomSheetDialog dialog;
+    DynamicDetailEntity.MemberNewsCommentBean mCommentBean = new DynamicDetailEntity.MemberNewsCommentBean();
+    private int mCommentPosition = -1;
 
     @Nullable
     @Override
@@ -127,6 +145,12 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
                         });
             }
         });
+        mDynamicMineAdapter.setOnItemCommentClick(new DynamicMineAdapter.OnItemCommentClick() {
+            @Override
+            public void onCommentClick(int position) {
+                showCommentDialog(position);
+            }
+        });
         mDynamicMineDelDialog.setDynamicMineDelListener(new DynamicMineDelDialog.DynamicMineDelListener() {
             @Override
             public void onDynamicMineDelListener() {
@@ -136,6 +160,77 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
                 mPresenter.dynamicMineDelParameter(dynamicMineDelBean);
             }
         });
+
+    }
+
+    /**
+     * 显示评论弹窗
+     *
+     * @param position
+     */
+    private void showCommentDialog(final int position) {
+        mCommentPosition = -1;
+        if (position < 0 || position >= mDynamicMineEntityList.size()) {
+            return;
+        }
+        if (getActivity() == null) {
+            return;
+        }
+        final int dynamicID = mDynamicMineEntityList.get(position).getId();
+        dialog = new BottomSheetDialog(getActivity());
+        View commentView = LayoutInflater.from(getActivity()).inflate(R.layout.comment_dialog_layout, null);
+        final EditText commentText = commentView.findViewById(R.id.dialog_comment_et);
+        final Button bt_comment = commentView.findViewById(R.id.dialog_comment_bt);
+        dialog.setContentView(commentView);
+        /**
+         * 解决bsd显示不全的情况
+         */
+        View parent = (View) commentView.getParent();
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(parent);
+        commentView.measure(0, 0);
+        behavior.setPeekHeight(commentView.getMeasuredHeight());
+
+        bt_comment.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                String commentContent = commentText.getText().toString().trim();
+                if (!TextUtils.isEmpty(commentContent)) {
+                    mCommentPosition = position;
+                    dialog.dismiss();
+                    mCommentBean.setNickname(UserStorage.getInstance().getLogin().getNickname());
+                    mCommentBean.setContent(commentContent);
+                    PublishCommentBean commentBean = new PublishCommentBean();
+                    commentBean.setMemberNewsId(String.valueOf(dynamicID));
+                    commentBean.setContent(commentContent);
+                    commentBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
+                    mPresenter.publishCommentParameter(commentBean, true);
+                } else {
+                    Toast.makeText(getActivity(), "评论内容不能为空", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        commentText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!TextUtils.isEmpty(charSequence) && charSequence.length() > 2) {
+                    bt_comment.setBackgroundColor(Color.parseColor("#FFB568"));
+                } else {
+                    bt_comment.setBackgroundColor(Color.parseColor("#D8D8D8"));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        dialog.show();
     }
 
     private void turnToDetail(int position) {
@@ -198,6 +293,16 @@ public class DynamicMineFragment extends BaseFragment<DynamicMineContract.View, 
     public void dynamicMineDelLoad(BaseApiResponse baseApiResponse) {
         ToastUtil.show(baseApiResponse.getMsg());
         mDynamicMineAdapter.remove(delPosition);
+    }
+
+    @Override
+    public void publishCommentLoad(BaseApiResponse baseApiResponse, boolean isNoChild) {
+        if (mCommentPosition >= 0 && mCommentPosition < mDynamicMineEntityList.size()) {
+            int comment = mDynamicMineEntityList.get(mCommentPosition).getTotalComment() + 1;
+            mDynamicMineEntityList.get(mCommentPosition).setTotalComment(comment);
+            mDynamicMineAdapter.notifyItemChanged(mCommentPosition);
+            mCommentPosition = -1;
+        }
     }
 
 
