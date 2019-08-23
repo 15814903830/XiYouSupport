@@ -26,7 +26,6 @@ import com.zero.ci.refresh.ZRefreshLayout;
 import com.zero.ci.refresh.api.RefreshLayout;
 import com.zero.ci.refresh.api.listener.OnRefreshLoadMoreListener;
 import com.zero.ci.tool.ForwardUtil;
-import com.zero.ci.widget.logger.Logger;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -64,24 +63,38 @@ public class SearchUserFragment extends BaseFragment {
         return newsFragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            searchStr = arguments.getString(APPContents.BUNDLE_SEARCH);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.fragment_search_user, null);
+        mView = inflater.inflate(R.layout.fragment_search_user, container, false);
         mUnbinder = ButterKnife.bind(this, mView);
         mSearchUserEntityList = new ArrayList<>();
         mSearchUserZrl.setEnableRefresh(false);
 
-        Bundle arguments = this.getArguments();
-        searchStr = arguments.getString(APPContents.BUNDLE_SEARCH);
-        Logger.d("SearchUserFragment ===>>> searchStr :" + searchStr);
-
         initAdapter();
         initZrl();
-        requestUser(searchStr, 1, true);
+
         return mView;
     }
 
+    public void search(String searchKey) {
+        searchStr = searchKey;
+        if (mSearchUserAdapter == null) {
+            initAdapter();
+        }
+        mSearchUserAdapter.setSearchStr(searchStr);
+        page = 1;
+        requestUser(searchKey, 1, true);
+    }
 
     private void initAdapter() {
         mSearchUserAdapter = new SearchUserAdapter(R.layout.adapter_search_user, mSearchUserEntityList);
@@ -96,7 +109,6 @@ public class SearchUserFragment extends BaseFragment {
                 ForwardUtil.getInstance(getActivity()).forward(AccompanyUserInfoActivity.class, toBundle);
             }
         });
-
 
 
     }
@@ -118,11 +130,10 @@ public class SearchUserFragment extends BaseFragment {
 
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-
-
                 mSearchUserZrl.getLayout().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        page = 1;
                         requestUser(searchStr, 1, true);
                         mSearchUserZrl.finishRefresh();
                     }
@@ -141,18 +152,17 @@ public class SearchUserFragment extends BaseFragment {
                     @Override
                     public void onSuccess(String result) {
                         if (result.equals("[]")) {
+
                         } else {
                             Type type = new TypeToken<List<SearchUserEntity>>() {
                             }.getType();
                             List<SearchUserEntity> searchUserEntityList = new Gson().fromJson(result, type);
-                            if (searchUserEntityList.equals("")) {
-                                return;
+                            if (isPtr) {
+                                mSearchUserEntityList.clear();
+                                mSearchUserEntityList.addAll(searchUserEntityList);
+                                mSearchUserAdapter.replaceData(mSearchUserEntityList);
                             } else {
-                                if (isPtr) {
-                                    mSearchUserEntityList = searchUserEntityList;
-                                } else {
-                                    mSearchUserEntityList.addAll(searchUserEntityList);
-                                }
+                                mSearchUserEntityList.addAll(searchUserEntityList);
                                 mSearchUserAdapter.addData(mSearchUserEntityList);
                             }
                         }

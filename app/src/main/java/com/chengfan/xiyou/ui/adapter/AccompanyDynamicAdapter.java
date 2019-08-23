@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -49,6 +50,8 @@ public class AccompanyDynamicAdapter extends BaseRVAdapter<AccompanyUserInfoEnti
 
         NineGridView nineGridView = helper.getView(R.id.dynamic_accompany_ngv);
         final ImageView imageViewtu = helper.getView(R.id.ap_dynamic_iv);
+        CardView cardView = helper.getView(R.id.cv_dynamic);
+        ImageView iv_video = helper.getView(R.id.iv_video_dynamic);
 
         final ImageView imglike = helper.getView(R.id.iv_imglike);
         if (item.isHavePraise()) {
@@ -60,7 +63,7 @@ public class AccompanyDynamicAdapter extends BaseRVAdapter<AccompanyUserInfoEnti
         List<ImageEntity> imageEntityList = new ArrayList<>();
         List<NineGridBean> nineGridBeanList = new ArrayList<>();
 
-        String imageStr = (String) item.getImages();
+        String imageStr = item.getImages();
         if (imageStr != null) {
             String[] strArr = imageStr.split("\\|");
             for (String str : strArr) {
@@ -70,15 +73,26 @@ public class AccompanyDynamicAdapter extends BaseRVAdapter<AccompanyUserInfoEnti
         }
 
         if (imageEntityList.size() > 1) {
+            cardView.setVisibility(View.GONE);
             imageViewtu.setVisibility(View.GONE);
             nineGridView.setVisibility(View.VISIBLE);
             nineGridView.addData(nineGridBeanList);
             setPhoneNgV(nineGridView);
         } else {
             nineGridView.setVisibility(View.GONE);
-            imageViewtu.setVisibility(View.VISIBLE);
-            if (imageEntityList.size() > 0)
+            if (imageEntityList.size() > 0) {
+                cardView.setVisibility(View.VISIBLE);
+                imageViewtu.setVisibility(View.VISIBLE);
                 ImageLoaderManager.getInstance().showImage(imageViewtu, imageEntityList.get(0).getImgUrl());
+                if (DataFormatUtil.isVideo(imageEntityList.get(0).getImgUrl())) {
+                    iv_video.setVisibility(View.VISIBLE);
+                } else {
+                    iv_video.setVisibility(View.GONE);
+                }
+            } else {
+                cardView.setVisibility(View.GONE);
+                imageViewtu.setVisibility(View.GONE);
+            }
         }
 
         helper.getView(R.id.ll_comment_dynamic_item).setOnClickListener(new View.OnClickListener() {

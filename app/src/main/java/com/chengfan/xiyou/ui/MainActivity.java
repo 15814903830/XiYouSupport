@@ -1,8 +1,6 @@
 package com.chengfan.xiyou.ui;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,9 +25,8 @@ import com.chengfan.xiyou.ui.main.HomeFragment;
 import com.chengfan.xiyou.ui.main.MineFragment;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.RongGetToken;
-import com.chengfan.xiyou.utils.UpdateApk;
 import com.chengfan.xiyou.utils.UserStorage;
-import com.github.zackratos.ultimatebar.UltimateBar;
+import com.chengfan.xiyou.utils.status.StatusBarUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zero.ci.base.BaseActivity;
@@ -50,7 +47,6 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
 
-
 public class MainActivity extends BaseActivity implements HttpCallBack {
 
     @BindView(R.id.bot_nav)
@@ -65,34 +61,31 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
     ChatFragment mChatFragment;
     MineFragment mMineFragment;
 
-    private  HttpCallBack mHttpCallBack;
+    private HttpCallBack mHttpCallBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        UltimateBar.Companion.with(this)
-                .statusDrawable(new ColorDrawable(Color.WHITE))
-                .statusDark(true)
-                .create()
-                .drawableBar();
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mHttpCallBack=this;
-        UpdateApk manager = new UpdateApk(this);
-         //manager.checkUpdate();
-      //  commitanswers();
+        //修改状态栏的文字颜色为黑色
+        int flag = StatusBarUtil.StatusBarLightMode(this);
+        StatusBarUtil.StatusBarLightMode(this, flag);
+
+        mHttpCallBack = this;
         HttpRequest.get(APIContents.Conter)
                 .params(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID))
                 .execute(new AbstractResponse<String>() {
                     @Override
                     public void onSuccess(String result) {
+                        if (result.isEmpty()) {
+                            return;
+                        }
                         Type type = new TypeToken<MineEntity>() {
                         }.getType();
                         final MineEntity mineEntity = new Gson().fromJson(result, type);
                         LoginEntity loginEntity = new LoginEntity();
-                        Log.e("result",result);
                         loginEntity.setId(mineEntity.getId());
                         loginEntity.setWeiXinUid(String.valueOf(mineEntity.getWeiXin()));
                         loginEntity.setNickname(mineEntity.getNickname());
@@ -116,6 +109,7 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
         bottomInit();
 
         getGroupChatInfo();
+
     }
 
     /**
@@ -134,14 +128,12 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
         mDynamicFragment = new DynamicFragment();
         mMineFragment = new MineFragment();
 
-
         // add to fragments for adapter
         fragments.add(mHomeFragment);
         fragments.add(mAccompanyFragment);
         fragments.add(mChatFragment);
         fragments.add(mDynamicFragment);
         fragments.add(mMineFragment);
-
 
         //set enable
         mBotNav.enableItemShiftingMode(false);
@@ -157,7 +149,6 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
 
         // binding with ViewPager
         mBotNav.setupWithViewPager(mFragmentNavigationVp);
-
 
         mMineFragment.setAttentionSelectListener(new MineFragment.AttentionSelectListener() {
             @Override
@@ -234,16 +225,17 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
         }
         return super.onKeyDown(keyCode, event);
     }
+
     private void commitanswers() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<RequestParams> list=new ArrayList<>();
+                List<RequestParams> list = new ArrayList<>();
                 list.add(new RequestParams(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID)));
 
-                Log.e("commitanswers",APPContents.E_ID);
-                Log.e("commitanswers",AppData.getString(AppData.Keys.AD_USER_ID));
-                OkHttpUtils.doGet(APIContents.Conter,list,mHttpCallBack,1);
+                Log.e("commitanswers", APPContents.E_ID);
+                Log.e("commitanswers", AppData.getString(AppData.Keys.AD_USER_ID));
+                OkHttpUtils.doGet(APIContents.Conter, list, mHttpCallBack, 1);
 
             }
         }).start();
@@ -260,7 +252,7 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-        Log.e("response",response);
+        Log.e("response", response);
     }
 
     @SuppressLint("HandlerLeak")

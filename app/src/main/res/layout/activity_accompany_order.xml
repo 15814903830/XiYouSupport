@@ -1,348 +1,338 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chengfan.xiyou.utils.StatusBarHeightView
-    app:use_type="use_padding_top"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-    <Button
-        android:id="@+id/order_back_btn"
-        android:layout_width="@dimen/padding_35"
-        android:layout_height="@dimen/padding_35"
-        android:layout_marginLeft="@dimen/padding_20"
-        android:layout_marginTop="@dimen/padding_10"
-        android:background="@drawable/xy_black_back"/>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    app:use_type="use_padding_top">
 
-    <android.support.v4.widget.NestedScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/order_bottom_ll">
+        android:orientation="vertical">
 
-
-        <RelativeLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <RelativeLayout
-                android:id="@+id/order_top_rl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:adjustViewBounds="true"
-                    android:id="@+id/order_pic_iv"
-                    android:layout_width="match_parent"
-                    android:layout_height="280dp"
-                    android:scaleType="fitXY"/>
-
-
                 <RelativeLayout
-                    android:id="@+id/order_user_info_rl"
+                    android:id="@+id/order_top_rl"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/order_pic_iv"
-                    android:layout_marginLeft="@dimen/padding_20"
-                    android:layout_marginRight="@dimen/padding_20"
-                    >
+                    android:layout_height="match_parent">
 
+                    <ImageView
+                        android:id="@+id/order_pic_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop" />
 
-                    <RelativeLayout
-                        android:layout_marginVertical="8dp"
-                        android:id="@+id/order_name_rl"
+                    <LinearLayout
+                        android:id="@+id/order_user_info_rl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        >
+                        android:layout_below="@id/order_pic_iv"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <LinearLayout
+                            android:id="@+id/order_name_rl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.chengfan.xiyou.view.RegularTextView
+                                android:id="@+id/order_game_name_tv"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:paddingRight="10dp"
+                                android:text="IDsdfdsdf"
+                                android:textColor="@color/color_333333"
+                                android:textSize="17sp" />
 
 
-                        <com.chengfan.xiyou.view.RegularTextView
-                            android:maxLength="10"
-                            android:ellipsize="end"
-                            android:id="@+id/order_game_name_tv"
-                            android:layout_width="wrap_content"
+                            <com.chengfan.xiyou.view.RegularTextView
+                                android:id="@+id/order_money_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="$3443/小时"
+                                android:textColor="@color/color_F44336"
+                                android:textSize="17sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/order_type_ll"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="IDsdfdsdf"
-                            android:textColor="@color/color_333333"
-                            android:textSize="@dimen/text_size_18"/>
+                            android:layout_marginTop="20dp"
+                            android:gravity="center_vertical">
 
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/search_game" />
 
-                        <com.chengfan.xiyou.view.RegularTextView
-                            android:id="@+id/order_money_tv"
-                            android:layout_width="wrap_content"
+                            <com.chengfan.xiyou.view.RegularTextView
+                                android:id="@+id/order_type_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/padding_10"
+                                android:text="游戏陪玩"
+                                android:textColor="@color/color_999999"
+                                android:textSize="@dimen/text_size_13" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/search_game_name_ll"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="@dimen/padding_20"
-                            android:text="$3443/小时"
-                            android:textColor="@color/color_F44336"
-                            android:textSize="@dimen/text_size_18"/>
+                            android:layout_marginTop="@dimen/padding_10"
+                            android:gravity="center_vertical">
 
-                    </RelativeLayout>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/icon_accompany_time" />
 
+                            <com.chengfan.xiyou.view.RegularTextView
+                                android:id="@+id/order_time_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/padding_10"
+                                android:lineSpacingMultiplier="1.6"
+                                android:textColor="@color/color_999999"
+                                android:textSize="@dimen/text_size_13" />
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/order_type_ll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/order_name_rl"
-                        android:layout_marginTop="@dimen/padding_10"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/search_game_name_llbb"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/search_game"/>
+                            android:layout_marginTop="@dimen/padding_10"
+                            android:gravity="center_vertical">
 
-                        <com.chengfan.xiyou.view.RegularTextView
-                            android:text="游戏陪玩"
-                            android:id="@+id/order_type_tv"
-                            android:layout_width="wrap_content"
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/icon_accompany_time" />
+
+                            <com.chengfan.xiyou.view.RegularTextView
+                                android:id="@+id/order_time_tvbb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/padding_10"
+                                android:lineSpacingMultiplier="1.6"
+                                android:textColor="@color/color_999999"
+                                android:textSize="@dimen/text_size_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/search_game_name_llcc"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/padding_10"
-                            android:textColor="@color/color_999999"
-                            android:textSize="@dimen/text_size_13"/>
+                            android:layout_marginTop="@dimen/padding_10"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:background="@drawable/peiwanxiangqing33x" />
+
+                            <com.chengfan.xiyou.view.RegularTextView
+                                android:id="@+id/order_time_tvllcc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/padding_10"
+                                android:text="暂无分区"
+                                android:textColor="@color/color_999999"
+                                android:textSize="@dimen/text_size_13" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/search_game_name_lldd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/padding_10"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:background="@drawable/peiwanxiangqing33x" />
+
+                            <com.chengfan.xiyou.view.RegularTextView
+                                android:id="@+id/order_time_tvdd"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/padding_10"
+                                android:text="暂无段位"
+                                android:textColor="@color/color_999999"
+                                android:textSize="@dimen/text_size_13" />
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/search_game_name_ll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/order_type_ll"
-                        android:layout_marginTop="@dimen/padding_10"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/icon_accompany_time"/>
-
-                        <com.chengfan.xiyou.view.RegularTextView
-                            android:id="@+id/order_time_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/padding_10"
-                            android:textColor="@color/color_999999"
-                            android:textSize="@dimen/text_size_13"/>
-                    </LinearLayout>
+                    <View
+                        android:id="@+id/order_line_one_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/order_user_info_rl"
+                        android:background="@color/color_E5E5E5" />
 
                     <LinearLayout
-                        android:id="@+id/search_game_name_llbb"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/search_game_name_ll"
-                        android:layout_marginTop="@dimen/padding_10"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/icon_accompany_time"/>
-
-                        <com.chengfan.xiyou.view.RegularTextView
-                            android:id="@+id/order_time_tvbb"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/padding_10"
-                            android:textColor="@color/color_999999"
-                            android:textSize="@dimen/text_size_13"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/search_game_name_llcc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/search_game_name_llbb"
-                        android:layout_marginTop="@dimen/padding_10"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:background="@drawable/peiwanxiangqing33x"/>
-
-                        <com.chengfan.xiyou.view.RegularTextView
-                            android:text="暂无分区"
-                            android:id="@+id/order_time_tvllcc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/padding_10"
-                            android:textColor="@color/color_999999"
-                            android:textSize="@dimen/text_size_13"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/search_game_name_lldd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/search_game_name_llcc"
-                        android:layout_marginTop="@dimen/padding_10"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:background="@drawable/peiwanxiangqing33x"/>
-
-                        <com.chengfan.xiyou.view.RegularTextView
-                            android:text="暂无段位"
-                            android:id="@+id/order_time_tvdd"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/padding_10"
-                            android:textColor="@color/color_999999"
-                            android:textSize="@dimen/text_size_13"/>
-                    </LinearLayout>
-
-
-                </RelativeLayout>
-
-                <View
-                    android:id="@+id/order_line_one_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/order_user_info_rl"
-                    android:layout_marginTop="@dimen/padding_20"
-                    android:background="@color/color_E5E5E5"
-                    />
-
-                <LinearLayout
-                    android:id="@+id/order_user_lick_ll"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_below="@+id/order_line_one_view"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <com.zero.ci.widget.CircleImageView
-                        android:id="@+id/order_user_logo_civ"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_marginLeft="16dp"
-                        android:src="@drawable/complete_nan"
-                        app:civ_border_color="@android:color/white"
-                        app:civ_border_width="1dp"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="6dp"
-                        android:layout_weight="1"
+                        android:id="@+id/order_user_lick_ll"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_below="@+id/order_line_one_view"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp">
+
+                        <com.zero.ci.widget.CircleImageView
+                            android:id="@+id/order_user_logo_civ"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/complete_nan"
+                            app:civ_border_color="@android:color/white"
+                            app:civ_border_width="1dp" />
 
                         <com.chengfan.xiyou.view.RegularTextView
                             android:id="@+id/order_user_name_tv"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
                             android:text="沐风"
                             android:textColor="@color/color_333333"
-                            android:textSize="@dimen/text_size_13"/>
+                            android:textSize="@dimen/text_size_13" />
 
+                        <com.chengfan.xiyou.view.RegularTextView
+                            android:id="@+id/order_focus_tv"
+                            android:layout_width="50dp"
+                            android:layout_height="@dimen/padding_20"
+                            android:background="@drawable/accompany_lick_bg"
+                            android:gravity="center"
+                            android:text="关注"
+                            android:textColor="@color/color_D1AE81"
+                            android:textSize="12sp" />
                     </LinearLayout>
 
+                    <View
+                        android:id="@+id/order_line_two_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/order_user_lick_ll"
+                        android:background="@color/color_E5E5E5" />
+
                     <com.chengfan.xiyou.view.RegularTextView
-                        android:id="@+id/order_focus_tv"
-                        android:layout_width="50dp"
-                        android:layout_height="@dimen/padding_20"
-                        android:layout_margin="12dp"
-                        android:background="@drawable/accompany_lick_bg"
-                        android:gravity="center"
-                        android:text="关注"
-                        android:textColor="@color/color_D1AE81"
-                        android:textSize="12sp"/>
-                </LinearLayout>
+                        android:id="@+id/order_shuoming_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/order_line_two_view"
+                        android:layout_marginTop="20dp"
+                        android:lineSpacingMultiplier="1.6"
+                        android:paddingLeft="@dimen/padding_20"
+                        android:paddingRight="@dimen/padding_20"
+                        android:textColor="@color/color_666666"
+                        android:textSize="@dimen/text_size_15" />
 
-                <View
-                    android:id="@+id/order_line_two_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/order_user_lick_ll"
-                    android:background="@color/color_E5E5E5"
-                    />
+                </RelativeLayout>
 
-                <com.chengfan.xiyou.view.RegularTextView
-                    android:id="@+id/order_shuoming_tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/order_line_two_view"
-                    android:layout_marginLeft="@dimen/padding_20"
-                    android:layout_marginTop="@dimen/padding_10"
-                    android:layout_marginRight="@dimen/padding_20"
-                    android:text="sdfasndlnnfalksdnglkanfkl"
-                    android:textColor="@color/color_666666"
-                    android:textSize="@dimen/text_size_15"/>
-
-            </RelativeLayout>
-
-
-            <LinearLayout
-                android:id="@+id/order_list_top_ll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/order_top_rl"
-                android:layout_marginTop="@dimen/padding_20"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-
-                <ImageView
-                    android:layout_width="@dimen/padding_5"
-                    android:layout_height="16dp"
-                    android:background="@color/color_D1AE81"/>
-
-                <com.chengfan.xiyou.view.BoldTextView
-                    android:id="@+id/order_pinglun_num_tv"
+                <LinearLayout
+                    android:id="@+id/order_list_top_ll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_20"
-                    android:text="评论"
-                    android:textColor="@color/color_333333"
-                    android:textSize="@dimen/text_size_18"/>
+                    android:layout_below="@id/order_top_rl"
+                    android:layout_marginTop="60dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="@dimen/padding_5"
+                        android:layout_height="16dp"
+                        android:background="@color/color_D1AE81" />
 
+                    <com.chengfan.xiyou.view.BoldTextView
+                        android:id="@+id/order_pinglun_num_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_20"
+                        android:text="评论"
+                        android:textColor="@color/color_333333"
+                        android:textSize="@dimen/text_size_18" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/order_rv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/order_list_top_ll"
-                android:layout_marginTop="@dimen/padding_20"/>
-        </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+                </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/order_bottom_ll"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/order_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/order_list_top_ll" />
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/order_bottom_ll"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:paddingLeft="@dimen/padding_20"
+            android:paddingTop="@dimen/padding_10"
+            android:paddingRight="@dimen/padding_20"
+            android:paddingBottom="@dimen/padding_10">
+
+            <TextView
+                android:id="@+id/order_info_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:background="@drawable/xy_order_info_bg"
+                android:gravity="center"
+                android:text="@string/order_info_txt"
+                android:textColor="@color/color_D1AE81"
+                android:textSize="@dimen/text_size_12" />
+
+            <TextView
+                android:id="@+id/order_xiadan_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="8"
+                android:background="@drawable/xy_order_button_bg"
+                android:gravity="center"
+                android:text="@string/order_xiadan_txt"
+                android:textColor="@color/color_FFFFFF"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.chengfan.xiyou.view.StatusBarHeightView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="@dimen/padding_20"
-        android:layout_marginTop="@dimen/padding_10"
-        android:layout_marginRight="@dimen/padding_20"
-        android:layout_marginBottom="@dimen/padding_10">
+        app:use_type="use_padding_top">
 
-        <TextView
-            android:id="@+id/order_info_tv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/padding_35"
-            android:layout_weight="1"
-            android:background="@drawable/xy_order_info_bg"
-            android:gravity="center"
-            android:text="@string/order_info_txt"
-            android:textColor="@color/color_D1AE81"
-            android:textSize="@dimen/text_size_12"/>
+        <ImageView
+            android:id="@+id/order_back_btn"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:padding="20dp"
+            android:src="@drawable/xy_black_back" />
 
-        <TextView
-            android:id="@+id/order_xiadan_tv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/padding_35"
-            android:layout_marginStart="@dimen/padding_20"
-            android:layout_marginLeft="@dimen/padding_20"
-            android:layout_weight="0.5"
-            android:background="@drawable/xy_order_button_bg"
-            android:gravity="center"
-            android:text="@string/order_xiadan_txt"
-            android:textColor="@color/color_FFFFFF"
-            android:textSize="@dimen/text_size_12"/>
-    </LinearLayout>
-</com.chengfan.xiyou.utils.StatusBarHeightView>
+    </com.chengfan.xiyou.view.StatusBarHeightView>
+
+</FrameLayout>

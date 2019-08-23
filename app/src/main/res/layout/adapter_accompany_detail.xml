@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/padding_10"
-    android:layout_marginBottom="@dimen/padding_10">
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingTop="30dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="15dp">
 
-    <com.zero.ci.widget.CircleImageView
-        android:id="@+id/ac_detail_civ"
-        android:layout_width="@dimen/padding_25"
-        android:layout_height="@dimen/padding_25"
-        android:layout_marginLeft="@dimen/padding_20"
-        android:src="@mipmap/ic_launcher"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="0dp"/>
-
-    <com.chengfan.xiyou.view.MediumTextView
-        android:id="@+id/ac_detail_nick_name_tv"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_toEndOf="@+id/ac_detail_civ"
-        android:layout_toRightOf="@+id/ac_detail_civ"
-        android:text="sdfsfs"
-        android:textColor="@color/color_333333"
-        android:textSize="@dimen/text_size_15"/>
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <com.chengfan.xiyou.view.RegularTextView
-        android:id="@+id/ac_detail_time_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/padding_20"
-        android:text="sfdsfs"
-        android:textColor="@color/color_999999"
-        android:textSize="@dimen/text_size_12"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="361dp"
-        tools:layout_editor_absoluteY="0dp"/>
+        <com.zero.ci.widget.CircleImageView
+            android:id="@+id/ac_detail_civ"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/ic_launcher"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <com.chengfan.xiyou.view.MediumTextView
+            android:id="@+id/ac_detail_nick_name_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/text_size_15" />
+
+        <com.chengfan.xiyou.view.RegularTextView
+            android:id="@+id/ac_detail_time_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sfdsfs"
+            android:textColor="@color/color_999999"
+            android:textSize="@dimen/text_size_12" />
+
+    </LinearLayout>
 
     <com.chengfan.xiyou.view.RegularTextView
         android:id="@+id/ac_detail_content_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ac_detail_civ"
-        android:layout_marginLeft="@dimen/padding_20"
         android:layout_marginTop="@dimen/padding_10"
-        android:layout_marginRight="@dimen/padding_20"/>
-</RelativeLayout>
+        android:lineSpacingMultiplier="1.6" />
+</LinearLayout>

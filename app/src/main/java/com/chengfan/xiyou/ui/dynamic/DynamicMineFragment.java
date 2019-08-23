@@ -33,6 +33,7 @@ import com.chengfan.xiyou.ui.WebActivity;
 import com.chengfan.xiyou.ui.adapter.DynamicMineAdapter;
 import com.chengfan.xiyou.ui.dialog.DynamicMineDelDialog;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.chengfan.xiyou.utils.UserStorage;
 import com.google.gson.Gson;
 import com.zero.ci.base.BaseApiResponse;
@@ -234,7 +235,10 @@ public class DynamicMineFragment extends
     }
 
     private void turnToDetail(int position) {
-        if (mDynamicMineEntityList.get(position).getImages().contains(".mp4")) {
+        if (position < 0 || position >= mDynamicMineEntityList.size()) {
+            return;
+        }
+        if (DataFormatUtil.isVideo(mDynamicMineEntityList.get(position).getImages())) {  //视频
             int id = mDynamicMineEntityList.get(position).getId();
             String userId = AppData.getString(AppData.Keys.AD_USER_ID);
             String url = APIContents.HOST + "/WapNews/MemberNewsVoidDetail?" + "id=" + id + "&memberId=" + userId;

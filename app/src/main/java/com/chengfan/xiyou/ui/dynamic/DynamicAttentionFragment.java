@@ -1,5 +1,6 @@
 package com.chengfan.xiyou.ui.dynamic;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +29,10 @@ import com.chengfan.xiyou.domain.model.entity.LikeBase;
 import com.chengfan.xiyou.domain.model.entity.PublishCommentBean;
 import com.chengfan.xiyou.domain.presenter.DynamicAttentionPresenterImpl;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.ui.WebActivity;
 import com.chengfan.xiyou.ui.adapter.DynamicAttentionAdapter;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.chengfan.xiyou.utils.UserStorage;
 import com.google.gson.Gson;
 import com.zero.ci.base.BaseApiResponse;
@@ -42,7 +44,6 @@ import com.zero.ci.refresh.ZRefreshLayout;
 import com.zero.ci.refresh.api.RefreshLayout;
 import com.zero.ci.refresh.api.listener.OnRefreshLoadMoreListener;
 import com.zero.ci.tool.ForwardUtil;
-import com.zero.ci.widget.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,8 +126,6 @@ public class DynamicAttentionFragment extends
 
     @Override
     public void listLoad(List<FinanceRecordEntity> financeRecordEntityList, boolean isPtr) {
-
-        Log.e("financeRecordEntityList", "" + financeRecordEntityList.size());
         if (financeRecordEntityList != null) {
             if (isPtr) {
                 mDynamicAttentionAdapter.replaceData(mFinanceRecordEntityList);
@@ -134,7 +133,6 @@ public class DynamicAttentionFragment extends
             } else {
                 mFinanceRecordEntityList.addAll(financeRecordEntityList);
             }
-            Log.e("mFinanceRecordEntity", "" + mFinanceRecordEntityList.size());
             mDynamicAttentionAdapter.setNewData(mFinanceRecordEntityList);
         }
     }
@@ -149,7 +147,6 @@ public class DynamicAttentionFragment extends
         }
     }
 
-
     private void initRv() {
         mDynamicAttentionAdapter = new DynamicAttentionAdapter(R.layout.adapter_dynamic_attention, mFinanceRecordEntityList);
         mAttentionRv.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -157,13 +154,9 @@ public class DynamicAttentionFragment extends
         mDynamicAttentionAdapter.setOnItemClickListener(new BaseRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseRVAdapter adapter, View view, int position) {
-                Bundle toBundle = new Bundle();
-                toBundle.putString(APPContents.BUNDLE_DYNAMIC_ID, mFinanceRecordEntityList.get(position).getId() + "");
-                Logger.d("DynamicAttentionFragment === >>> " + mFinanceRecordEntityList.get(position).getId());
-                ForwardUtil.getInstance(getActivity()).forward(DynamicDetailActivity.class, toBundle);
+                turnToDetail(position);
             }
         });
-
 
         mDynamicAttentionAdapter.setLickListener(new DynamicAttentionAdapter.LickListener() {
             @Override
@@ -198,6 +191,24 @@ public class DynamicAttentionFragment extends
                 showCommentDialog(position);
             }
         });
+    }
+
+    private void turnToDetail(int position) {
+        if (position < 0 || position >= mFinanceRecordEntityList.size()) {
+            return;
+        }
+        if (DataFormatUtil.isVideo(mFinanceRecordEntityList.get(position).getImages())) {
+            int id = mFinanceRecordEntityList.get(position).getId();
+            String userId = AppData.getString(AppData.Keys.AD_USER_ID);
+            String url = APIContents.HOST + "/WapNews/MemberNewsVoidDetail?" + "id=" + id + "&memberId=" + userId;
+            Intent intent = new Intent(getActivity(), WebActivity.class);
+            intent.putExtra(WebActivity.KEY_URL, url);
+            startActivity(intent);
+        } else {
+            Bundle toBundle = new Bundle();
+            toBundle.putString(APPContents.BUNDLE_DYNAMIC_ID, mFinanceRecordEntityList.get(position).getId() + "");
+            ForwardUtil.getInstance(getActivity()).forward(DynamicDetailActivity.class, toBundle);
+        }
     }
 
     /**

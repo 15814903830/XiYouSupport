@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -47,7 +45,8 @@ public class SearchActivity extends BaseActivity {
     TextView mSearchContTv;
     @BindView(R.id.search_show_ll)
     LinearLayout mSearchShowLl;
-
+    @BindView(R.id.view_empty_search)
+    View view_empty;
 
     private VpAdapter adapter;
     private List<Fragment> fragments;
@@ -55,7 +54,7 @@ public class SearchActivity extends BaseActivity {
     SearchGameFragment mSearchGameFragment;
     SearchFamilyFragment mSearchFamilyFragment;
 
-    String searchStr;
+    String searchStr = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,60 +67,22 @@ public class SearchActivity extends BaseActivity {
                 .statusDark(true)
                 .create()
                 .drawableBar();
-        mSearchShowLl.setVisibility(View.GONE);
+
+        view_empty.setVisibility(View.VISIBLE);
 
         FontHelper.applyFont(this, mSearchContTv, APPContents.FONTS_REGULAR);
         mBotNav.setTypeface(Typeface.createFromAsset(this.getAssets(), APPContents.FONTS_MEDIUM));
 
-        searchStr = mSearchEt.getText().toString();
-        mSearchEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        initFragment();
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
-                searchStr = s.toString().trim();
-                mSearchShowLl.setVisibility(View.VISIBLE);
-                bottomInit(searchStr);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-        mSearchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((actionId == 0 || actionId == 3) && event != null) {
-                    //点击搜索要做的操作
-                    searchStr = v.getText().toString().trim();
-                    bottomInit(searchStr);
-                }
-                return false;
-            }
-        });
-
-
+        initEvents();
     }
 
-    @OnClick(R.id.search_cont_tv)
-    public void onClick() {
-        finish();
-    }
-
-
-    private void bottomInit(String searchStr) {
+    private void initFragment() {
         fragments = new ArrayList<>(3);
         mSearchUserFragment = SearchUserFragment.getInstance(searchStr);
         mSearchGameFragment = SearchGameFragment.getInstance(searchStr);
         mSearchFamilyFragment = SearchFamilyFragment.getInstance(searchStr);
-
 
         // add to fragments for adapter
         fragments.add(mSearchUserFragment);
@@ -141,7 +102,56 @@ public class SearchActivity extends BaseActivity {
 
         // binding with ViewPager
         mBotNav.setupWithViewPager(mFragmentNavigationVp);
+    }
 
+    @OnClick(R.id.search_cont_tv)
+    public void onClick() {
+        finish();
+    }
 
+    private void initEvents() {
+//        mSearchEt.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                searchStr = s.toString().trim();
+//                bottomInit(searchStr);
+//            }
+//        });
+        mSearchEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((actionId == 0 || actionId == 3) && event != null) {
+                    //点击搜索要做的操作
+                    searchStr = v.getText().toString().trim();
+                    bottomInit(searchStr);
+                }
+                return false;
+            }
+        });
+        view_empty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void bottomInit(String searchStr) {
+        if (view_empty.getVisibility() == View.VISIBLE) {
+            view_empty.setVisibility(View.GONE);
+        }
+        mSearchUserFragment.search(searchStr);
+        mSearchGameFragment.search(searchStr);
+        mSearchFamilyFragment.search(searchStr);
     }
 }

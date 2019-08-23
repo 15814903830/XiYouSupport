@@ -27,7 +27,6 @@ import com.zero.ci.refresh.ZRefreshLayout;
 import com.zero.ci.refresh.api.RefreshLayout;
 import com.zero.ci.refresh.api.listener.OnRefreshLoadMoreListener;
 import com.zero.ci.tool.ForwardUtil;
-import com.zero.ci.widget.logger.Logger;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -52,7 +51,7 @@ public class SearchGameFragment extends BaseFragment {
 
     SearchGameAdapter mSearchGameAdapter;
     List<SearchGameEntity> mSearchGameEntityList;
-    String searchStr;
+    String searchStr = "";
     int page = 1;
 
     public static SearchGameFragment getInstance(String search) {
@@ -63,19 +62,35 @@ public class SearchGameFragment extends BaseFragment {
         return newsFragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle arguments = this.getArguments();
+        if (arguments != null) {
+            searchStr = arguments.getString(APPContents.BUNDLE_SEARCH);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_search_game, null);
         mUnbinder = ButterKnife.bind(this, mView);
-        Bundle arguments = this.getArguments();
-        searchStr = arguments.getString(APPContents.BUNDLE_SEARCH);
-        Logger.d("SearchGameFragment ===>>> searchStr :" + searchStr);
 
         initAdapter();
         initZrl();
-        requestGame(searchStr, 1, true);
+
         return mView;
+    }
+
+    public void search(String searchKey) {
+        searchStr = searchKey;
+        if (mSearchGameAdapter == null) {
+            initAdapter();
+        }
+        mSearchGameAdapter.setSearchStr(searchStr);
+        page = 1;
+        requestGame(searchKey, 1, true);
     }
 
     private void initAdapter() {
@@ -111,11 +126,10 @@ public class SearchGameFragment extends BaseFragment {
 
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-
-
                 mSearchGameZrl.getLayout().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        page = 1;
                         requestGame(searchStr, 1, true);
                         mSearchGameZrl.finishRefresh();
                     }
@@ -137,16 +151,16 @@ public class SearchGameFragment extends BaseFragment {
                         } else {
                             Type type = new TypeToken<List<SearchGameEntity>>() {
                             }.getType();
-                            Log.e("result",result);
+                            Log.e("result", result);
                             List<SearchGameEntity> searchGameEntityList = new Gson().fromJson(result, type);
-                            if (searchGameEntityList.size() < 0) {
+                            if (searchGameEntityList.isEmpty()) {
                                 return;
+                            }
+                            if (isPtr) {
+                                mSearchGameEntityList = searchGameEntityList;
+                                mSearchGameAdapter.replaceData(mSearchGameEntityList);
                             } else {
-                                if (isPtr) {
-                                    mSearchGameEntityList = searchGameEntityList;
-                                } else {
-                                    mSearchGameEntityList.addAll(searchGameEntityList);
-                                }
+                                mSearchGameEntityList.addAll(searchGameEntityList);
                                 mSearchGameAdapter.addData(mSearchGameEntityList);
                             }
                         }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/color_F5F5F5"
-                android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F5F5F5"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/mine_top_rl"
@@ -175,14 +175,14 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/mine_order"/>
+                android:background="@drawable/mine_order" />
 
             <com.chengfan.xiyou.view.RegularTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/mine_order_txt"
                 android:textColor="@color/color_333333"
-                android:textSize="@dimen/text_size_13"/>
+                android:textSize="@dimen/text_size_13" />
         </LinearLayout>
 
         <LinearLayout
@@ -198,14 +198,14 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/mine_game"
                 android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/text_size_18"/>
+                android:textSize="@dimen/text_size_18" />
 
             <com.chengfan.xiyou.view.RegularTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/mine_pei_txt"
                 android:textColor="@color/color_333333"
-                android:textSize="@dimen/text_size_13"/>
+                android:textSize="@dimen/text_size_13" />
         </LinearLayout>
 
         <LinearLayout
@@ -221,14 +221,14 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/mine_moeny"
                 android:textColor="@color/color_FFFFFF"
-                android:textSize="@dimen/text_size_18"/>
+                android:textSize="@dimen/text_size_18" />
 
             <com.chengfan.xiyou.view.RegularTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/mine_qian_txt"
                 android:textColor="@color/color_333333"
-                android:textSize="@dimen/text_size_13"/>
+                android:textSize="@dimen/text_size_13" />
         </LinearLayout>
 
     </LinearLayout>
@@ -249,13 +249,13 @@
             android:layout_marginTop="@dimen/padding_10"
             android:text="@string/mine_more_txt"
             android:textColor="@color/color_333333"
-            android:textSize="@dimen/text_size_18"/>
+            android:textSize="@dimen/text_size_18" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/mine_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/padding_20"/>
+            android:layout_marginBottom="@dimen/padding_20" />
 
     </LinearLayout>
 

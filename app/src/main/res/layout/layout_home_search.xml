@@ -1,59 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+<com.chengfan.xiyou.view.StatusBarHeightView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:use_type="use_padding_top">
 
     <LinearLayout
-        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/padding_20"
-        android:layout_marginTop="@dimen/padding_30"
-        android:layout_marginRight="@dimen/padding_20"
-        android:gravity="center">
+        android:layout_height="48dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
         <LinearLayout
             android:id="@+id/search_address_ll"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/padding_20"
-            android:gravity="center">
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
             <TextView
                 android:id="@+id/search_address_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="广州"
                 android:textColor="@color/color_333333"
-                android:textSize="@dimen/text_size_15"/>
+                android:textSize="@dimen/text_size_15" />
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_10"
-                android:background="@drawable/home_row"/>
+                android:background="@drawable/home_row" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/search_ll"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/xiyou_serch_bg"
             android:gravity="center">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/home_search"
-                />
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/home_search" />
 
             <TextView
                 android:id="@+id/search_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="@string/home_search_txt"
                 android:textColor="@color/color_999999"
-                android:textSize="@dimen/text_size_15"/>
+                android:textSize="@dimen/text_size_15" />
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</com.chengfan.xiyou.view.StatusBarHeightView>
