@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="15dp"></View>
-    <include
-        layout="@layout/layout_home_search"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_home_search" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -20,11 +17,11 @@
             android:orientation="vertical">
 
             <include
-                android:visibility="gone"
                 layout="@layout/layout_item_banner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_20"/>
+                android:layout_marginTop="@dimen/padding_20"
+                android:visibility="gone" />
 
             <!--<android.support.v7.widget.RecyclerView-->
             <!--android:id="@+id/accompany_game_rv"-->
@@ -35,116 +32,129 @@
             <com.chengfan.xiyou.widget.viewpager.JazzyViewPager
                 android:id="@+id/accompany_jvp"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"/>
+                android:layout_height="180dp" />
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/linear"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_below="@+id/accompany_jvp"
                 android:gravity="center"
-                android:orientation="horizontal"></LinearLayout>
+                android:orientation="horizontal"
+                android:visibility="gone"></LinearLayout>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/color_F5F6FA"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/padding_50">
-                <LinearLayout
-                    android:layout_marginHorizontal="@dimen/padding_15"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/padding_50">
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="推荐陪玩"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="守望先锋"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="和平精英"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="王者荣耀"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="绝地求生"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="推荐陪玩"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="LOL"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="音乐"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="堡垒之夜"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="陪聊倾述"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                    <TextView
-                        android:textColor="#999999"
-                        android:textSize="15sp"
-                        android:text="哄睡FM"
-                        android:layout_width="79dp"
-                        android:layout_height="19dp" />
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/padding_50"
+                        android:layout_marginHorizontal="@dimen/padding_15"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="推荐陪玩"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="守望先锋"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="和平精英"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="王者荣耀"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="绝地求生"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="推荐陪玩"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="LOL"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="音乐"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="堡垒之夜"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="陪聊倾述"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="79dp"
+                            android:layout_height="19dp"
+                            android:text="哄睡FM"
+                            android:textColor="#999999"
+                            android:textSize="15sp" />
+                    </LinearLayout>
                 </HorizontalScrollView>
+
                 <com.zero.ci.navigation.BottomNavigationViewEx
-                    android:visibility="gone"
                     android:id="@+id/bot_nav"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:background="@color/color_F5F6FA"
+                    android:visibility="gone"
                     app:itemTextColor="@color/selector_item_accompany_color"
-                    app:menu="@menu/menu_navigation_accompany_fab"/>
+                    app:menu="@menu/menu_navigation_accompany_fab" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/accompany_rv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/padding_15"
-                    android:layout_marginRight="@dimen/padding_15"/>
+                    android:layout_marginRight="@dimen/padding_15" />
 
             </LinearLayout>
 

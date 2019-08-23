@@ -4,43 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <View
+
+    <com.chengfan.xiyou.view.StatusBarHeightView
         android:layout_width="match_parent"
-        android:layout_height="15dp"></View>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="@dimen/padding_10"
-        android:background="@color/color_FFFFFF">
+        android:layout_height="wrap_content"
+        android:background="@color/color_FFFFFF"
+        app:use_type="use_padding_top">
 
         <com.zero.ci.navigation.BottomNavigationViewEx
             android:id="@+id/bot_nav"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
-            android:layout_marginEnd="@dimen/padding_100"
-            android:layout_marginRight="@dimen/padding_100"
+            android:layout_height="48dp"
+            android:layout_marginRight="60dp"
             app:itemTextColor="@color/selector_item_accompany_color"
             app:menu="@menu/menu_navigation_dynamic_fab" />
 
         <ImageView
-            android:layout_marginBottom="3dp"
             android:id="@+id/dynamic_go_issued_iv"
             android:layout_width="60dp"
-            android:layout_height="45dp"
-            android:layout_alignParentEnd="true"
+            android:layout_height="48dp"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
             android:paddingLeft="20dp"
-            android:paddingTop="28dp"
+            android:paddingTop="14dp"
             android:paddingRight="20dp"
+            android:paddingBottom="14dp"
             android:src="@drawable/dynamic_c" />
 
-    </RelativeLayout>
+    </com.chengfan.xiyou.view.StatusBarHeightView>
 
     <android.support.v4.view.ViewPager
-        android:layout_marginTop="@dimen/padding_5"
         android:id="@+id/fragment_navigation_vp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/padding_5" />
 
 </LinearLayout>

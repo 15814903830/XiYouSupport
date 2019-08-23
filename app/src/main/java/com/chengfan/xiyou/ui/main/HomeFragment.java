@@ -175,7 +175,6 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
         }
     };
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

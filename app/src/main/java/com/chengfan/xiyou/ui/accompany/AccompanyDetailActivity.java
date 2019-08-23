@@ -7,7 +7,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -136,7 +135,7 @@ public class AccompanyDetailActivity extends
         mPresenter.checkLetterParameter(currentMemberId);
         mPresenter.checkVIPParameter();
 
-        if (AppData.getString(AppData.Keys.AD_USER_ID).equals(currentMemberId)) {
+        if (DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID)) == currentMemberId) {
             mOrderBottomLl.setVisibility(View.GONE);
             mOrderFocusTv.setVisibility(View.GONE);
         }
@@ -189,7 +188,6 @@ public class AccompanyDetailActivity extends
 
     @Override
     public void memberShipLoad(BaseApiResponse baseApiResponse, boolean isLike) {
-        Log.e("isLike", isLike + "");
         if (baseApiResponse.isSuc()) {
             if (isLike) {
                 mOrderFocusTv.setText("关注");
