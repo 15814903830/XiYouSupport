@@ -101,4 +101,14 @@ public class DataFormatUtil {
         return weekDay;
     }
 
+    /**
+     * 判断路径是否是视频
+     *
+     * @param path
+     * @return
+     */
+    public static boolean isVideo(String path) {
+        return path.contains(".mp4");
+    }
+
 }

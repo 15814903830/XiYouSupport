@@ -83,7 +83,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY" />
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/iv_video_attention_dynamic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_video_bg"
+            android:paddingLeft="80dp"
+            android:paddingRight="80dp"
+            android:src="@drawable/icon_new_video" />
+
     </android.support.v7.widget.CardView>
 
     <RelativeLayout

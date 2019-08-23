@@ -34,6 +34,7 @@ import com.chengfan.xiyou.ui.WebActivity;
 import com.chengfan.xiyou.ui.adapter.AccompanyDynamicAdapter;
 import com.chengfan.xiyou.ui.dynamic.DynamicDetailActivity;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.chengfan.xiyou.utils.MyToastUtil;
 import com.zero.ci.base.BaseFragment;
 import com.zero.ci.base.adapter.BaseRVAdapter;
@@ -128,7 +129,7 @@ public class AccompanyDynamicFragment extends BaseFragment implements HttpCallBa
         if (position < 0 || position >= mAccompanyUserInfoEntity.getMemberNews().size()) {
             return;
         }
-        if (mAccompanyUserInfoEntity.getMemberNews().get(position).getImages().contains(".mp4")) {
+        if (DataFormatUtil.isVideo(mAccompanyUserInfoEntity.getMemberNews().get(position).getImages())) {
             int id = mAccompanyUserInfoEntity.getMemberNews().get(position).getId();
             String userId = AppData.getString(AppData.Keys.AD_USER_ID);
             String url = APIContents.HOST + "/WapNews/MemberNewsVoidDetail?" + "id=" + id + "&memberId=" + userId;

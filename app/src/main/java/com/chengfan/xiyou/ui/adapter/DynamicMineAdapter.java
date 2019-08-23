@@ -2,7 +2,6 @@ package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,6 +10,7 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.domain.model.entity.DynamicMineEntity;
 import com.chengfan.xiyou.domain.model.entity.ImageEntity;
 import com.chengfan.xiyou.ui.dialog.ViewPagerDialog;
+import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.chengfan.xiyou.utils.GlideImageLoader;
 import com.chengfan.xiyou.utils.Timeutils;
 import com.chengfan.xiyou.widget.ninegridview.NineGirdImageContainer;
@@ -57,7 +57,6 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
 
     @Override
     protected void convert(final BaseViewHolder helper, DynamicMineEntity item) {
-        Log.e("showImage", "" + item.getImages());
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.attention_user_pic_civ),
                 APIContents.HOST + "/" + item.getMember().getAvatarUrl());
         if (item.getMember().isVip()) {
@@ -65,9 +64,6 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
         } else {
             helper.getView(R.id.attention_is_hy_iv).setVisibility(View.GONE);
         }
-
-
-        Log.e("isHavePraise", "" + item.isHavePraise());
         if (item.isHavePraise()) {
             helper.getView(R.id.mine_like_iv).setBackgroundResource(R.drawable.ap_dynamic_licked_num);
         } else {
@@ -107,13 +103,13 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
         CardView cardView = helper.getView(R.id.mycarview);
         NineGridView nineGridView = helper.getView(R.id.attention_ngv);
         ImageView imageView = helper.getView(R.id.attention_iv);
+        ImageView iv_video = helper.getView(R.id.iv_video_mine_dynamic);
         List<ImageEntity> imageEntityList = new ArrayList<>();
         List<NineGridBean> nineGridBeanList = new ArrayList<>();
         String imageStr = item.getImages();
         if (imageStr != null) {
             String[] strArr = imageStr.split("\\|");
             for (String str : strArr) {
-                Log.e("imgurlstr", str);
                 imageEntityList.add(new ImageEntity(APIContents.HOST + "/" + str));
                 nineGridBeanList.add(new NineGridBean(APIContents.HOST + "/" + str));
             }
@@ -126,11 +122,18 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
             nineGridView.addData(nineGridBeanList);
         } else {
             nineGridView.setVisibility(View.GONE);
-            imageView.setVisibility(View.VISIBLE);
-            cardView.setVisibility(View.VISIBLE);
-            Log.e("imgurl", "" + imageEntityList.get(0).getImgUrl());
-            ImageLoaderManager.getInstance().showImage(imageView, imageEntityList.get(0).getImgUrl());
-            //ImageLoaderManager.getInstance().showImage(imageView, "https://ss1.baidu.com/-4o3dSag_xI4khGko9WTAnF6hhy/image/h%3D300/sign=a9e671b9a551f3dedcb2bf64a4eff0ec/4610b912c8fcc3cef70d70409845d688d53f20f7.jpg");
+            if (imageEntityList.size() > 0) {
+                imageView.setVisibility(View.VISIBLE);
+                cardView.setVisibility(View.VISIBLE);
+                ImageLoaderManager.getInstance().showImage(imageView, imageEntityList.get(0).getImgUrl());
+                if (DataFormatUtil.isVideo(imageEntityList.get(0).getImgUrl())) {
+                    iv_video.setVisibility(View.VISIBLE);
+                } else {
+                    iv_video.setVisibility(View.GONE);
+                }
+            } else {
+                cardView.setVisibility(View.GONE);
+            }
         }
     }
 

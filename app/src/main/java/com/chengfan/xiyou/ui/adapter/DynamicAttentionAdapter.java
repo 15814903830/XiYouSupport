@@ -2,7 +2,6 @@ package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,6 +10,7 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.domain.model.entity.FinanceRecordEntity;
 import com.chengfan.xiyou.domain.model.entity.ImageEntity;
 import com.chengfan.xiyou.ui.dialog.ViewPagerDialog;
+import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.chengfan.xiyou.utils.GlideImageLoader;
 import com.chengfan.xiyou.utils.Timeutils;
 import com.chengfan.xiyou.widget.ninegridview.NineGirdImageContainer;
@@ -19,7 +19,6 @@ import com.chengfan.xiyou.widget.ninegridview.NineGridView;
 import com.zero.ci.base.adapter.BaseRVAdapter;
 import com.zero.ci.base.adapter.BaseViewHolder;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
-import com.zero.ci.widget.logger.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,8 +74,6 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
             e.printStackTrace();
         }
 
-
-        Log.e("isHavePraise", "isHavePraise" + item.isHavePraise());
         if (item.isHavePraise()) {
             helper.getView(R.id.attention_fans_iv).setBackgroundResource(R.drawable.ap_dynamic_licked_num);
         } else {
@@ -102,6 +99,7 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
         NineGridView nineGridView = helper.getView(R.id.attention_ngv);
         ImageView imageView = helper.getView(R.id.attention_iv);
         CardView cardView = helper.getView(R.id.mycarview);
+        ImageView iv_video = helper.getView(R.id.iv_video_attention_dynamic);
         List<ImageEntity> imageEntityList = new ArrayList<>();
         List<NineGridBean> nineGridBeanList = new ArrayList<>();
         String imageStr = item.getImages();
@@ -110,7 +108,6 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
             for (String str : strArr) {
                 imageEntityList.add(new ImageEntity(APIContents.HOST + "/" + str));
                 nineGridBeanList.add(new NineGridBean(APIContents.HOST + "/" + str));
-                Logger.d("DynamicAttentionAdapter ==>>>" + APIContents.HOST + "/" + str);
             }
         }
 
@@ -122,17 +119,22 @@ public class DynamicAttentionAdapter extends BaseRVAdapter<FinanceRecordEntity, 
             nineGridView.addData(nineGridBeanList);
         } else {
             nineGridView.setVisibility(View.GONE);
-            imageView.setVisibility(View.VISIBLE);
-            cardView.setVisibility(View.VISIBLE);
-            if (imageEntityList.size() > 0)
+            if (imageEntityList.size() > 0) {
+                imageView.setVisibility(View.VISIBLE);
+                cardView.setVisibility(View.VISIBLE);
                 ImageLoaderManager.getInstance().showImage(imageView, imageEntityList.get(0).getImgUrl());
+                if (DataFormatUtil.isVideo(imageEntityList.get(0).getImgUrl())) {
+                    iv_video.setVisibility(View.VISIBLE);
+                } else {
+                    iv_video.setVisibility(View.GONE);
+                }
+            } else {
+                cardView.setVisibility(View.GONE);
+            }
         }
     }
 
-
     private void setPhoneNgV(NineGridView nineGridView) {
-
-
         //设置图片加载器，这个是必须的，不然图片无法显示
         nineGridView.setImageLoader(new GlideImageLoader());
         //设置显示列数，默认3列
