@@ -8,15 +8,17 @@
     android:layout_marginRight="@dimen/padding_20"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginBottom="@dimen/padding_10">
+        android:layout_marginBottom="@dimen/padding_10"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_weight="1"
             android:gravity="center_vertical">
 
             <com.zero.ci.widget.CircleImageView
@@ -62,11 +64,10 @@
                     android:gravity="center">
 
                     <ImageView
-                        android:layout_marginRight="@dimen/padding_5"
                         android:id="@+id/home_user_sex_iv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:layout_marginRight="@dimen/padding_5" />
 
                     <com.chengfan.xiyou.view.RegularTextView
                         android:id="@+id/home_user_age_tv"
@@ -76,12 +77,12 @@
                         android:textSize="@dimen/text_size_13" />
 
                     <TextView
-                        android:layout_marginVertical="2dp"
-                        android:background="@color/color_999999"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="3dp"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="3dp"
+                        android:layout_marginVertical="2dp"
+                        android:background="@color/color_999999"
                         android:textColor="@color/color_999999"
                         android:textSize="@dimen/text_size_13" />
 
@@ -96,25 +97,37 @@
 
         </LinearLayout>
 
-        <com.chengfan.xiyou.view.RegularTextView
-            android:id="@+id/home_user_game_name_tv"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:ellipsize="end"
-            android:maxLength="10"
-            android:textColor="@color/color_D1AE81" />
+            android:layout_height="50dp"
+            android:gravity="right"
+            android:orientation="vertical">
 
-        <com.chengfan.xiyou.view.RegularTextView
-            android:id="@+id/home_user_address_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:text="广州 天河"
-            android:textColor="#999999" />
-    </RelativeLayout>
+            <com.chengfan.xiyou.view.RegularTextView
+                android:id="@+id/home_user_game_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_D1AE81"
+                android:textSize="13sp" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <com.chengfan.xiyou.view.RegularTextView
+                android:id="@+id/home_user_address_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:text="广州 天河"
+                android:textColor="#999999"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -19,6 +19,7 @@ import com.chengfan.xiyou.domain.contract.AccompanyDetailContract;
 import com.chengfan.xiyou.domain.model.entity.AccompanyDetailEntity;
 import com.chengfan.xiyou.domain.model.entity.CheckLetterEntity;
 import com.chengfan.xiyou.domain.presenter.AccompanyDetailPresenterImpl;
+import com.chengfan.xiyou.im.UserIMInfo;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
 import com.chengfan.xiyou.okhttp.RequestParams;
@@ -135,11 +136,6 @@ public class AccompanyDetailActivity extends
         mPresenter.checkLetterParameter(currentMemberId);
         mPresenter.checkVIPParameter();
 
-        if (DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID)) == currentMemberId) {
-            mOrderBottomLl.setVisibility(View.GONE);
-            mOrderFocusTv.setVisibility(View.GONE);
-        }
-
         mCheckLetterDialog = new CheckLetterDialog(this);
         mCheckLetterDialog.setCheckListener(new CheckLetterDialog.CheckListener() {
             @Override
@@ -199,8 +195,25 @@ public class AccompanyDetailActivity extends
 
     @Override
     public void sayHiLoad(BaseApiResponse baseApiResponse) {
+        saveUserInfo(mAccompanyDetailEntity.getMemberId(), mAccompanyDetailEntity.getNickname(),
+                mAccompanyDetailEntity.getAvatarUrl());
         RongIM.getInstance().startPrivateChat(AccompanyDetailActivity.this,
-                mAccompanyDetailEntity.getId() + "", mAccompanyDetailEntity.getNickname());
+                mAccompanyDetailEntity.getMemberId() + "", mAccompanyDetailEntity.getNickname());
+    }
+
+    /**
+     * 保存用户信息
+     *
+     * @param userId
+     * @param username
+     * @param userImage
+     */
+    private void saveUserInfo(int userId, String username, String userImage) {
+        UserIMInfo userInfo = new UserIMInfo();
+        userInfo.setId(userId);
+        userInfo.setNickname(username);
+        userInfo.setAvatarUrl(APIContents.HOST + "/" + userImage);
+        userInfo.save();
     }
 
     private void initView(final AccompanyDetailEntity accompanyDetailEntity) {
@@ -238,8 +251,10 @@ public class AccompanyDetailActivity extends
         mOrderRv.setAdapter(mAccompanyDetailAdapter);
         mOrderRv.setFocusableInTouchMode(false);
 
-        if (currentMemberId == DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID))) {
+        if (accompanyDetailEntity.getMemberId() ==
+                DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID))) {
             mOrderBottomLl.setVisibility(View.GONE);
+            mOrderFocusTv.setVisibility(View.GONE);
         } else {
             mOrderBottomLl.setVisibility(View.VISIBLE);
         }

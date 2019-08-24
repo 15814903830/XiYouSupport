@@ -14,6 +14,8 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.model.entity.LoginEntity;
 import com.chengfan.xiyou.domain.model.entity.MineEntity;
+import com.chengfan.xiyou.im.GroupChatInfo;
+import com.chengfan.xiyou.im.UserIMInfo;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
 import com.chengfan.xiyou.okhttp.RequestParams;
@@ -36,6 +38,10 @@ import com.zero.ci.network.zrequest.response.AbstractResponse;
 import com.zero.ci.tool.ActManager;
 import com.zero.ci.tool.ToastUtil;
 import com.zero.ci.widget.logger.Logger;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -95,6 +101,9 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
                         loginEntity.setAreaCode(mineEntity.getAreaCode());
                         loginEntity.setJob(mineEntity.getJob());
                         UserStorage.getInstance().saveLoginInfo(loginEntity);
+
+                        saveUserInfo(mineEntity.getId(), mineEntity.getNickname(), mineEntity.getAvatarUrl());
+
                         new Thread(
                                 new Runnable() {
                                     @Override
@@ -113,12 +122,33 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
     }
 
     /**
+     * 保存用户信息
+     *
+     * @param userId
+     * @param username
+     * @param userImage
+     */
+    private void saveUserInfo(int userId, String username, String userImage) {
+        UserIMInfo userInfo = new UserIMInfo();
+        userInfo.setId(userId);
+        userInfo.setNickname(username);
+        userInfo.setAvatarUrl(APIContents.HOST + "/" + userImage);
+        userInfo.save();
+    }
+
+    /**
      * 获取群组信息
      */
     private void getGroupChatInfo() {
-
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                String url = APIContents.HOST + "/api/Member/TeamList/" + AppData.getString(AppData.Keys.AD_USER_ID);
+                OkHttpUtils.doGet(url, mHttpCallBack, 0);
+            }
+        }.start();
     }
-
 
     private void bottomInit() {
         fragments = new ArrayList<>(5);
@@ -253,6 +283,24 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
         Log.e("response", response);
+        switch (requestId) {
+            case 0:
+                try {
+                    JSONArray array = new JSONArray(response);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        JSONObject object = jsonObject.getJSONObject("team");
+                        GroupChatInfo groupChatInfo = new GroupChatInfo();
+                        groupChatInfo.setTargetId(object.getString("id"));
+                        groupChatInfo.setName(object.getString("name"));
+                        groupChatInfo.setImage(APIContents.HOST + "/" + object.getString("avatarUrl"));
+                        groupChatInfo.save();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
     }
 
     @SuppressLint("HandlerLeak")

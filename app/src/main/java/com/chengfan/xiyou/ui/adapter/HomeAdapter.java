@@ -1,7 +1,6 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -39,25 +38,31 @@ public class HomeAdapter extends BaseRVAdapter<MemberBean, BaseViewHolder> {
             helper.getView(R.id.home_is_hy_iv).setVisibility(View.GONE);
         }
 
-        if (item.getAccompanyPlay() != null)
-            helper.setText(R.id.home_user_game_name_tv, item.getAccompanyPlay().getTitle() + " . ￥" + item.getAccompanyPlay().getPrice() + "/小时");
+        if (item.getAccompanyPlay() != null) {
+            helper.getView(R.id.home_user_game_name_tv).setVisibility(View.VISIBLE);
+            helper.setText(R.id.home_user_game_name_tv,
+                    item.getAccompanyPlay().getSubject().getTitle()
+                            + " ▪ ￥" + item.getAccompanyPlay().getPrice() + "/小时");
+        } else {
+            helper.getView(R.id.home_user_game_name_tv).setVisibility(View.GONE);
+            helper.setText(R.id.home_user_game_name_tv, "");
+        }
+
         helper.setText(R.id.home_user_address_tv, item.getAreaName());
         helper.setText(R.id.home_user_age_tv, item.getAge() + "岁");
         helper.setText(R.id.home_user_fanse_num_tv, item.getTotalFans() + "粉丝");
 
 
-        ImageView seximg=helper.getView(R.id.home_user_sex_iv);
+        ImageView seximg = helper.getView(R.id.home_user_sex_iv);
 
-        if (item.getGender()==1){
+        if (item.getGender() == 1) {
             seximg.setImageResource(R.drawable.home_nan);
-        }else {
+        } else {
             seximg.setImageResource(R.drawable.home_nv);
         }
 
-
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.home_user_pic_civ), APIContents.HOST + "/" + item.getAvatarUrl());
 
-        Log.e("homeurl:",APIContents.HOST + "/" + item.getAvatarUrl());
         List<ImageEntity> imageEntityList = new ArrayList<>();
         String imageStr = item.getMemberNews().getImages();
         if (imageStr != null) {

@@ -1,5 +1,7 @@
 package com.chengfan.xiyou.im;
 
+import android.util.Log;
+
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
