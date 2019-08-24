@@ -96,6 +96,20 @@
                         </LinearLayout>
                     </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/tv_chat_accompany"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/user_lick_add"
+                        android:gravity="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:text="发私信"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
                     <LinearLayout
                         android:id="@+id/a_user_info_lick_ll"
                         android:layout_width="wrap_content"

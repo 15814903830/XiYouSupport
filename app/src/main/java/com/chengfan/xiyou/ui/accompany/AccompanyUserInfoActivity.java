@@ -6,10 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -40,6 +41,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
 
 /**
  * @author: Zero Yuan
@@ -72,6 +74,11 @@ public class AccompanyUserInfoActivity extends
     BottomNavigationViewEx mBotNav;
     @BindView(R.id.fragment_navigation_vp)
     WrapContentHeightViewPager mFragmentNavigationVp;
+
+    @BindView(R.id.a_user_info_game_select_rl)
+    RelativeLayout rl_accompany;
+    @BindView(R.id.tv_chat_accompany)
+    TextView tv_chat;
 
     private VpAdapter adapter;
     private List<Fragment> fragments;
@@ -124,7 +131,7 @@ public class AccompanyUserInfoActivity extends
         mPresenter.userInfoParameter(currentMemberId);
     }
 
-    @OnClick({R.id.detail_back, R.id.a_user_info_more_tv})
+    @OnClick({R.id.detail_back, R.id.a_user_info_more_tv, R.id.tv_chat_accompany})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.detail_back:
@@ -132,6 +139,11 @@ public class AccompanyUserInfoActivity extends
                 break;
             case R.id.a_user_info_more_tv:
                 ForwardUtil.getInstance(this).forward(AccompanyMoreActivity.class);
+                break;
+            case R.id.tv_chat_accompany:
+                RongIM.getInstance().startPrivateChat(AccompanyUserInfoActivity.this,
+                        String.valueOf(currentMemberId),
+                        mAccompanyUserInfoEntity.getNickname());
                 break;
         }
     }
@@ -196,7 +208,9 @@ public class AccompanyUserInfoActivity extends
         if (accompanyUserInfoEntity.getId() ==
                 DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID))) {
             mAUserInfoLickLl.setVisibility(View.GONE);
+            tv_chat.setVisibility(View.GONE);
         } else {
+            tv_chat.setVisibility(View.VISIBLE);
             if (accompanyUserInfoEntity.isIsFans()) {
                 mAUserInfoLickLl.setBackgroundResource(R.drawable.user_licked_bg);
                 mAUserInfoLickIv.setImageResource(R.drawable.icon_licked);
@@ -220,7 +234,6 @@ public class AccompanyUserInfoActivity extends
             @Override
             public void onMemberShipListener() {
                 mPresenter.memberShipLoad(currentMemberId, false);
-                Log.e("currentMemberId", "" + currentMemberId);
             }
         });
         mAUserInfoLickLl.setOnClickListener(new View.OnClickListener() {
@@ -236,6 +249,11 @@ public class AccompanyUserInfoActivity extends
         });
 
         mUserInfoAdapter.setNewData(accompanyUserInfoEntity.getAccompanyPlay());
+        if (accompanyUserInfoEntity.getAccompanyPlay().isEmpty()) {
+            rl_accompany.setVisibility(View.GONE);
+        } else {
+            rl_accompany.setVisibility(View.VISIBLE);
+        }
     }
 
 }

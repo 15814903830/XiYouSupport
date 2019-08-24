@@ -135,11 +135,6 @@ public class AccompanyDetailActivity extends
         mPresenter.checkLetterParameter(currentMemberId);
         mPresenter.checkVIPParameter();
 
-        if (DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID)) == currentMemberId) {
-            mOrderBottomLl.setVisibility(View.GONE);
-            mOrderFocusTv.setVisibility(View.GONE);
-        }
-
         mCheckLetterDialog = new CheckLetterDialog(this);
         mCheckLetterDialog.setCheckListener(new CheckLetterDialog.CheckListener() {
             @Override
@@ -238,8 +233,10 @@ public class AccompanyDetailActivity extends
         mOrderRv.setAdapter(mAccompanyDetailAdapter);
         mOrderRv.setFocusableInTouchMode(false);
 
-        if (currentMemberId == DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID))) {
+        if (accompanyDetailEntity.getMemberId() ==
+                DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID))) {
             mOrderBottomLl.setVisibility(View.GONE);
+            mOrderFocusTv.setVisibility(View.GONE);
         } else {
             mOrderBottomLl.setVisibility(View.VISIBLE);
         }
