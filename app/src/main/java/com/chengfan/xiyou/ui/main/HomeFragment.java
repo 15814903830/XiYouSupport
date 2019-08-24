@@ -185,10 +185,6 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
         mPresenter.onAttach(getActivity(), this);
         mHomeBannerEntity = new HomeBannerEntity();
         mHandler.sendEmptyMessage(MSG_LOAD_DATA);
-        // areaCode = UserStorage.getInstance().getLogin().getAreaCode();
-        // areaName = UserStorage.getInstance().getLogin().getAreaName();
-
-        // mSearchAddressTv.setText(areaName);
         toBundle = new Bundle();
         mMemberBeanList = new ArrayList<>();
         iniView();
