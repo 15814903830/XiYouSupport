@@ -14,6 +14,7 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.model.entity.SayHiBean;
 import com.chengfan.xiyou.domain.model.entity.SayHiEntity;
+import com.chengfan.xiyou.im.UserIMInfo;
 import com.chengfan.xiyou.ui.adapter.SayHiAdapter;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.FontHelper;
@@ -27,6 +28,13 @@ import com.zero.ci.widget.logger.Logger;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.rong.imkit.RongIM;
+import io.rong.imlib.IRongCallback;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.TextMessage;
 
 /**
  * @author: Zero Yuan
@@ -117,6 +125,9 @@ public class SayHiDialog extends Dialog {
             sayHiBean.setFriendId(AppData.getString(AppData.Keys.AD_USER_ID));
             sayHiBean.setMemberId(mSayHiEntityList.get(i).getId());
             sayHiBeanList.add(sayHiBean);
+
+            sendMessage(mSayHiEntityList.get(i).getId(), mSayHiEntityList.get(i).getNickname(),
+                    mSayHiEntityList.get(i).getAvatarUrl());
         }
         Logger.d("requestAdd  : " + new Gson().toJson(sayHiBeanList));
         HttpRequest.post(APIContents.SayHi + "/" + AppData.getString(AppData.Keys.AD_USER_ID))
@@ -135,4 +146,54 @@ public class SayHiDialog extends Dialog {
                     }
                 });
     }
+
+    /**
+     * 发送消息
+     *
+     * @param id
+     * @param nickname
+     * @param avatarUrl
+     */
+    private void sendMessage(int id, String nickname, String avatarUrl) {
+        saveUserInfo(id, nickname, avatarUrl);
+
+        TextMessage textMessage = TextMessage.obtain("你好！");
+        Message message = Message.obtain(String.valueOf(id),
+                Conversation.ConversationType.PRIVATE, textMessage);
+        RongIM.getInstance().sendMessage(message, null, null, sendMessageCallback);
+    }
+
+    /**
+     * 保存用户信息
+     *
+     * @param userId
+     * @param username
+     * @param userImage
+     */
+    private void saveUserInfo(int userId, String username, String userImage) {
+        UserIMInfo userInfo = new UserIMInfo();
+        userInfo.setId(userId);
+        userInfo.setNickname(username);
+        userInfo.setAvatarUrl(APIContents.HOST + "/" + userImage);
+        userInfo.save();
+    }
+
+    private IRongCallback.ISendMessageCallback sendMessageCallback =
+            new IRongCallback.ISendMessageCallback() {
+                @Override
+                public void onAttached(Message message) {
+
+                }
+
+                @Override
+                public void onSuccess(Message message) {
+
+                }
+
+                @Override
+                public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+
+                }
+            };
+
 }
