@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -18,8 +21,6 @@ import com.chengfan.xiyou.im.GroupChatInfo;
 import com.chengfan.xiyou.im.UserIMInfo;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
-import com.chengfan.xiyou.okhttp.RequestParams;
-import com.chengfan.xiyou.ui.adapter.VpAdapter;
 import com.chengfan.xiyou.ui.main.AccompanyFragment;
 import com.chengfan.xiyou.ui.main.ChatFragment;
 import com.chengfan.xiyou.ui.main.DynamicFragment;
@@ -32,7 +33,6 @@ import com.chengfan.xiyou.utils.status.StatusBarUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zero.ci.base.BaseActivity;
-import com.zero.ci.navigation.BottomNavigationViewEx;
 import com.zero.ci.network.zrequest.request.HttpRequest;
 import com.zero.ci.network.zrequest.response.AbstractResponse;
 import com.zero.ci.tool.ActManager;
@@ -44,23 +44,33 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
 
 public class MainActivity extends BaseActivity implements HttpCallBack {
 
-    @BindView(R.id.bot_nav)
-    BottomNavigationViewEx mBotNav;
-    @BindView(R.id.fragment_navigation_vp)
-    ViewPager mFragmentNavigationVp;
-    private VpAdapter adapter;
-    private List<Fragment> fragments;
+    @BindView(R.id.ll_tab_one_main)
+    LinearLayout ll_one;
+    @BindView(R.id.ll_tab_two_main)
+    LinearLayout ll_two;
+    @BindView(R.id.ll_tab_three_main)
+    LinearLayout ll_three;
+    @BindView(R.id.ll_tab_four_main)
+    LinearLayout ll_four;
+    @BindView(R.id.ll_tab_five_main)
+    LinearLayout ll_five;
+
+    private static final String TAG_ONE = "one";
+    private static final String TAG_TWO = "two";
+    private static final String TAG_THREE = "three";
+    private static final String TAG_FOUR = "four";
+    private static final String TAG_FIVE = "five";
+
     HomeFragment mHomeFragment;
     DynamicFragment mDynamicFragment;
     AccompanyFragment mAccompanyFragment;
@@ -68,6 +78,10 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
     MineFragment mMineFragment;
 
     private HttpCallBack mHttpCallBack;
+
+    private FragmentManager fm;
+    private String mTag;
+    private Fragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +94,115 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
         StatusBarUtil.StatusBarLightMode(this, flag);
 
         mHttpCallBack = this;
+
+        fm = getSupportFragmentManager();
+
+        initView();
+
+        initUserInfo();
+
+//        bottomInit();
+
+        getGroupChatInfo();
+
+    }
+
+    private void initView() {
+        if (mHomeFragment == null) {
+            mHomeFragment = new HomeFragment();
+        }
+        showFragment(mHomeFragment, TAG_ONE);
+    }
+
+    @OnClick({R.id.ll_tab_one_main, R.id.ll_tab_two_main, R.id.ll_tab_three_main,
+            R.id.ll_tab_four_main, R.id.ll_tab_five_main})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_tab_one_main:
+                if (mHomeFragment == null) {
+                    mHomeFragment = new HomeFragment();
+                }
+                showFragment(mHomeFragment, TAG_ONE);
+                break;
+            case R.id.ll_tab_two_main:
+                if (mAccompanyFragment == null) {
+                    mAccompanyFragment = new AccompanyFragment();
+                }
+                showFragment(mAccompanyFragment, TAG_TWO);
+                break;
+            case R.id.ll_tab_three_main:
+                if (mChatFragment == null) {
+                    mChatFragment = new ChatFragment();
+                }
+                showFragment(mChatFragment, TAG_THREE);
+                break;
+            case R.id.ll_tab_four_main:
+                if (mDynamicFragment == null) {
+                    mDynamicFragment = new DynamicFragment();
+                }
+                showFragment(mDynamicFragment, TAG_FOUR);
+                break;
+            case R.id.ll_tab_five_main:
+                if (mMineFragment == null) {
+                    mMineFragment = new MineFragment();
+                }
+                showFragment(mMineFragment, TAG_FIVE);
+                break;
+        }
+    }
+
+    /**
+     * 显示Fragment
+     */
+    private void showFragment(Fragment fragment, String tag) {
+        if (tag.equals(mTag)) {
+            return;
+        }
+        FragmentTransaction transaction = fm.beginTransaction();
+        if (mFragment != null) {
+            transaction.hide(mFragment);
+        }
+        if (fragment.isAdded()) {
+            transaction.show(fragment);
+        } else {
+            transaction.add(R.id.frame_main, fragment, tag);
+        }
+        transaction.commit();
+        mTag = tag;
+        mFragment = fragment;
+        initTabLayout();
+    }
+
+    /**
+     * 初始化TAB布局
+     */
+    private void initTabLayout() {
+        ll_one.setSelected(false);
+        ll_two.setSelected(false);
+        ll_three.setSelected(false);
+        ll_four.setSelected(false);
+        ll_five.setSelected(false);
+        switch (mTag) {
+            case TAG_ONE:
+                ll_one.setSelected(true);
+                break;
+            case TAG_TWO:
+                ll_two.setSelected(true);
+                break;
+            case TAG_THREE:
+                ll_three.setSelected(true);
+                break;
+            case TAG_FOUR:
+                ll_four.setSelected(true);
+                break;
+            case TAG_FIVE:
+                ll_five.setSelected(true);
+                break;
+        }
+    }
+
+
+    private void initUserInfo() {
         HttpRequest.get(APIContents.Conter)
                 .params(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID))
                 .execute(new AbstractResponse<String>() {
@@ -114,11 +237,6 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
                         ).start();
                     }
                 });
-
-        bottomInit();
-
-        getGroupChatInfo();
-
     }
 
     /**
@@ -149,47 +267,6 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
             }
         }.start();
     }
-
-    private void bottomInit() {
-        fragments = new ArrayList<>(5);
-        mHomeFragment = new HomeFragment();
-        mAccompanyFragment = new AccompanyFragment();
-        mChatFragment = new ChatFragment();
-        mDynamicFragment = new DynamicFragment();
-        mMineFragment = new MineFragment();
-
-        // add to fragments for adapter
-        fragments.add(mHomeFragment);
-        fragments.add(mAccompanyFragment);
-        fragments.add(mChatFragment);
-        fragments.add(mDynamicFragment);
-        fragments.add(mMineFragment);
-
-        //set enable
-        mBotNav.enableItemShiftingMode(false);
-        mBotNav.enableShiftingMode(false);
-        mBotNav.enableAnimation(true);
-        mBotNav.setIconSize(20, 20);
-        mBotNav.setIconsMarginTop(25);
-
-        // set adapter
-        adapter = new VpAdapter(getSupportFragmentManager(), fragments);
-        mFragmentNavigationVp.setAdapter(adapter);
-        mFragmentNavigationVp.setOffscreenPageLimit(4);
-
-        // binding with ViewPager
-        mBotNav.setupWithViewPager(mFragmentNavigationVp);
-
-        mMineFragment.setAttentionSelectListener(new MineFragment.AttentionSelectListener() {
-            @Override
-            public void onAttentionSelectListener() {
-                mBotNav.setCurrentItem(3);
-                Logger.e("AttentionSelectListener ----  is going ");
-                AppData.putBoolen(AppData.Keys.AD_IS_SHOW, true);
-            }
-        });
-    }
-
 
     /**
      * <p>连接服务器，在整个应用程序全局，只需要调用一次</p>
@@ -255,22 +332,6 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
         }
         return super.onKeyDown(keyCode, event);
     }
-
-    private void commitanswers() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<RequestParams> list = new ArrayList<>();
-                list.add(new RequestParams(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID)));
-
-                Log.e("commitanswers", APPContents.E_ID);
-                Log.e("commitanswers", AppData.getString(AppData.Keys.AD_USER_ID));
-                OkHttpUtils.doGet(APIContents.Conter, list, mHttpCallBack, 1);
-
-            }
-        }).start();
-    }
-
 
     @Override
     public void onResponse(String response, int requestId) {
