@@ -12,22 +12,16 @@ import android.view.ViewGroup;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
-import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.ChatFriendContract;
 import com.chengfan.xiyou.domain.model.entity.ChatFriendEntity;
 import com.chengfan.xiyou.domain.presenter.ChatFriendPresenterImpl;
+import com.chengfan.xiyou.im.UserIMInfo;
 import com.chengfan.xiyou.ui.adapter.ChatFriendAdapter;
 import com.chengfan.xiyou.ui.dialog.ChatFriendDialog;
-import com.chengfan.xiyou.utils.AppData;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.zero.ci.base.BaseApiResponse;
 import com.zero.ci.base.BaseFragment;
-import com.zero.ci.network.zrequest.request.HttpRequest;
-import com.zero.ci.network.zrequest.response.AbstractResponse;
 import com.zero.ci.refresh.ZRefreshLayout;
 import com.zero.ci.tool.ToastUtil;
-import com.zero.ci.widget.logger.Logger;
 import com.zero.ci.widget.recyclerview.OnItemClickListener;
 import com.zero.ci.widget.recyclerview.OnItemMenuClickListener;
 import com.zero.ci.widget.recyclerview.SwipeMenu;
@@ -36,7 +30,6 @@ import com.zero.ci.widget.recyclerview.SwipeMenuCreator;
 import com.zero.ci.widget.recyclerview.SwipeMenuItem;
 import com.zero.ci.widget.recyclerview.SwipeRecyclerView;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +96,11 @@ public class ChatFriendFragment
         mChatFriendSrv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int adapterPosition) {
+
+                saveUserInfo(mChatFriendEntityList.get(adapterPosition).getId(),
+                        mChatFriendEntityList.get(adapterPosition).getNickname(),
+                        mChatFriendEntityList.get(adapterPosition).getAvatarUrl());
+
                 RongIM.getInstance().startPrivateChat(getActivity(),
                         mChatFriendEntityList.get(adapterPosition).getId() + "",
                         mChatFriendEntityList.get(adapterPosition).getNickname());
@@ -112,10 +110,22 @@ public class ChatFriendFragment
 
         mChatFriendAdapter = new ChatFriendAdapter(R.layout.adapter_chat_friend, mChatFriendEntityList);
         mChatFriendSrv.setAdapter(mChatFriendAdapter);
-
-
     }
 
+    /**
+     * 保存用户信息
+     *
+     * @param userId
+     * @param username
+     * @param userImage
+     */
+    private void saveUserInfo(int userId, String username, String userImage) {
+        UserIMInfo userInfo = new UserIMInfo();
+        userInfo.setId(userId);
+        userInfo.setNickname(username);
+        userInfo.setAvatarUrl(APIContents.HOST + "/" + userImage);
+        userInfo.save();
+    }
 
     /**
      * 菜单创建器，在Item要创建菜单的时候调用。
@@ -153,7 +163,7 @@ public class ChatFriendFragment
             menuBridge.closeMenu();
             mChatFriendDialog.show();
             firendId = mChatFriendEntityList.get(position).getId() + "";
-            Log.e("myurl:---",""+position);
+            Log.e("myurl:---", "" + position);
         }
     };
 

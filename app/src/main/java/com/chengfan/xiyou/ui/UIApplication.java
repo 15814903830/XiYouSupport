@@ -86,7 +86,7 @@ public class UIApplication extends BaseApplication {
                             RongIM.getInstance().refreshUserInfoCache(new UserInfo(
                                     String.valueOf(userIMInfo.getId()),
                                     userIMInfo.getNickname(),
-                                    Uri.parse(APIContents.HOST + "/" + userIMInfo.getAvatarUrl())));
+                                    Uri.parse(userIMInfo.getAvatarUrl())));
                         }
                     }
                 }

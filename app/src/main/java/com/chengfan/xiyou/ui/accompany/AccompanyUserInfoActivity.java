@@ -18,6 +18,7 @@ import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.AccompanyUserInfoContract;
 import com.chengfan.xiyou.domain.model.entity.AccompanyUserInfoEntity;
 import com.chengfan.xiyou.domain.presenter.AccompanyUserInfoPresenterImpl;
+import com.chengfan.xiyou.im.UserIMInfo;
 import com.chengfan.xiyou.ui.adapter.AccompanyUserInfoAdapter;
 import com.chengfan.xiyou.ui.adapter.VpAdapter;
 import com.chengfan.xiyou.ui.dialog.MemberShipDialog;
@@ -141,11 +142,28 @@ public class AccompanyUserInfoActivity extends
                 ForwardUtil.getInstance(this).forward(AccompanyMoreActivity.class);
                 break;
             case R.id.tv_chat_accompany:
+                saveUserInfo(currentMemberId, mAccompanyUserInfoEntity.getNickname(),
+                        mAccompanyUserInfoEntity.getAvatarUrl());
                 RongIM.getInstance().startPrivateChat(AccompanyUserInfoActivity.this,
                         String.valueOf(currentMemberId),
                         mAccompanyUserInfoEntity.getNickname());
                 break;
         }
+    }
+
+    /**
+     * 保存用户信息
+     *
+     * @param userId
+     * @param username
+     * @param userImage
+     */
+    private void saveUserInfo(int userId, String username, String userImage) {
+        UserIMInfo userInfo = new UserIMInfo();
+        userInfo.setId(userId);
+        userInfo.setNickname(username);
+        userInfo.setAvatarUrl(APIContents.HOST + "/" + userImage);
+        userInfo.save();
     }
 
     @Override
