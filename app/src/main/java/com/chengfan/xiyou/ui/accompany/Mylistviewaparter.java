@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -63,18 +65,27 @@ public class Mylistviewaparter extends BaseAdapter {
             vh.sum=convertView.findViewById(R.id.accompany_game_num_tv);
             vh.place=convertView.findViewById(R.id.accompany_game_address_tv);
             vh.headimg=convertView.findViewById(R.id.accompany_game_civ);
+            vh.mseximg=convertView.findViewById(R.id.accompany_game_sex_iv);
             convertView.setTag(vh);
         }else {
             vh = (VH) convertView.getTag();
         }
-        vh.tvmoney.setText(""+list.get(position).getPrice());
+//        vh.tvmoney.setText(list.get(position).getGradeTitle()+" ¥ "+list.get(position).getPrice());
+        vh.tvmoney.setText(" ¥ "+list.get(position).getPrice()+"/小时");
+        Log.e("vh.tvmoney",list.get(position).getGradeTitle());
         vh.tvname.setText(""+list.get(position).getNickname());
         vh.age.setText(""+list.get(position).getAge()+"岁");
-        vh.sum.setText(""+list.get(position).getTotalFans());
+        vh.sum.setText(""+list.get(position).getTotalFans()+"粉丝");
         vh.place.setText(""+list.get(position).getAreaName());
 
+        if (list.get(position).getGender()==1){
+            //男
+            vh.mseximg.setImageResource(R.drawable.home_nan);
+        }else {
+            //女
+            vh.mseximg.setImageResource(R.drawable.home_nv);
+        }
         Glide.with(context).load(APIContents.HOST+"/"+list.get(position).getAvatarUrl()).into(vh.headimg);
-        Log.e("imgurl",APIContents.HOST+list.get(position).getAvatarUrl());
         return convertView;
     }
 
@@ -86,6 +97,7 @@ public class Mylistviewaparter extends BaseAdapter {
         RegularTextView age;//年龄
         RegularTextView sum;//粉丝数
         RegularTextView place;//位置
+        ImageView mseximg;//性别
     }
 
 }

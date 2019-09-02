@@ -84,8 +84,9 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
         helper.setText(R.id.attention_lick_num_tv, item.getTotalPraise() + " ");
         if (item.getMember().getAccompanyPlay().size() > 0)
             helper.setText(R.id.attention_game_name_tv,
-                    item.getMember().getAccompanyPlay().get(0).getTitle() + ". ￥" +
-                            item.getMember().getAccompanyPlay().get(0).getPrice());
+                    item.getMember().getAccompanyPlay().get(0).getSubject().getTitle() + ". ￥" +
+                            item.getMember().getAccompanyPlay().get(0).getPrice()+"/小时");
+
         helper.getView(R.id.attention_del_tv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +139,7 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
     }
 
 
-    private void setPhoneNgV(NineGridView nineGridView) {
+    private void setPhoneNgV(final NineGridView nineGridView) {
         //设置图片加载器，这个是必须的，不然图片无法显示
         nineGridView.setImageLoader(new GlideImageLoader());
         //设置显示列数，默认3列
@@ -169,9 +170,9 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
             @Override
             public void onNineGirdItemClick(int position, NineGridBean gridBean, NineGirdImageContainer imageContainer) {
                 List<ImageEntity> imageEntityList = new ArrayList<>();
-                //for (int i = 0; i < nineGridBeanList.size(); i++) {
-                imageEntityList.add(new ImageEntity(gridBean.getThumbUrl()));
-                // }
+                for (int i = 0; i < nineGridView.getDataList().size(); i++) {
+                    imageEntityList.add(new ImageEntity(nineGridView.getDataList().get(i).getThumbUrl()));
+                }
                 ViewPagerDialog viewPagerDialog = new ViewPagerDialog(mContext, imageEntityList);
                 viewPagerDialog.show();
             }

@@ -123,8 +123,6 @@ public class MineOrderAllFragment extends BaseFragment<MineOrderAllContract.View
 
         initView();
         initZrl();
-
-
         request();
         return mView;
     }
@@ -156,6 +154,7 @@ public class MineOrderAllFragment extends BaseFragment<MineOrderAllContract.View
                     Log.e("position1",""+position);
                     Bundle toBundle = new Bundle();
                     toBundle.putInt(APPContents.E_ID, mPlaceOrderList.get(position).getUniformOrderId());
+                    toBundle.putString("NAME", mPlaceOrderList.get(position).getAccompanyPlay().getMember().getNickname());
                     ForwardUtil.getInstance(getActivity()).forward(MineOrderDetailActivity.class, toBundle);
                 }
             });
@@ -196,7 +195,6 @@ public class MineOrderAllFragment extends BaseFragment<MineOrderAllContract.View
             mTakingAdapter.setTakingRefuseListener(new MineTakingOrderAllAdapter.TakingRefuseListener() {
                 @Override
                 public void onTakingRefuseListener(int position) {
-                    Log.e("position",""+position);
                     selectPosition = position;
                     NiceDialog.init()
                             .setLayoutId(R.layout.dolingjujue)
@@ -244,6 +242,8 @@ public class MineOrderAllFragment extends BaseFragment<MineOrderAllContract.View
 
                                             }
                                         }
+
+
                                     });
 
 
@@ -310,10 +310,10 @@ public class MineOrderAllFragment extends BaseFragment<MineOrderAllContract.View
                     bean.setAccompanyPlayId(mTakingOrderList.get(selectPosition).getAccompanyPlayId());
                     bean.setMemberId(Integer.parseInt(AppData.getString(AppData.Keys.AD_USER_ID)));
                     bean.setStatus(2);
-                    Log.e("setStatus","setStatus2");
-                    Logger.d("MineOrderAllFragment ==>>  " + new Gson().toJson(bean));
                     mPresenter.updateOrderStatusParameter(bean);
+                    mTakingAdapter.notifyDataSetChanged();
                     request();
+                    mPresenter.takingOrderAllParameter(1, true);
                 }
             });
 
@@ -383,6 +383,7 @@ public class MineOrderAllFragment extends BaseFragment<MineOrderAllContract.View
                 mPlaceOrderList.addAll(mineOrderEntityList);
             }
             mPlaceAdapter.setNewData(mineOrderEntityList);
+            mPlaceAdapter.notifyDataSetChanged();
         }
     }
 
@@ -395,6 +396,7 @@ public class MineOrderAllFragment extends BaseFragment<MineOrderAllContract.View
             if (isPtr) {
                 mTakingAdapter.replaceData(mineOrderEntityList);
                 mTakingOrderList = mineOrderEntityList;
+                mTakingAdapter.setNewData(mTakingOrderList);
             } else {
                 mTakingOrderList.addAll(mineOrderEntityList);
             }
@@ -406,7 +408,7 @@ public class MineOrderAllFragment extends BaseFragment<MineOrderAllContract.View
 
     @Override
     public void updateOrderStatusLoad(BaseApiResponse baseApiResponse) {
-        ToastUtil.show(baseApiResponse.getMsg());//拒绝接口回调
+        request();
     }
 
     private void request() {
@@ -432,7 +434,8 @@ public class MineOrderAllFragment extends BaseFragment<MineOrderAllContract.View
             if (jujueBase.isSuc()){
                 dialogs.dismiss();
                 Toast.makeText(getContext(), jujueBase.getMsg(), Toast.LENGTH_SHORT).show();
-                request();
+                mPresenter.takingOrderAllParameter(1, true);
+
             }
         } catch (Exception e) {
             e.printStackTrace();

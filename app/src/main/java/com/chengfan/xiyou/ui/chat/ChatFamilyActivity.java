@@ -15,6 +15,8 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APIContents;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.github.zackratos.ultimatebar.UltimateBar;
@@ -53,7 +55,7 @@ public class ChatFamilyActivity extends BaseActivity {
                 .drawableBar();
         initView();
         mXyMiddleTv.setText("家族专区");
-        mChatFamilyWv.loadUrl("http://xy.gx11.cn/Wap/Family?id=" + AppData.getString(AppData.Keys.AD_USER_ID) + "&sort=0&page=1&limit=0");
+        mChatFamilyWv.loadUrl("http://api.maihui111.com//Wap/Family?id=" + AppData.getString(AppData.Keys.AD_USER_ID));
     }
     private void initView() {
         mChatFamilyWv.setWebViewClient(new WebViewClient() {

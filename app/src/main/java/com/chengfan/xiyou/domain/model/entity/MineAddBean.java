@@ -34,7 +34,6 @@ public class MineAddBean  implements Serializable {
     private String serviceEndTime;
     private String price;
     private String remark;
-    private String status;
 
     @Override
     public String toString() {
@@ -50,10 +49,23 @@ public class MineAddBean  implements Serializable {
                 ", price='" + price + '\'' +
                 ", remark='" + remark + '\'' +
                 ", status='" + status + '\'' +
+                ", audioPath='" + audioPath + '\'' +
                 ", areaTitle='" + areaTitle + '\'' +
                 ", gradeTitle='" + gradeTitle + '\'' +
                 '}';
     }
+
+    private String status;
+
+    public String getAudioPath() {
+        return audioPath;
+    }
+
+    public void setAudioPath(String audioPath) {
+        this.audioPath = audioPath;
+    }
+
+    private String audioPath;
 
     private String areaTitle;
 

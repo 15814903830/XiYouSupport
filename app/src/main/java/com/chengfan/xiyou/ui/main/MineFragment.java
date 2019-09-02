@@ -1,5 +1,6 @@
 package com.chengfan.xiyou.ui.main;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.chengfan.xiyou.ui.mine.MineRecordActivity;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.view.BoldTextView;
 import com.chengfan.xiyou.view.RegularTextView;
+import com.chengfan.xiyou.view.WebKeFuActivity;
 import com.github.zackratos.ultimatebar.UltimateBar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -102,16 +104,18 @@ public class MineFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_mine, null);
         mUnbinder = ButterKnife.bind(this, mView);
-        UltimateBar.Companion.with(getActivity())
-                .statusDrawable(new ColorDrawable(Color.parseColor("#00000000")))
-                .statusDark(true)
-                .create()
-                .drawableBar();
         mXiYouBeanList = new ArrayList<>();
         mMineEntity = new MineEntity();
+        setMineData();
         return mView;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        request();
+    }
 
     @OnClick({R.id.mine_top_cl, R.id.mine_guan_ll, R.id.mine_fen_ll, R.id.mine_dong_ll, R.id.mine_order_ll, R.id.mine_game_ll, R.id.mine_money_ll})
     public void onClick(View view) {
@@ -149,7 +153,7 @@ public class MineFragment extends BaseFragment {
 
 
     private void setMineData() {
-        mXiYouBeanList.add(new XiYouBean(R.drawable.mine_huiyuan, getResources().getString(R.string.mine_huiyuan_txt), "1"));
+    //    mXiYouBeanList.add(new XiYouBean(R.drawable.mine_huiyuan, getResources().getString(R.string.mine_huiyuan_txt), "1"));
         mXiYouBeanList.add(new XiYouBean(R.drawable.mine_yaoqing, getResources().getString(R.string.mine_yaoqing_txt), "1"));
         mXiYouBeanList.add(new XiYouBean(R.drawable.mine_jiazu, getResources().getString(R.string.mine_familys_txt), "1"));
         mXiYouBeanList.add(new XiYouBean(R.drawable.mine_xiaofei, getResources().getString(R.string.mine_xiaofei_txt), "1"));
@@ -165,35 +169,38 @@ public class MineFragment extends BaseFragment {
             public void onItemClick(BaseRVAdapter adapter, View view, int position) {
 
                 switch (position) {
+//                    case 0:
+//                        /*我的会员*/
+//                        ForwardUtil.getInstance(getActivity()).forward(MineMemberActivity.class);
+//                        break;
                     case 0:
-                        /*我的会员*/
-                        ForwardUtil.getInstance(getActivity()).forward(MineMemberActivity.class);
-                        break;
-                    case 1:
                         /*我的邀请 ====>>>  wv*/
                         ForwardUtil.getInstance(getActivity()).forward(MineInviteActivity.class);
                         break;
-                    case 2:
+                    case 1:
                         /*我的家族*/
                         ForwardUtil.getInstance(getActivity()).forward(MineFamilyActivity.class);
                         break;
-                    case 3:
+                    case 2:
                         /*消费记录  =====>>>  wv 《》*/
                         ForwardUtil.getInstance(getActivity()).forward(MineRecordActivity.class);
                         break;
-                    case 4:
+                    case 3:
                         /*联系客服*/
-                        CSCustomServiceInfo.Builder csBuilder = new CSCustomServiceInfo.Builder();
-                        CSCustomServiceInfo csInfo = csBuilder.nickName("嬉游客服").build();
-                        RongIM.getInstance().startCustomerServiceChat(getActivity(), "gx123", "联系客服", csInfo);
+//                        CSCustomServiceInfo.Builder csBuilder = new CSCustomServiceInfo.Builder();
+//                        CSCustomServiceInfo csInfo = csBuilder.nickName("嬉游客服").build();
+//                        RongIM.getInstance().startCustomerServiceChat(getActivity(), "gx123", "联系客服", csInfo);
+                        startActivity(new Intent(getContext(), WebKeFuActivity.class));
                         break;
-                    case 5:
+                    case 4:
                         /*关于我们  =====>>>  wv*/
                         ForwardUtil.getInstance(getActivity()).forward(MineAboutActivity.class);
                         break;
-                    case 6:
+                    case 5:
                         /*退出账号*/
                         ForwardUtil.getInstance(getActivity()).forward(LoginActivity.class);
+                        if (getActivity()!=null)
+                        getActivity().finish();
                         break;
 
                 }
@@ -232,8 +239,6 @@ public class MineFragment extends BaseFragment {
             ImageLoaderManager.getInstance().showImage(mMinePicCiv, APIContents.HOST + "/" + mineEntity.getAvatarUrl());
         }
         mMineUserNameTv.setText(mineEntity.getNickname());
-        //  mMinePhoneTv.setText(mineEntity.);
-        // Log.e("mMinePicCiv",""+mineEntity.getAvatarUrl());
         ImageLoaderManager.getInstance().showImage(mMinePicCiv, APIContents.HOST + "/" + mineEntity.getAvatarUrl());
         if (mineEntity.isVip()) {
             mMiniHuiyuanIv.setVisibility(View.VISIBLE);
@@ -255,8 +260,7 @@ public class MineFragment extends BaseFragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             if (data) {
-                setMineData();
-                request();
+                data = false;
             } else {
                 data = false;
             }

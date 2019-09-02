@@ -239,11 +239,38 @@
                         android:layout_below="@+id/order_user_lick_ll"
                         android:background="@color/color_E5E5E5" />
 
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/padding_20"
+                        android:background="@drawable/llpwxq"
+                        android:gravity="center"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/order_line_two_view"
+                        android:id="@+id/ll_mp3"
+                        android:layout_width="120dp"
+                        android:layout_height="@dimen/rc_dimen_size_24">
+                        <ImageView
+                            android:id="@+id/iv_bfzt"
+                            android:layout_marginLeft="@dimen/album_dp_10"
+                            android:background="@drawable/img_bfzt_drawable"
+                            android:layout_width="8dp"
+                            android:layout_height="8dp" />
+                        <TextView
+                            android:id="@+id/tv_mp3time"
+                            android:layout_marginRight="@dimen/album_dp_10"
+                            android:textSize="12sp"
+                            android:textColor="#D1AE81"
+                            android:gravity="center"
+                            android:text="10s"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent" />
+                    </LinearLayout>
                     <com.chengfan.xiyou.view.RegularTextView
                         android:id="@+id/order_shuoming_tv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/order_line_two_view"
+                        android:layout_below="@+id/ll_mp3"
                         android:layout_marginTop="20dp"
                         android:lineSpacingMultiplier="1.6"
                         android:paddingLeft="@dimen/padding_20"

@@ -7,9 +7,14 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.okhttp.BaseActivity;
+import com.chengfan.xiyou.utils.dialog.BaseNiceDialog;
+import com.chengfan.xiyou.utils.dialog.NiceDialog;
+import com.chengfan.xiyou.utils.dialog.ViewConvertListener;
+import com.chengfan.xiyou.utils.dialog.ViewHolder;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
@@ -20,17 +25,15 @@ public class WebActivity extends BaseActivity {
 
     private ImageView iv_back;
     private WebView webView;
-
-
+    BaseNiceDialog baseNiceDialog;
     private String mUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web);
-
         mUrl = getIntent().getStringExtra(KEY_URL);
-
+        showLoading();
         Log.e("mUrl",mUrl);
         initView();
         initEvents();
@@ -63,6 +66,8 @@ public class WebActivity extends BaseActivity {
             {
                 super.onPageFinished(view, url);
                 // 加载完成
+                if (baseNiceDialog!=null)
+                    baseNiceDialog.dismiss();
             }
 
             @Override
@@ -91,5 +96,25 @@ public class WebActivity extends BaseActivity {
     private void initView() {
         iv_back = findViewById(R.id.iv_back_web_view);
         webView = findViewById(R.id.web_view);
+    }
+
+    /**
+     * 显示loading
+     */
+    public void showLoading() {
+        Toast.makeText(this, "加载视频中", Toast.LENGTH_SHORT).show();
+        NiceDialog.init()
+                .setLayoutId(R.layout.dialog_loading_layout)
+                .setConvertListener(new ViewConvertListener() {
+                    @Override
+                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                         baseNiceDialog=dialog;
+                    }
+                })
+                .setOutCancel(false)
+                .setWidth(200)
+                .setHeight(200)
+                .setShowBottom(false)
+                .show(getSupportFragmentManager());
     }
 }

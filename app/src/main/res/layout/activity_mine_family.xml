@@ -12,7 +12,23 @@
         android:visibility="gone"
         />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:gravity="center"
+            android:text="您还没有家族!"
+            android:textSize="24sp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></WebView>
+</FrameLayout>
     <android.support.v4.widget.NestedScrollView
+        android:visibility="gone"
         android:id="@+id/family_nsv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

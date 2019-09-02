@@ -66,7 +66,13 @@ public class MineTakingNoStartAdapter extends BaseRVAdapter<MineOrderTakingEntit
                     mTakingTakersListener.onTakingTakersListener(helper.getAdapterPosition());
                 }
             });
+
+
+        }else {
+            helper.getView(R.id.tanking_no_start_ll).setVisibility(View.GONE);
         }
+
+
 
     }
 

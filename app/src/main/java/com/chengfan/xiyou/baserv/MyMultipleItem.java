@@ -2,6 +2,8 @@ package com.chengfan.xiyou.baserv;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.chengfan.xiyou.domain.model.entity.AccompanyEntity;
 
+import java.util.List;
+
 
 /**
  * @author glsite.com
@@ -17,12 +19,12 @@ public class MyMultipleItem implements MultiItemEntity {
     public static final int NORMAL_TYPE = 3;
 
     private int itemType;
-    private AccompanyEntity homeFragmnetRecyclViewBase;
+    AccompanyEntity.AccompanyPlayBean list;
 
 
-    public MyMultipleItem(int itemType, AccompanyEntity homeFragmnetRecyclViewBase) {
+    public MyMultipleItem(int itemType, AccompanyEntity.AccompanyPlayBean list) {
         this.itemType = itemType;
-        this.homeFragmnetRecyclViewBase = homeFragmnetRecyclViewBase;
+        this.list = list;
     }
 
     @Override
@@ -30,7 +32,7 @@ public class MyMultipleItem implements MultiItemEntity {
         return itemType;
     }
 
-    public AccompanyEntity  getData(){
-        return homeFragmnetRecyclViewBase;
+    public AccompanyEntity.AccompanyPlayBean  getData(){
+        return  list;
     }
 }

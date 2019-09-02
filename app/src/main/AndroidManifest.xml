@@ -17,7 +17,11 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_ST ATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STAT E" />
+    <uses-permission
+        android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
@@ -33,8 +37,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".ui.chat.Web2Activity"></activity>
-        <activity android:name=".ui.mine.order.AutonymtrueforflaseActivity2"></activity>
+        <activity android:name=".view.WebKeFuActivity"></activity>
+        <activity android:name=".ui.chat.Web2Activity" />
+        <activity android:name=".ui.mine.order.AutonymtrueforflaseActivity2" />
         <activity
             android:name=".ui.WebActivity"
             android:launchMode="singleTop"
@@ -105,7 +110,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MainActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentStatusTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
@@ -182,6 +187,9 @@
             android:name=".ui.mine.MineAddPlayActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.mine.MineAddPlayActivity2"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.mine.MineMemberActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -234,7 +242,13 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentStatusTheme" />
-        <activity android:name=".ui.chat.WebActivity" />
+        <activity android:name=".ui.chat.WebActivity" /> <!-- 配置APP ID -->
+        <meta-data
+            android:name="BUGLY_APPID"
+            android:value="91ac30603c" /> <!-- 配置APP版本号 -->
+        <meta-data
+            android:name="BUGLY_APP_VERSION"
+            android:value="1.0.0" />
     </application>
 
 </manifest>

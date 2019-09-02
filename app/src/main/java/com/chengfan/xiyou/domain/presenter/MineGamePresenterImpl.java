@@ -26,6 +26,7 @@ public class MineGamePresenterImpl extends BasePresenter<MineGameContract.View> 
         append(mModel.GAME_OBSERVABLE(), new NetObserver<List<MemberIdEntity>>(this) {
             @Override
             public void onNetNext(List<MemberIdEntity> result) {
+                if (result!=null)
                 mView.gamePlayLoad(result);
             }
 

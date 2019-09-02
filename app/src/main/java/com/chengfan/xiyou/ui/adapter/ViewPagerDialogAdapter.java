@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ public class ViewPagerDialogAdapter extends PagerAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.adapter_view_pager_dialog, null);
         ImageView mPhotoView = view.findViewById(R.id.vp_dialog_img);
         ImageLoaderManager.getInstance().showImage(mPhotoView, list.get(position).getImgUrl());
+        Log.e("getImgUrl",list.get(position).getImgUrl());
         container.addView(view);
         return view;
     }

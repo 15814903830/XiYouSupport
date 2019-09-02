@@ -83,13 +83,16 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.utils.StringUtils;
 
 /**
  * @author: Zero Yuan
@@ -283,7 +286,7 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
                 }
                 llone.setEnabled(false);
                 luyingstart.setText("s后开始录音，请做好准备");
-                /** 倒计时60秒，一次1秒 */
+                /** 倒计时3秒，一次1秒 */
                 timer = new CountDownTimer(3 * 1000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
@@ -293,6 +296,7 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
                     @Override
                     public void onFinish() {
                         timeronFinish();
+                        startmusic();
                     }
 
                 }.start();
@@ -302,67 +306,76 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
                 lltwo.setVisibility(View.GONE);
                 llone.setVisibility(View.GONE);
                 finish.setText("录制完成"+luztime+"s");
+                stopmusic();
                 break;
             case R.id.iv_bfzt://播放暂停
                 if (img){
                     imgbfzt.setSelected(true);
                     img=false;
+                    playmusic();
                 }else {
                     imgbfzt.setSelected(false);
                     img=true;
+                    stopplaymusic();
                 }
                 break;
             case R.id.tv_new://重新录制
                 llthree.setVisibility(View.VISIBLE);
                 timer1.cancel();
-                timeronFinish();
+                timer.cancel();
+                //timeronFinish();
+                llone.setVisibility(View.VISIBLE);
+                timer.start();
+
                 break;
         }
     }
 
-//    //开始录音
-//    public void  startmusic(){
-//        // TODO Auto-generated method stub
-//        mRecorder = new MediaRecorder();
-//        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//        mRecorder.setOutputFile(FileName);
-//        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-//        try {
-//            mRecorder.prepare();
-//        } catch (IOException e) {
-//            Log.e(LOG_TAG, "prepare() failed");
-//        }
-//        mRecorder.start();
-//    }
-//
-//    //停止录音
-//
-//    public void  stopmusic(){
-//        mRecorder.stop();
-//        mRecorder.release();
-//        mRecorder = null;
-//    }
-//
-//    //播放录音
-//    public void  playmusic(){
-//        // TODO Auto-generated method stub
-//        mPlayer = new MediaPlayer();
-//        try{
-//            mPlayer.setDataSource(FileName);
-//            mPlayer.prepare();
-//            mPlayer.start();
-//        }catch(IOException e){
-//            Log.e(LOG_TAG,"播放失败");
-//        }
-//    }
-//
-//
-//    //停止播放录音
-//    public void  stopplaymusic(){
-//        mPlayer.release();
-//        mPlayer = null;
-//    }
+    //开始录音
+    public void  startmusic(){
+        // TODO Auto-generated method stub
+        mRecorder = new MediaRecorder();
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mRecorder.setOutputFile(FileName);
+        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        try {
+            mRecorder.prepare();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
+        mRecorder.start();
+    }
+
+    //停止录音
+
+    public void  stopmusic(){
+        if (mRecorder!=null){
+            mRecorder.stop();
+            mRecorder.release();
+            mRecorder = null;
+        }
+    }
+
+    //播放录音
+    public void  playmusic(){
+        // TODO Auto-generated method stub
+        mPlayer = new MediaPlayer();
+        try{
+            mPlayer.setDataSource(FileName);
+            mPlayer.prepare();
+            mPlayer.start();
+        }catch(IOException e){
+            Log.e(LOG_TAG,"播放失败");
+        }
+    }
+
+
+    //停止播放录音
+    public void  stopplaymusic(){
+        mPlayer.release();
+        mPlayer = null;
+    }
 
 
 
@@ -382,91 +395,121 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
             ToastUtil.show("请选择陪玩类型");
         } else if (weekStr.equals("")) {
             ToastUtil.show("请选择接单日期");
-        } else {
+        } else if (fileBase.getFilePath().equals("1")){
+            ToastUtil.show("请选择上传图片");
+        }else if (Double.parseDouble(mAddPriceEt.getText().toString())>3000.0){
+            ToastUtil.show("陪练价格不得高于3000元");
+        }else if (FileName.equals("")){
+            ToastUtil.show("请完成音频录制");
+        }
+        else {
+            File file=new File(FileName);
+            mUploadFile = new UploadFile(0, file, FileName);
+            audioPath(FileToBase64.best64(mUploadFile));
 
-            MineAddBean mineAddBean = new MineAddBean();
-            mineAddBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
-            mineAddBean.setPrice(priceStr);
-            mineAddBean.setTitle(titleStr);
-            mineAddBean.setImages(fileBase.getFilePath());
-            mineAddBean.setRemark(remarkStr);
 
-
-
-            String str[] = weekStr.split(",");
-
-            for (int i = 0; i < str.length; i++) {
-                if (str[i]=="星期一"){
-                    if (i==str.length){
-                        str[i]="1";
-                    }else {
-                        str[i]="1,";
-                    }
-                }
-
-                if (str[i]=="星期二"){
-                    if (i==str.length){
-                        str[i]="2";
-                    }else {
-                        str[i]="2,";
-                    }
-                }
-
-                if (str[i]=="星期三"){
-                    if (i==str.length){
-                        str[i]="3";
-                    }else {
-                        str[i]="3,";
-                    }
-                }
-
-                if (str[i]=="星期四"){
-                    if (i==str.length){
-                        str[i]="4";
-                    }else {
-                        str[i]="4,";
-                    }
-                }
-
-                if (str[i]=="星期五"){
-                    if (i==str.length){
-                        str[i]="5";
-                    }else {
-                        str[i]="5,";
-                    }
-                }
-
-                if (str[i]=="星期六"){
-                    if (i==str.length){
-                        str[i]="6";
-                    }else {
-                        str[i]="6,";
-                    }
-                }
-                if (str[i]=="星期日"){
-                    if (i==str.length){
-                        str[i]="0";
-                    }else {
-                        str[i]="0,";
-                    }
-                }
-
-            }
-            // 遍历
-            StringBuffer str5 = new StringBuffer();
-            for (String s : str) {
-                str5.append(s);
-            }
-            Log.e("mString", str5.toString());
-
-//            mineAddBean.setWeekDay(str5.toString());
-//            mineAddBean.setSubjectId(subjectStr);
-//            mineAddBean.setServiceStartTime(startTimeStr);
-//            mineAddBean.setServiceEndTime(endTimeStr);
-//            mineAddBean.setAreaTitle(mAdd77.getText().toString());
-//            mineAddBean.setGradeTitle(mAdd66.getText().toString());
-//            mPresenter.mineAddParameter(mineAddBean);
     }
+    }
+
+    private String getweekStr() {
+        String str[] = weekStr.split(",");
+        for (int i = 0; i < str.length; i++) {
+            Log.e("length",""+str.length+"i"+i);
+            if (str[i].equals("星期一")){
+                if (i==str.length-1){
+                    Log.e("length星期一",""+i);
+                    str[i]="1";
+                }else {
+                    Log.e("length星期一,",""+i);
+                    str[i]="1";
+                }
+            }
+
+            if (str[i].equals("星期二")){
+                if (i==str.length-1){
+                    str[i]="2";
+                }else {
+                    str[i]="2";
+                }
+            }
+
+            if (str[i].equals("星期三")){
+                if (i==str.length-1){
+                    str[i]="3";
+                }else {
+                    str[i]="3";
+                }
+            }
+
+            if (str[i].equals("星期四")){
+                if (i==str.length-1){
+                    str[i]="4";
+                }else {
+                    str[i]="4";
+                }
+            }
+
+            if (str[i].equals("星期五")){
+                if (i==str.length-1){
+                    str[i]="5";
+                }else {
+                    str[i]="5";
+                }
+            }
+
+            if (str[i].equals("星期六")){
+                if (i==str.length-1){
+                    str[i]="6";
+                }else {
+                    str[i]="6";
+                }
+            }
+            if (str[i].equals("星期日")){
+                if (i==str.length-1){
+                    str[i]="0";
+                }else {
+                    str[i]="0";
+                }
+            }
+        }
+
+
+
+        int[] ints = new int[str.length];
+
+        for(int i=0;i<str.length;i++){
+
+            ints[i] = Integer.parseInt(str[i]);
+
+        }
+
+
+
+        for (int i = 0; i < ints.length - 1; i++) {//排序
+            for (int j = i + 1; j > 0; j--) {
+                if (ints[j]<ints[j - 1]) {
+                    int temp = ints[j];
+                    ints[j] = ints[j - 1];
+                    ints[j - 1] = temp;
+                }
+            }
+        }
+
+
+        String s = "";
+        for(int i=0;i<ints.length;i++)
+        {
+            if(i<ints.length-1)
+            {
+                s+=ints[i]+",";
+            }
+            else if(i==ints.length-1)
+            {
+                s+=ints[i];
+            }
+        }
+
+        return s;
     }
 
 
@@ -538,6 +581,17 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
                 subjectStr = mAddPlayEntityList.get(options1).getId() + "";
                 Log.e("str", "" + mAddPlayEntityList.get(options1).getTitle());
                 mAddTypeTv.setText(str);
+                try {
+                    String gradetitles = addPlayClassifyBase.getSubject().get(options1).getGradeTitles().split(":")[1];
+                    regionAas = Arrays.asList(gradetitles.split(","));
+
+                    String gettitle = addPlayClassifyBase.getSubject().get(options1).getAreaTitles().split(":")[1];
+                    regionAas0 = Arrays.asList(gettitle.split(","));
+
+                    Log.e("regionAas0",regionAas0.get(0));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 Logger.d(str);
             }
         })
@@ -551,6 +605,8 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
 
                             String gettitle = addPlayClassifyBase.getSubject().get(options1).getAreaTitles().split(":")[1];
                             regionAas0 = Arrays.asList(gettitle.split(","));
+
+                            Log.e("regionAas0",regionAas0.get(0));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -608,22 +664,22 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                OkHttpUtils.doGet("http://xy.gx11.cn/api/Member/ListByArea?isRecommend=true&subjectId=10048&newsCode=1101&page=1&limit=18", mHttpCallBack, 2);
+                OkHttpUtils.doGet(APIContents.HOST+"/api/Member/ListByArea?isRecommend=true&subjectId=10048&newsCode=1101&page=1&limit=18", mHttpCallBack, 2);
             }
         }).start();
     }
 
     @Override
     public void mineAddLoad(BaseApiResponse response) {
-        Log.e("mineAddLoad", response.getMsg());
+        if (response!=null)
         Toast.makeText(this, response.getMsg(), Toast.LENGTH_SHORT).show();
+        if (!isDestroyed())
         finish();
     }
 
     @Override
     public void uploadLoad(UpdateEntity response) {
         this.response = response;
-        Log.e("uploadLoad", response.getMsg());
         ToastUtil.show(response.getMsg());
         mBaseNiceDialog.dismiss();
     }
@@ -693,7 +749,27 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Log.e("response", response);
+                Log.e("responseaddPlay", response);
+                break;
+            case 1:
+                FileBase myfileBase = JSON.parseObject(response, FileBase.class);
+                Log.e("myfileBase", response);
+                MineAddBean mineAddBean = new MineAddBean();
+                mineAddBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
+                mineAddBean.setPrice(priceStr);
+                mineAddBean.setTitle(titleStr);
+                mineAddBean.setImages(fileBase.getFilePath());
+                mineAddBean.setRemark(remarkStr);
+                getweekStr();
+                mineAddBean.setWeekDay(getweekStr());
+                mineAddBean.setSubjectId(subjectStr);
+                mineAddBean.setServiceStartTime(startTimeStr);
+                mineAddBean.setServiceEndTime(endTimeStr);
+                mineAddBean.setAreaTitle(mAdd77.getText().toString());
+                mineAddBean.setGradeTitle(mAdd66.getText().toString());
+                mineAddBean.setAudioPath(myfileBase.getFilePath());
+                mPresenter.mineAddParameter(mineAddBean);
+                mXyMoreTv.setEnabled(false);
                 break;
         }
     }
@@ -708,6 +784,23 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
                     jsonObject.put("fileName", "png");
                     jsonObject.put("fileData", data);
                     OkHttpUtils.doPostJson(APIContents.UPLOAD_FILE, jsonObject.toString(), mHttpCallBack, 0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    private void audioPath(final String data) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("source", "AccompanyPlayNews");
+                    jsonObject.put("fileName", "png");
+                    jsonObject.put("fileData", data);
+                    OkHttpUtils.doPostJson(APIContents.UPLOAD_FILE, jsonObject.toString(), mHttpCallBack, 1);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

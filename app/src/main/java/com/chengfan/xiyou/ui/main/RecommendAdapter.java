@@ -33,9 +33,9 @@ public class RecommendAdapter extends FragmentPagerAdapter {
         return list.size();
     }
 
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mtitlelist.get(position);
-    }
+//    @Nullable
+//    @Override
+//    public CharSequence getPageTitle(int position) {
+//        return mtitlelist.get(position);
+//    }
 }

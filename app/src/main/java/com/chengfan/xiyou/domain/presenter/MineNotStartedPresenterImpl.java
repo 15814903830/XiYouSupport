@@ -44,6 +44,7 @@ public class MineNotStartedPresenterImpl extends BasePresenter<MineNotStartedCon
         append(mModel.TAKING_NO_STARTED_OBSERVABLE(page), new NetObserver<List<MineOrderTakingEntity>>(this) {
             @Override
             public void onNetNext(List<MineOrderTakingEntity> result) {
+                if (result!=null)
                 mView.takingNoStartedLoad(result, isPtr);
             }
 

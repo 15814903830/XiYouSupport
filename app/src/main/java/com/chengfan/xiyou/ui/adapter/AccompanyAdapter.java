@@ -49,20 +49,20 @@ public class AccompanyAdapter extends BaseRVAdapter<AccompanyEntity, BaseViewHol
     @Override
     protected void convert(final BaseViewHolder helper, AccompanyEntity item) {
 
-        ViewGroup.LayoutParams params = helper.getView(R.id.ac_img_riv).getLayoutParams();
-        params.height = heightList.get(helper.getAdapterPosition());
-        helper.getView(R.id.ac_img_riv).setLayoutParams(params);
-
-        ImageLoaderManager.getInstance().showImage(helper.getView(R.id.ac_img_riv), APIContents.HOST + "/" + item.getImages());
-        helper.setText(R.id.tv_subject_tv, item.getTitle())
-                .setText(R.id.tv_name, item.getNickname());
-        ImageLoaderManager.getInstance().showImage(helper.getView(R.id.cirv_user_pic_civ), APIContents.HOST + "/" + item.getAvatarUrl());
-        if (item.getSubjectId().equals("1")) {
-            helper.setText(R.id.tv_yxpw, "游戏陪玩");
-            helper.setText(R.id.jiage, "￥" + item.getPrice() + "/小时");
-        } else {
-            helper.getView(R.id.ll_dibu).setVisibility(View.GONE);
-        }
+//        ViewGroup.LayoutParams params = helper.getView(R.id.ac_img_riv).getLayoutParams();
+//        params.height = heightList.get(helper.getAdapterPosition());
+//        helper.getView(R.id.ac_img_riv).setLayoutParams(params);
+//
+//        ImageLoaderManager.getInstance().showImage(helper.getView(R.id.ac_img_riv), APIContents.HOST + "/" + item.getImages());
+//        helper.setText(R.id.tv_subject_tv, item.getTitle())
+//                .setText(R.id.tv_name, item.getNickname());
+//        ImageLoaderManager.getInstance().showImage(helper.getView(R.id.cirv_user_pic_civ), APIContents.HOST + "/" + item.getAvatarUrl());
+//        if (item.getSubjectId().equals("1")) {
+//            helper.setText(R.id.tv_yxpw, "游戏陪玩");
+//            helper.setText(R.id.jiage, "￥" + item.getPrice() + "/小时");
+//        } else {
+//            helper.getView(R.id.ll_dibu).setVisibility(View.GONE);
+//        }
 
 
     }

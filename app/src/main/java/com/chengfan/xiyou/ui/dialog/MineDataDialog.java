@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
@@ -87,8 +88,11 @@ public class MineDataDialog extends Dialog {
                 } else {
                     mMineDataAdapter.isSelected.put(position, false); // 修改map的值保存状态
                     mMineDataAdapter.notifyItemChanged(position);
-                    selectWeakList.add(weakList.get(position));
+                    selectWeakList.remove(weakList.get(position));
+                    //selectWeakList.add(weakList.get(position));
                 }
+
+
             }
         });
         mMineDataAdapter.addData(weakList);

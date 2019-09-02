@@ -66,7 +66,9 @@ public class MineTakingOrderAllAdapter extends BaseRVAdapter<MineOrderTakingEnti
 
         Log.e("convert",""+item.getStatus());
         if (item.getStatus() == 1) {
+            helper.getView(R.id.taking_ongoing_tv).setVisibility(View.GONE);
             helper.getView(R.id.tanking_no_start_ll).setVisibility(View.VISIBLE);
+            helper.getView(R.id.tanking_ll).setVisibility(View.GONE);
             helper.getView(R.id.taking_refuse_tv).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -84,19 +86,23 @@ public class MineTakingOrderAllAdapter extends BaseRVAdapter<MineOrderTakingEnti
             });
         } else if (item.getStatus() == 2) {
             helper.getView(R.id.taking_ongoing_tv).setVisibility(View.VISIBLE);
+            helper.getView(R.id.tanking_no_start_ll).setVisibility(View.GONE);
+            helper.getView(R.id.tanking_ll).setVisibility(View.GONE);
             helper.getView(R.id.taking_ongoing_tv).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //陪玩结束
                     helper.getView(R.id.taking_ongoing_tv).setVisibility(View.GONE);
+                    helper.getView(R.id.taking_refuse_tv).setVisibility(View.GONE);
+                    helper.getView(R.id.taking_takers_tv).setVisibility(View.GONE);
                     mTakingOngoingListener.onTakingOngoingListener(helper.getAdapterPosition());
                 }
             });
         } else if (item.getStatusTag().equals("待确认")) {
             helper.getView(R.id.tanking_ll).setVisibility(View.VISIBLE);
+            helper.getView(R.id.taking_ongoing_tv).setVisibility(View.GONE);
+            helper.getView(R.id.tanking_no_start_ll).setVisibility(View.GONE);
             Log.e("FinishTime",item.getFinishTime());
-
-
           String time=item.getFinishTime().split("T")[1].split(":")[0];
           int mytime= Integer.parseInt(time);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");// HH:mm:ss

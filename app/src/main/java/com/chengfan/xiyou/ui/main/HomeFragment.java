@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,10 @@ import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.BaiDuEntity;
 import com.chengfan.xiyou.utils.GetJsonDataUtil;
 import com.chengfan.xiyou.utils.LocationUtils;
+import com.chengfan.xiyou.utils.dialog.BaseNiceDialog;
+import com.chengfan.xiyou.utils.dialog.NiceDialog;
+import com.chengfan.xiyou.utils.dialog.ViewConvertListener;
+import com.chengfan.xiyou.utils.dialog.ViewHolder;
 import com.chengfan.xiyou.widget.CardPageTransformer;
 import com.chengfan.xiyou.widget.pickerview.builder.OptionsPickerBuilder;
 import com.chengfan.xiyou.widget.pickerview.listener.OnOptionsSelectListener;
@@ -86,6 +91,7 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
     int page;
     HomeBannerEntity mHomeBannerEntity;
     HomeAdapter mHomeAdapter;
+    private BaseNiceDialog mDialog;
     private CardPageTransformer mTransformer;
     // banner图片数据
     private List<String> data_banner_string = new ArrayList<>();
@@ -124,6 +130,7 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                     break;
                 case MSG_LOAD_SUCCESS:
                     Logger.e("解析完成");
+                    showLoading();
                     new Thread(
                             new Runnable() {
                                 @Override
@@ -191,7 +198,6 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
         iniBanner();
         initZrl();
         mSayHiDialog = new SayHiDialog(getActivity());
-
         return mView;
     }
 
@@ -202,8 +208,11 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
         mHomeAdapter.setOnItemClickListener(new BaseRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseRVAdapter adapter, View view, int position) {
-                toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, mMemberBeanList.get(position).getId());
-                ForwardUtil.getInstance(getActivity()).forward(AccompanyUserInfoActivity.class, toBundle);
+                if (position<0||position>mMemberBeanList.size()){
+                }else {
+                    toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, mMemberBeanList.get(position).getId());
+                    ForwardUtil.getInstance(getActivity()).forward(AccompanyUserInfoActivity.class, toBundle);
+                }
             }
         });
 
@@ -254,6 +263,7 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                         page++;
                         mPresenter.homePageMoreParameter(areaCode, page);
                         mHomeZrl.finishLoadMore();
+                        Log.e("pageonLoadMore",""+areaCode);
                     }
                 }, 1000);
             }
@@ -266,6 +276,7 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                         page = 1;
                         mPresenter.homePageParameter(areaCode, 1);
                         mHomeZrl.finishRefresh();
+                        Log.e("pageonRefresh",""+page);
                     }
                 }, 1000);
             }
@@ -276,10 +287,13 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
     public void homePageMoreLoad(List<MemberBean> memberBeanList) {
         mMemberBeanList.addAll(memberBeanList);
         mHomeAdapter.setNewData(mMemberBeanList);
+        Log.e("pagehomePageMoreLoad",""+page);
     }
 
     @Override
     public void homePageLoad(HomeBannerEntity result) {
+        Log.e("homePageLoad",""+result.getMember().size());
+        hideLoading();
         for (HomeBannerEntity.NewsBean bannerBean : result.getNews()) {
             data_banner_string.add(APIContents.HOST + "/" + bannerBean.getImgUrl());
         }
@@ -288,10 +302,10 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
         mMemberBeanList = mHomeBannerEntity.getMember();
         mHomeAdapter.addData(mMemberBeanList);
 
-        if (AppData.getBoole(AppData.Keys.AD_SHOW_SAY_HI)) {
-            mSayHiDialog.show();
-            AppData.putBoolen(AppData.Keys.AD_SHOW_SAY_HI, false);
-        }
+//        if (AppData.getBoole(AppData.Keys.AD_SHOW_SAY_HI)) {
+//            mSayHiDialog.show();
+//            AppData.putBoolen(AppData.Keys.AD_SHOW_SAY_HI, false);
+//        }
 
     }
 
@@ -335,7 +349,6 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                     cityName = mCityList.get(options1).get(options2).getName();
                     areaCode = mCityList.get(options1).get(options2).getId();
                 }
-
 
                 String tx = cityName;
 
@@ -419,4 +432,32 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
     }
 
 
+
+        /**
+         * 显示loading
+         */
+        public void showLoading() {
+            NiceDialog.init()
+                    .setLayoutId(R.layout.dialog_loading_layout)
+                    .setConvertListener(new ViewConvertListener() {
+                        @Override
+                        protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                            mDialog = dialog;
+                        }
+                    })
+                    .setOutCancel(false)
+                    .setWidth(48)
+                    .setHeight(48)
+                    .setShowBottom(false)
+                    .show(getChildFragmentManager());
+        }
+
+        /**
+         * 隐藏loading
+         */
+        public void hideLoading() {
+            if (mDialog != null) {
+                mDialog.dismiss();
+            }
+        }
 }

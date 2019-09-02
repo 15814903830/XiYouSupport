@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -142,6 +143,7 @@ public class SayHiDialog extends Dialog {
                         BaseApiResponse baseApiResponse = new Gson().fromJson(result, type);
                         if (baseApiResponse.isSuc()) {
                             dismiss();
+                            Toast.makeText(mContext, "消息已发送", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

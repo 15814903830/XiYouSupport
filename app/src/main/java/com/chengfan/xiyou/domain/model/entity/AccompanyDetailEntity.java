@@ -56,7 +56,46 @@ public class AccompanyDetailEntity implements Serializable {
     private String subjectImages;
     private boolean isFans;
     private int commentTotal;
+
+    @Override
+    public String toString() {
+        return "AccompanyDetailEntity{" +
+                "id=" + id +
+                ", subjectId=" + subjectId +
+                ", memberId=" + memberId +
+                ", title='" + title + '\'' +
+                ", images='" + images + '\'' +
+                ", weekDay='" + weekDay + '\'' +
+                ", serviceEndTime='" + serviceEndTime + '\'' +
+                ", serviceStartTime='" + serviceStartTime + '\'' +
+                ", price=" + price +
+                ", remark='" + remark + '\'' +
+                ", status=" + status +
+                ", createTime='" + createTime + '\'' +
+                ", gender=" + gender +
+                ", userName='" + userName + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", subjectTitle='" + subjectTitle + '\'' +
+                ", subjectImages='" + subjectImages + '\'' +
+                ", isFans=" + isFans +
+                ", commentTotal=" + commentTotal +
+                ", order=" + order +
+                ", audioPath='" + audioPath + '\'' +
+                '}';
+    }
+
     private List<OrderBean> order;
+
+    public String getAudioPath() {
+        return audioPath;
+    }
+
+    public void setAudioPath(String audioPath) {
+        this.audioPath = audioPath;
+    }
+
+    private  String audioPath;
 
     public int getId() {
         return id;

@@ -129,7 +129,7 @@ public class ChatCreateGroupActivity
                 } else {
                     mChatCreateGroupAdapter.isSelected.put(position, false); // 修改map的值保存状态
                     mChatCreateGroupAdapter.notifyItemChanged(position);
-                    mSelectList.add(mChatCreteEntityList.get(position));
+                    mSelectList.remove(mChatCreteEntityList.get(position));
                 }
             }
         });

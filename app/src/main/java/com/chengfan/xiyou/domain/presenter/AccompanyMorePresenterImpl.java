@@ -1,5 +1,6 @@
 package com.chengfan.xiyou.domain.presenter;
 
+import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.AccompanyMoreContract;
 import com.chengfan.xiyou.domain.model.AccompanyMoreModelImpl;
 import com.chengfan.xiyou.domain.model.entity.AccompanyMoreEntity;
@@ -22,8 +23,8 @@ public class AccompanyMorePresenterImpl extends BasePresenter<AccompanyMoreContr
     }
 
     @Override
-    public void moreParameter() {
-        append(mModel.MORE_OBSERVABLE(), new NetObserver<List<AccompanyMoreEntity>>(this) {
+    public void moreParameter(String id) {
+        append(mModel.MORE_OBSERVABLE(id), new NetObserver<List<AccompanyMoreEntity>>(this) {
             @Override
             public void onNetNext(List<AccompanyMoreEntity> result) {
                 mView.moreLoad(result);

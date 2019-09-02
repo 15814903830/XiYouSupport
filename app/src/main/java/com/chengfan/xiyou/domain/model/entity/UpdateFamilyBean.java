@@ -33,7 +33,7 @@ public class UpdateFamilyBean  implements Serializable {
     private String describe;
     private String createTime;
     private MemberBean member;
-    private List<FamilyMemberBeanX> familyMember;
+    private String familyMember;
 
     public int getTotalMember() {
         return totalMember;
@@ -107,11 +107,11 @@ public class UpdateFamilyBean  implements Serializable {
         this.member = member;
     }
 
-    public List<FamilyMemberBeanX> getFamilyMember() {
+    public String getFamilyMember() {
         return familyMember;
     }
 
-    public void setFamilyMember(List<FamilyMemberBeanX> familyMember) {
+    public void setFamilyMember(String familyMember) {
         this.familyMember = familyMember;
     }
 

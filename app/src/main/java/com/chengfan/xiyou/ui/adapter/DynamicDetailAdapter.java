@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -25,6 +26,7 @@ public class DynamicDetailAdapter extends BaseRVAdapter<DynamicDetailEntity.Acco
     @Override
     protected void convert(BaseViewHolder helper, DynamicDetailEntity.AccompanyPlayBean item) {
 
+        Log.e("getPrice", ""+item.getPrice());
         helper.setText(R.id.search_game_money_tv, "￥" + item.getPrice() + "/小时")
                 .setText(R.id.search_game_name_tv, item.getTitle())
                 .setText(R.id.search_game_type_tv, item.getSubject().getTitle());

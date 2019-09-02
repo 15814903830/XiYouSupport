@@ -28,6 +28,15 @@ public class MineAddPlayModelImpl implements MineAddPlayContract.Model {
 
     }
 
+    public Observable<BaseApiResponse> MINE_ADD_OBSERVABLEE(MineAddBean mineAddBean) {
+        return HttpRequest.post(APIContents.Publish)
+                .paramsJsonString(new Gson().toJson(mineAddBean))
+                .execute(new AdaptResponse<BaseApiResponse>() {
+                });
+
+    }
+
+
     @Override
     public Observable<UpdateEntity> UPLOAD_OBSERVABLE(XYUploadEntity xyUploadEntity) {
         return HttpRequest.post(APIContents.UPLOAD_FILE)

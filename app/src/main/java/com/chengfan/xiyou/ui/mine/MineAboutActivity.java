@@ -9,9 +9,11 @@ import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.github.zackratos.ultimatebar.UltimateBar;
 import com.zero.ci.base.BaseActivity;
@@ -45,7 +47,14 @@ public class MineAboutActivity extends BaseActivity {
                 .create()
                 .drawableBar();
 
-        mAboutWv.loadUrl("http://xy.gx11.cn/WapNews/Detail/4");
+        mAboutWv.loadUrl(APIContents.HOST+"/WapNews/Detail/4");
+        mAboutWv.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                mAboutWv.loadUrl(url);
+                return true;
+            }
+        });
     }
 
     @OnClick({R.id.xy_back_btn})

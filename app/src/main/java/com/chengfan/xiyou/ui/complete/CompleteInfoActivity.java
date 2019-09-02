@@ -3,6 +3,7 @@ package com.chengfan.xiyou.ui.complete;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,9 +30,12 @@ import com.chengfan.xiyou.domain.model.entity.LoginEntity;
 import com.chengfan.xiyou.domain.model.entity.MemberInfoBean;
 import com.chengfan.xiyou.domain.model.entity.SystemConfigEntity;
 import com.chengfan.xiyou.domain.model.entity.UploadEntity;
+import com.chengfan.xiyou.domain.model.response.LoginResponse;
 import com.chengfan.xiyou.domain.presenter.CompleterInfoPresenterImpl;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.ui.MainActivity;
+import com.chengfan.xiyou.ui.login.LoginActivity;
 import com.chengfan.xiyou.ui.mine.order.FileBase;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.FontHelper;
@@ -73,6 +77,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * @author: Zero Yuan
@@ -144,6 +150,7 @@ public class CompleteInfoActivity
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
     private FileBase fileBase;
+    private LoginResponse loginResponse;
 
 
     private ArrayList<String> shenGaoList = new ArrayList<>();
@@ -248,9 +255,10 @@ public class CompleteInfoActivity
                     ToastUtil.show(R.string.complete_hint_face_txt);
                 else if (jobStr.equals(""))
                     ToastUtil.show(R.string.complete_hint_job_txt);
-                else if (mUploadFile == null)
+                else if (fileBase == null)
                     ToastUtil.show("请选择您的头像");
-                else {
+                else
+                    {
                     MemberInfoBean bean = new MemberInfoBean();
                     bean.setAge(ageStr);
                     bean.setAvatarUrl(fileBase.getFilePath());
@@ -548,13 +556,14 @@ public class CompleteInfoActivity
     @Override
     public void saveInfo(BaseApiResponse baseApiResponse) {
         if (baseApiResponse.isSuc()) {
-            LoginEntity loginEntity = new LoginEntity();
-            loginEntity.setAreaCode(Integer.parseInt(areaCode));
-            loginEntity.setAreaName(areaName);
-            UserStorage.getInstance().saveLoginInfo(loginEntity);
-            int areaCode = UserStorage.getInstance().getLogin().getAreaCode();
-            String areaName = UserStorage.getInstance().getLogin().getAreaName();
-            ForwardUtil.getInstance(this).forward(CompleteVideoActivity.class);
+//            LoginEntity loginEntity = new LoginEntity();
+//            loginEntity.setAreaCode(Integer.parseInt(areaCode));
+//            loginEntity.setAreaName(areaName);
+//            UserStorage.getInstance().saveLoginInfo(loginEntity);
+//            int areaCode = UserStorage.getInstance().getLogin().getAreaCode();
+//            String areaName = UserStorage.getInstance().getLogin().getAreaName();
+          //  ForwardUtil.getInstance(this).forward(CompleteVideoActivity.class);
+            ForwardUtil.getInstance(this).forward(MainActivity.class);
         } else {
             ToastUtil.show(baseApiResponse.getMsg());
         }
@@ -594,6 +603,42 @@ public class CompleteInfoActivity
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            case 1:
+                try {
+                    loginResponse = JSON.parseObject(response, LoginResponse.class);
+                    if (loginResponse!=null){
+                        if (loginResponse.isSuc()) {
+                            APPContents.ID = "" + loginResponse.getData().getId();
+                            UserStorage.getInstance().saveLoginInfo(loginResponse.getData());
+
+                            //设置当前用户信息
+                            RongIM.getInstance().setCurrentUserInfo(new UserInfo(String.valueOf(loginResponse.getData().getId()),
+                                    loginResponse.getData().getNickname(),
+                                    Uri.parse(APIContents.HOST + "/" + loginResponse.getData().getAvatarUrl())));
+
+                            AppData.putString(AppData.Keys.AD_USER_ID, loginResponse.getData().getId() + "");
+                            if (loginResponse.getData().getAge() > 0) {
+                                ForwardUtil.getInstance(this).forward(MainActivity.class);
+                            } else {
+                                ForwardUtil.getInstance(this).forward(CompleteSexActivity.class);
+                            }
+
+                        } else {
+                            ToastUtil.show(loginResponse.getMsg());
+
+                        }
+
+                    }else {
+                        ToastUtil.show("登录失败");
+                    }
+
+
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
         }
     }
 
@@ -607,4 +652,20 @@ public class CompleteInfoActivity
             onHandlerMessageCallback(response, requestId);
         }
     };
+
+    public void mylogin(final String userName, final String password){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("userName", userName);
+                    jsonObject.put("password", password);
+                    OkHttpUtils.doPostJson(APIContents.LOGIN, jsonObject.toString(), mHttpCallBack, 1);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 }

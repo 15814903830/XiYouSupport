@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
@@ -72,9 +73,9 @@ public class AccompanyDynamicFragment extends BaseFragment implements HttpCallBa
 
     private Context mContext;
 
+    private TextView mTextView;
     public static AccompanyDynamicFragment getInstance(AccompanyUserInfoEntity accompanyUserInfoEntity) {
         AccompanyDynamicFragment newsFragment = new AccompanyDynamicFragment();
-
         Bundle bundle = new Bundle();
         bundle.putSerializable(APPContents.BUNDLE_FRAGMENT, accompanyUserInfoEntity);
         newsFragment.setArguments(bundle);
@@ -92,14 +93,18 @@ public class AccompanyDynamicFragment extends BaseFragment implements HttpCallBa
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_accompany_dynamic, null);
         mUnbinder = ButterKnife.bind(this, mView);
+        mTextView=mView.findViewById(R.id.tv_zzc);
         mAccompanyUserInfoEntity = new AccompanyUserInfoEntity();
-
         Bundle arguments = this.getArguments();
         mAccompanyUserInfoEntity = (AccompanyUserInfoEntity) arguments.getSerializable(APPContents.BUNDLE_FRAGMENT);
 
         mCallBack = this;
 
         if (mAccompanyUserInfoEntity != null) {
+            if (mAccompanyUserInfoEntity.getMemberNews().size()==0){
+                mTextView.setVisibility(View.VISIBLE);
+            }
+            Log.e("mTextView","!!VISIBLE");
             mAccompanyDynamicAdapter = new AccompanyDynamicAdapter(R.layout.adapter_accompany_dynamic, mAccompanyUserInfoEntity.getMemberNews());
             mApDynamicRv.setLayoutManager(new LinearLayoutManager(getActivity()));
             mApDynamicRv.setAdapter(mAccompanyDynamicAdapter);

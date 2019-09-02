@@ -32,7 +32,6 @@
             android:background="@null"
             android:gravity="left|top"
             android:hint="@string/create_hint_des_txt"
-            android:imeOptions="actionDone"
             android:inputType="textMultiLine"
             android:minLines="6"
             android:textSize="15dp"/>

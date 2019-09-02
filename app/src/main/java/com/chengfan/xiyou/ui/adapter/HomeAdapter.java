@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.domain.model.entity.ImageEntity;
@@ -61,7 +62,8 @@ public class HomeAdapter extends BaseRVAdapter<MemberBean, BaseViewHolder> {
             seximg.setImageResource(R.drawable.home_nv);
         }
 
-        ImageLoaderManager.getInstance().showImage(helper.getView(R.id.home_user_pic_civ), APIContents.HOST + "/" + item.getAvatarUrl());
+        Glide.with(mContext).load(APIContents.HOST + "/" + item.getAvatarUrl()).into((ImageView) helper.getView(R.id.home_user_pic_civ));
+       // ImageLoaderManager.getInstance().showImage(helper.getView(R.id.home_user_pic_civ), APIContents.HOST + "/" + item.getAvatarUrl());
 
         List<ImageEntity> imageEntityList = new ArrayList<>();
         String imageStr = item.getMemberNews().getImages();
@@ -73,15 +75,15 @@ public class HomeAdapter extends BaseRVAdapter<MemberBean, BaseViewHolder> {
             }
         }
         if (imageEntityList.size() >= 1)
-            ImageLoaderManager.getInstance().showImage(helper.getView(R.id.home_user_url_iv), imageEntityList.get(0).getImgUrl());
+            Glide.with(mContext).load(imageEntityList.get(0).getImgUrl()).into((ImageView) helper.getView(R.id.home_user_url_iv));
 
-        final ViewPagerDialog viewPagerDialog = new ViewPagerDialog(mContext, imageEntityList);
-        helper.getView(R.id.home_user_url_iv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPagerDialog.show();
-            }
-        });
+        //final ViewPagerDialog viewPagerDialog = new ViewPagerDialog(mContext, imageEntityList);
+//        helper.getView(R.id.home_user_url_iv).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                viewPagerDialog.show();
+//            }
+//        });
 
 
     }

@@ -72,10 +72,11 @@ public class SearchActivity extends BaseActivity {
 
         FontHelper.applyFont(this, mSearchContTv, APPContents.FONTS_REGULAR);
         mBotNav.setTypeface(Typeface.createFromAsset(this.getAssets(), APPContents.FONTS_MEDIUM));
-
         initFragment();
-
         initEvents();
+        if (view_empty.getVisibility() == View.VISIBLE) {
+            view_empty.setVisibility(View.GONE);
+        }
     }
 
     private void initFragment() {
@@ -83,6 +84,7 @@ public class SearchActivity extends BaseActivity {
         mSearchUserFragment = SearchUserFragment.getInstance(searchStr);
         mSearchGameFragment = SearchGameFragment.getInstance(searchStr);
         mSearchFamilyFragment = SearchFamilyFragment.getInstance(searchStr);
+
 
         // add to fragments for adapter
         fragments.add(mSearchUserFragment);

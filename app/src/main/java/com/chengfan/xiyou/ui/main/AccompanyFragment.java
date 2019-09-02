@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -43,8 +44,6 @@ import com.chengfan.xiyou.domain.model.entity.AccompanyEntity;
 import com.chengfan.xiyou.domain.model.entity.HomeBannerEntity;
 import com.chengfan.xiyou.domain.model.entity.JsonBean;
 import com.chengfan.xiyou.domain.presenter.AccompanyPresenterImpl;
-import com.chengfan.xiyou.ui.accompany.AccompanyUserInfoActivity;
-import com.chengfan.xiyou.ui.adapter.AccompanyAdapter;
 import com.chengfan.xiyou.ui.adapter.AccompanyJvAdapter;
 import com.chengfan.xiyou.ui.search.SearchActivity;
 import com.chengfan.xiyou.utils.BaiDuEntity;
@@ -122,7 +121,7 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
 
     private int areaCode;
     private String areaName;
-
+    private ViewHolder holder;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -177,6 +176,7 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
 
                                                             }
                                                             mPresenter.accompanyBannerParameter(areaCode, 1);
+                                                           // Log.e("areaCode",""+areaCode);
 
                                                         }
                                                     });
@@ -215,6 +215,7 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     }
 
     public void addvptab() {
+        mtitlelist.add("推荐陪练");
         mtitlelist.add("守望先锋");
         mtitlelist.add("和平精英");
         mtitlelist.add("王者荣耀");
@@ -224,14 +225,16 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         mtitlelist.add("堡受之夜");
         mtitlelist.add("陪聊倾诉");
         mtitlelist.add("哄睡FM");
-        for (int i = 0; i < 9; i++) {
-            mRecommendFragmentList.add(new RecommendFragment("" + i));
+        for (int i = 0; i < 10; i++) {
+            mRecommendFragmentList.add(RecommendFragment.getInstance(""+i));
         }
         mRecommendAdapter=new RecommendAdapter(getFragmentManager(),mRecommendFragmentList,mtitlelist);
         mViewPager.setAdapter(mRecommendAdapter);
+        //设置TabLayout的模式
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.setOffscreenPageLimit(mRecommendFragmentList.size()-1);
         mTabLayout.setSelectedTabIndicatorHeight(0);
+        setTabView();
     }
 
 
@@ -501,5 +504,68 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
             }
         }
         super.setUserVisibleHint(isVisibleToUser);
+    }
+
+    /**
+     * 设置Tab的样式
+     */
+    private void setTabView() {
+        holder = null;
+        for (int i = 0; i < mtitlelist.size(); i++) {
+            //依次获取标签
+            TabLayout.Tab tab = mTabLayout.getTabAt(i);
+            //为每个标签设置布局
+            tab.setCustomView(R.layout.tab_item);
+            holder = new ViewHolder(tab.getCustomView());
+            //为标签填充数据
+            holder.tvTabName.setText(mtitlelist.get(i));
+            //默认选择第一项
+            if (i == 0) {
+                holder.tvTabName.setSelected(true);
+                holder.tvTabName.setTextSize(22);
+                holder.tvTabName.setTypeface(Typeface.DEFAULT_BOLD);
+            }
+        }
+
+        //tab选中的监听事件
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                holder = new ViewHolder(tab.getCustomView());
+                holder.tvTabName.setSelected(true);
+                //选中后字体变大
+                holder.tvTabName.setTextSize(22);
+                //让Viewpager跟随TabLayout的标签切换
+                holder.tvTabName.setTypeface(Typeface.DEFAULT_BOLD);
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                holder = new ViewHolder(tab.getCustomView());
+                holder.tvTabName.setSelected(false);
+                //恢复为默认字体大小
+                holder.tvTabName.setTextSize(16);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    class ViewHolder {
+        TextView tvTabName;
+
+        public ViewHolder(View tabView) {
+            tvTabName = (TextView) tabView.findViewById(R.id.tv_tab_name);
+        }
+    }
+
+    //像素单位转换
+    public int dip2px(int dip) {
+        float density = getResources().getDisplayMetrics().density;
+        return (int) (dip * density + 0.5);
     }
 }

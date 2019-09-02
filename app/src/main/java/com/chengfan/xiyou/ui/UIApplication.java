@@ -9,6 +9,8 @@ import com.chengfan.xiyou.im.MyReceiveMessageListener;
 import com.chengfan.xiyou.im.UserIMInfo;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.MediaLoader;
+import com.chengfan.xiyou.utils.UserUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumConfig;
 import com.zero.ci.base.BaseApplication;
@@ -35,6 +37,7 @@ import me.jessyan.autosize.utils.LogUtils;
  * @Description:
  */
 public class UIApplication extends BaseApplication {
+    private UserUtils userUtils;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -66,9 +69,15 @@ public class UIApplication extends BaseApplication {
 
         GlobalConfig.setAppContext(mContext);
         AppData.data();
-
+        CrashReport.initCrashReport(getApplicationContext(), "91ac30603c", true);
+        userUtils = new UserUtils();
     }
 
+
+
+    public UserUtils getUserUtils() {
+        return userUtils;
+    }
     /**
      * 查找用户
      *

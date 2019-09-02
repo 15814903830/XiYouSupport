@@ -22,7 +22,7 @@ public class FileBase {
     private String fileName;
     private String fileExt;
     private int fileSize;
-    private String filePath;
+    private String filePath="1";
     private String fileUrl;
     private boolean success;
     private String msg;

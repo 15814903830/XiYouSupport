@@ -80,6 +80,8 @@ public class DynamicFragment extends BaseFragment {
         // set adapter
         adapter = new VpAdapter(getChildFragmentManager(), fragments);
         mFragmentNavigationVp.setAdapter(adapter);
+        mFragmentNavigationVp.setCurrentItem(1);
+        mBotNav.setCurrentItem(1);
         // binding with ViewPager
         mBotNav.setupWithViewPager(mFragmentNavigationVp);
 

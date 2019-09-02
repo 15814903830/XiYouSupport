@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +30,13 @@ import com.chengfan.xiyou.domain.model.entity.DynamicMineEntity;
 import com.chengfan.xiyou.domain.model.entity.LikeBase;
 import com.chengfan.xiyou.domain.model.entity.PublishCommentBean;
 import com.chengfan.xiyou.domain.presenter.DynamicMinePresenterImpl;
+import com.chengfan.xiyou.ui.UIApplication;
 import com.chengfan.xiyou.ui.WebActivity;
 import com.chengfan.xiyou.ui.adapter.DynamicMineAdapter;
 import com.chengfan.xiyou.ui.dialog.DynamicMineDelDialog;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.DataFormatUtil;
+import com.chengfan.xiyou.utils.Myinter;
 import com.chengfan.xiyou.utils.UserStorage;
 import com.google.gson.Gson;
 import com.zero.ci.base.BaseApiResponse;
@@ -62,7 +65,7 @@ import butterknife.Unbinder;
  */
 public class DynamicMineFragment extends
         BaseFragment<DynamicMineContract.View, DynamicMinePresenterImpl>
-        implements DynamicMineContract.View {
+        implements DynamicMineContract.View , Myinter {
     View mView;
     @BindView(R.id.dynamic_mine_rv)
     RecyclerView mDynamicMineRv;
@@ -96,11 +99,12 @@ public class DynamicMineFragment extends
         iniRv();
         initZrl();
         mPresenter.dynamicMineParameter(page, true);
+        ((UIApplication) getActivity().getApplication()).getUserUtils().setiFun(this);
         return mView;
     }
 
-    private void iniRv() {
 
+    private void iniRv() {
         mDynamicMineAdapter = new DynamicMineAdapter(R.layout.adapter_dynamic_mine, mDynamicMineEntityList);
         mDynamicMineRv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mDynamicMineRv.setAdapter(mDynamicMineAdapter);
@@ -131,6 +135,10 @@ public class DynamicMineFragment extends
                         .execute(new AbstractResponse<BaseApiResponse>() {
                             @Override
                             public void onSuccess(BaseApiResponse result) {
+                                Log.e("setMemberId",AppData.getString(AppData.Keys.AD_USER_ID));
+                                Log.e("setMemberNewsId",String.valueOf(mDynamicMineEntityList.get(position).getId()));
+
+
                                 if (result.isSuc()) {
                                     if (mDynamicMineEntityList.get(position).isHavePraise()) {
                                         mDynamicMineEntityList.get(position).setHavePraise(false);
@@ -268,8 +276,6 @@ public class DynamicMineFragment extends
 
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-
-
                 mDynamicMineZrl.getLayout().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -310,4 +316,10 @@ public class DynamicMineFragment extends
     }
 
 
+    @Override
+    public void myss(boolean mboolean) {
+        if (mboolean){
+            mDynamicMineZrl.autoRefresh();
+        }
+    }
 }

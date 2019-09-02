@@ -20,9 +20,9 @@ import io.reactivex.Observable;
  */
 public class AccompanyMoreModelImpl implements AccompanyMoreContract.Model {
     @Override
-    public Observable<List<AccompanyMoreEntity>> MORE_OBSERVABLE() {
-        return HttpRequest.get(APIContents.PLAY_LIST)
-                .params(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID))
+    public Observable<List<AccompanyMoreEntity>> MORE_OBSERVABLE(String id) {
+        return HttpRequest.get(APIContents.ListByMemberId)
+                .params(APPContents.E_ID,id)
                 .execute(new AdaptResponse<List<AccompanyMoreEntity>>() {
                 });
 

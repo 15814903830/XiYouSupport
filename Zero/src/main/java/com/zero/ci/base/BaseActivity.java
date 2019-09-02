@@ -10,10 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-
 import com.zero.ci.tool.ActManager;
 import com.zero.ci.tool.MPermissionUtil;
-
 import java.lang.reflect.ParameterizedType;
 
 
@@ -27,7 +25,7 @@ import java.lang.reflect.ParameterizedType;
 
 public class BaseActivity<V, P extends BasePresenter<V>> extends AppCompatActivity {
     protected P mPresenter;
-
+   // private BaseNiceDialog mDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         initPresenter();
@@ -123,7 +121,34 @@ public class BaseActivity<V, P extends BasePresenter<V>> extends AppCompatActivi
         ActManager.addActivity(this);
     }
 
-
+//
+//    /**
+//     * 显示loading
+//     */
+//    public void showLoading() {
+//        NiceDialog.init()
+//                .setLayoutId(R.layout.dialog_loading_layout)
+//                .setConvertListener(new ViewConvertListener() {
+//                    @Override
+//                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+//                        mDialog = dialog;
+//                    }
+//                })
+//                .setOutCancel(false)
+//                .setWidth(48)
+//                .setHeight(48)
+//                .setShowBottom(false)
+//                .show(getSupportFragmentManager());
+//    }
+//
+//    /**
+//     * 隐藏loading
+//     */
+//    public void hideLoading() {
+//        if (mDialog != null) {
+//            mDialog.dismiss();
+//        }
+//    }
 
 
 }

@@ -21,6 +21,16 @@ public class CreateFamilyBean  implements Serializable {
     private String memberId;
     private String name;
     private String avatarUrl;
+    private String Banner;
+
+    public String getBanner() {
+        return Banner;
+    }
+
+    public void setBanner(String banner) {
+        Banner = banner;
+    }
+
     private List<FamilyMemberBean> familyMember;
 
     public String getMemberId() {

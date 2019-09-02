@@ -171,15 +171,14 @@ public class RegisterActivity
                 }
                 break;
             case R.id.register_have_tv:
-                finish();
                 ForwardUtil.getInstance(this).forward(LoginActivity.class);
+                finish();
                 break;
         }
     }
 
     @Override
     public void registerLoad(RegisterResponse response) {
-
         Log.e("response", response.getData().toString());
         if (response.isSuc()) {
             UserStorage.getInstance().saveLoginInfo(response.getData());

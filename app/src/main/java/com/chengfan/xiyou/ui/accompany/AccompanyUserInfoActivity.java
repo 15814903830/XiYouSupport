@@ -1,11 +1,13 @@
 package com.chengfan.xiyou.ui.accompany;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -139,6 +141,9 @@ public class AccompanyUserInfoActivity extends
                 finish();
                 break;
             case R.id.a_user_info_more_tv:
+                Intent intent=new Intent(AccompanyUserInfoActivity.this,AccompanyMoreActivity.class);
+                Log.e("myurl",""+currentMemberId);
+                intent.putExtra("myurl",""+currentMemberId);
                 ForwardUtil.getInstance(this).forward(AccompanyMoreActivity.class);
                 break;
             case R.id.tv_chat_accompany:

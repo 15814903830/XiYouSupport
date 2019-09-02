@@ -32,16 +32,13 @@
         app:cardCornerRadius="@dimen/padding_10"
         app:cardElevation="@dimen/padding_10"
         app:cardUseCompatPadding="true">
-
         <ImageView
             android:id="@+id/ap_dynamic_iv"
             android:layout_width="220dp"
             android:layout_height="220dp"
-            android:layout_marginLeft="@dimen/padding_20"
-            android:layout_marginRight="@dimen/padding_20"
             android:scaleType="centerCrop" />
-
         <ImageView
+            android:layout_gravity="center"
             android:id="@+id/iv_video_dynamic"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,7 +46,6 @@
             android:paddingLeft="80dp"
             android:paddingRight="80dp"
             android:src="@drawable/icon_new_video" />
-
     </android.support.v7.widget.CardView>
 
     <LinearLayout

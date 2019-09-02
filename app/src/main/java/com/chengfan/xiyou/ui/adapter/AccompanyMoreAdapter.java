@@ -31,6 +31,7 @@ public class AccompanyMoreAdapter extends BaseRVAdapter<AccompanyMoreEntity, Bas
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.search_game_iv), APIContents.HOST + "/" + item.getImages());
 
         helper.setText(R.id.search_game_name_tv, item.getTitle());
+        helper.setText(R.id.search_game_type_tv, item.getSubjectTitle());
         helper.setText(R.id.search_game_money_tv, "￥" + item.getPrice() + "/小时");
 
     }

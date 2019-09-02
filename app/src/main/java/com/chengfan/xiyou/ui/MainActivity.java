@@ -277,8 +277,6 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
      * @return RongIM  客户端核心类的实例。
      */
     private void connect(String token) {
-
-
         RongIM.connect(token, new RongIMClient.ConnectCallback() {
 
             /**

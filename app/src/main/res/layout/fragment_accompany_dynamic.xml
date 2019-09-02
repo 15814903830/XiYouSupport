@@ -5,9 +5,22 @@
               android:orientation="vertical">
 
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ap_dynamic_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/padding_20"/>
+        <TextView
+            android:visibility="gone"
+            android:background="#FFFFFF"
+            android:id="@+id/tv_zzc"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:text="主人很懒,什么东西都没有留下了!"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+    </FrameLayout>
 </LinearLayout>

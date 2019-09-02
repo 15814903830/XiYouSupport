@@ -76,6 +76,8 @@
 
 
                 <com.chengfan.xiyou.view.RegularTextView
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:id="@+id/confirm_game_time_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

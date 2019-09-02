@@ -18,6 +18,7 @@ import com.zero.ci.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.rong.imkit.RongIM;
 
 /**
  * @author: Zero Yuan
@@ -31,6 +32,7 @@ public class MineOrderDetailActivity extends BaseActivity {
     WebView mMineOrderDetailWv;
     Bundle revBundle;
     int id;
+    private String name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,11 +44,11 @@ public class MineOrderDetailActivity extends BaseActivity {
         revBundle = getIntent().getExtras();
         if (revBundle != null)
             id = revBundle.getInt(APPContents.E_ID);
+        name = revBundle.getString("NAME");
         Log.e("id","---"+id);
         Log.e("idsss","---"+AppData.getString(AppData.Keys.AD_USER_ID));
         initweview();
-        mMineOrderDetailWv.loadUrl(" http://xy.gx11.cn/WapFinance/AccompanyPlayOrderDetail?id=" + id + "&memberId=" + AppData.getString(AppData.Keys.AD_USER_ID));
-        //mMineOrderDetailWv.loadUrl("http://xy.gx11.cn/WapFinance/AccompanyPlayOrderComment?id=" + id + "&memberId=" + AppData.getString(AppData.Keys.AD_USER_ID));
+        mMineOrderDetailWv.loadUrl("http://api.maihui111.com/WapFinance/AccompanyPlayOrderDetail?id=" + id + "&memberId=" + AppData.getString(AppData.Keys.AD_USER_ID));
 
     }
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -81,6 +83,7 @@ public class MineOrderDetailActivity extends BaseActivity {
                 if (url.contains("Api/Member/SendPrivateLetter")){
                     Log.e("toMemberId", url.split("=")[1]);
                 }
+                RongIM.getInstance().startPrivateChat(MineOrderDetailActivity.this, url.split("=")[1] + "", name);
                 return true;
             }
         });

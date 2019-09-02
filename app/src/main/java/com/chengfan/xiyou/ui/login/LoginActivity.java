@@ -19,6 +19,7 @@ import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.LoginContract;
 import com.chengfan.xiyou.domain.model.response.LoginResponse;
 import com.chengfan.xiyou.domain.presenter.LoginPresenterImpl;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.ui.MainActivity;
 import com.chengfan.xiyou.ui.complete.CompleteSexActivity;
 import com.chengfan.xiyou.utils.AppData;
@@ -42,7 +43,7 @@ import io.rong.imlib.model.UserInfo;
  */
 public class LoginActivity
         extends BaseActivity<LoginContract.View, LoginPresenterImpl>
-        implements LoginContract.View {
+        implements LoginContract.View{
     @BindView(R.id.login_user_name_et)
     EditText mLoginUserNameEt;
     @BindView(R.id.login_pw_et)
@@ -69,7 +70,6 @@ public class LoginActivity
                 .statusDark(true)
                 .create()
                 .drawableBar();
-
         FontHelper.applyFont(this, mLoginTitleTv, APPContents.FONTS_BOLD);
         FontHelper.applyFont(this, mLoginZFindTv, APPContents.FONTS_REGULAR);
         FontHelper.applyFont(this, mLoginZPwTv, APPContents.FONTS_REGULAR);
@@ -94,7 +94,8 @@ public class LoginActivity
 
     @Override
     public void loginLoad(LoginResponse loginResponse) {
-        Log.e("loginResponse", "" + loginResponse.getData().getId());
+        Log.e("loginResponse",loginResponse.getMsg());
+        if (loginResponse!=null){
         if (loginResponse.isSuc()) {
             APPContents.ID = "" + loginResponse.getData().getId();
             UserStorage.getInstance().saveLoginInfo(loginResponse.getData());
@@ -115,6 +116,10 @@ public class LoginActivity
             ToastUtil.show(loginResponse.getMsg());
 
         }
+
+        }else {
+            ToastUtil.show("登录失败");
+        }
     }
 
     @OnClick({R.id.login_btn, R.id.login_forget_ll, R.id.login_go_reg_tv})
@@ -128,6 +133,8 @@ public class LoginActivity
                 } else if (password.length() == 0) {
                     ToastUtil.show(R.string.login_pw_txt);
                 } else {
+                    Log.e("userName",userName);
+                    Log.e("userNamepassword",password);
                     mPresenter.loginParameter(userName, password);
                 }
                 break;
@@ -139,5 +146,4 @@ public class LoginActivity
                 break;
         }
     }
-
 }

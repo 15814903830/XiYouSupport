@@ -8,9 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.github.zackratos.ultimatebar.UltimateBar;
@@ -46,7 +48,14 @@ public class MineRecordActivity extends BaseActivity {
                 .create()
                 .drawableBar();
         initWebSettings();
-        mRecordWv.loadUrl("http://xy.gx11.cn/WapFinance/FinanceRecord?id=" + AppData.getString(AppData.Keys.AD_USER_ID) + "&page=1&limit=20");
+        mRecordWv.loadUrl(APIContents.HOST+"/WapFinance/FinanceRecord?id=" + AppData.getString(AppData.Keys.AD_USER_ID) + "&page=1&limit=20");
+        mRecordWv.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                mRecordWv.loadUrl(url);
+                return true;
+            }
+        });
 
     }
 

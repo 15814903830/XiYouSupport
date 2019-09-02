@@ -82,6 +82,7 @@ public class AccompanyJvAdapter extends PagerAdapter {
                 Logger.e("AccompanyFragment  subject Id  " + mXiYouBeanList.get(position).getSubjectId());
                 Bundle toBundle = new Bundle();
                 toBundle.putString(APPContents.E_SUBJECT_ID, mXiYouBeanList.get(position).getSubjectId());
+                toBundle.putString("TITLE", mXiYouBeanList.get(position).getTitle());
                 ForwardUtil.getInstance(context).forward(AccompanyGameActivity.class, toBundle);
             }
         });

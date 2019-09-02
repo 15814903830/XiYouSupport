@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -27,6 +28,7 @@ import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
 import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.accompany.AccompanyUserInfoActivity;
+import com.chengfan.xiyou.ui.login.LoginActivity;
 import com.zero.ci.tool.ForwardUtil;
 
 import org.json.JSONArray;
@@ -44,22 +46,36 @@ import java.util.List;
 @SuppressLint("ValidFragment")
 public class RecommendFragment extends Fragment implements HttpCallBack {
     View mView;
-
-    final String subjectId;
+     private String subjectId;
     private int page=1;
     private boolean data=true;
-    public RecommendFragment(String subjectId) {
-        this.subjectId = subjectId;
+    public static RecommendFragment getInstance(String subjectId) {
+        Bundle bundle=new Bundle();
+        bundle.putString("subjectId",subjectId);
+        RecommendFragment recommendFragment=new RecommendFragment();
+        recommendFragment.setArguments(bundle);
+        return recommendFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle=getArguments();
+        if (bundle != null) {
+            subjectId=bundle.getString("subjectId");
+        }
     }
 
     private List<MyMultipleItem> dast = new ArrayList<>();
     private MultipleItemAdapter adapter;
     private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
     private RecyclerView mAccompanyRv;
-    List<AccompanyEntity> mAccompanyEntityList;
+   AccompanyEntity mAccompanyEntityList;
     private HttpCallBack mHttpCallBack;
     private boolean datalist=true;
-
+    private Boolean over = false;
+    private boolean isErr = true;
+    private int intover=0;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -91,9 +107,9 @@ public class RecommendFragment extends Fragment implements HttpCallBack {
         mAccompanyRv.setNestedScrollingEnabled(false);
     }
 
-    private void initAdapter(List<AccompanyEntity> mAccompanyEntityList) {
-        for (int i = 0; i < mAccompanyEntityList.size(); i++) {
-            dast.add(new MyMultipleItem(MyMultipleItem.FIRST_TYPE, mAccompanyEntityList.get(i)));
+    private void initAdapter(AccompanyEntity mAccompanyEntityList) {
+        for (int i = 0; i < mAccompanyEntityList.getAccompanyPlay().size(); i++) {
+            dast.add(new MyMultipleItem(MyMultipleItem.FIRST_TYPE, mAccompanyEntityList.getAccompanyPlay().get(i)));
         }
         //创建适配器
         adapter = new MultipleItemAdapter(dast);
@@ -111,10 +127,12 @@ public class RecommendFragment extends Fragment implements HttpCallBack {
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                commitanswers(++page);
+                Log.e("onLoadMoreRequested","onLoadMoreRequested");
+              //  commitanswers(++page);
                 //这里设置的监听但是没有使用,使用自己判断的上拉加载,调用BaseRecyclerview的监听是因为要使用它的加载中加载失败加载完毕的布局
             }
         }, mAccompanyRv);
+
 
         initAdapter();
     }
@@ -129,20 +147,14 @@ public class RecommendFragment extends Fragment implements HttpCallBack {
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-        Log.e("response",response);
-
+        Log.e("responsesss",response);
         try {
-            if (datalist) {
-                mAccompanyEntityList = JSON.parseArray(response,AccompanyEntity.class);
-            } else {
-                mAccompanyEntityList.addAll(JSON.parseArray(response,AccompanyEntity.class));
-            }
+                mAccompanyEntityList = JSON.parseObject(response,AccompanyEntity.class);
             initAdapter(mAccompanyEntityList);
             adapter.loadMoreEnd();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void commitanswers(final int page) {
@@ -152,7 +164,9 @@ public class RecommendFragment extends Fragment implements HttpCallBack {
                 List<RequestParams> list=new ArrayList<>();
                 list.add(new RequestParams("subjectId", subjectId));
                 list.add(new RequestParams("page", ""+page));
-                    OkHttpUtils.doGet(APIContents.AccompanyPlayList ,list,mHttpCallBack,1);
+                list.add(new RequestParams("isRecommend", "true"));
+                list.add(new RequestParams("areaCode", "440100"));
+                    OkHttpUtils.doGet(APIContents.HOST+"/api/Member/ListByArea" ,list,mHttpCallBack,1);
             }
         }).start();
     }
@@ -161,9 +175,8 @@ public class RecommendFragment extends Fragment implements HttpCallBack {
             adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    Log.e("onItemChildClick", "" + position);//总布局RecycleView的Item监听
                     Bundle toBundle = new Bundle();
-                    toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, mAccompanyEntityList.get(position).getMemberId());
+                    toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, mAccompanyEntityList.getAccompanyPlay().get(position).getId());
                     ForwardUtil.getInstance(getActivity()).forward(AccompanyUserInfoActivity.class, toBundle);
                 }
             });

@@ -57,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/padding_20"
-                    android:text="$3443/小时"
+                    android:text=""
                     android:textColor="@color/color_D1AE81"
                     android:textSize="@dimen/text_size_15"/>
             </LinearLayout>
@@ -80,17 +80,18 @@
                 android:background="@drawable/home_nan"/>
 
             <com.chengfan.xiyou.view.RegularTextView
+                android:layout_marginLeft="@dimen/padding_5"
                 android:id="@+id/accompany_game_age_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="你不知道的事"
+                android:text=""
                 android:textColor="@color/color_999999"
                 android:textSize="@dimen/text_size_13"/>
 
             <com.chengfan.xiyou.view.RegularTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="|"
+                android:text=" | "
                 android:textColor="@color/color_999999"
                 android:textSize="@dimen/text_size_13"/>
 
@@ -98,16 +99,17 @@
                 android:id="@+id/accompany_game_num_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="你不知道的事"
+                android:text="0"
                 android:textColor="@color/color_999999"
                 android:textSize="@dimen/text_size_13"/>
         </LinearLayout>
 
 
         <com.chengfan.xiyou.view.RegularTextView
+            android:gravity="center"
             android:id="@+id/accompany_game_address_tv"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="25dp"
             android:layout_below="@+id/accompany_game_name_ll"
             android:layout_marginTop="@dimen/padding_10"
             android:background="@drawable/xy_text_bg"

@@ -70,6 +70,8 @@ public class APPContents {
 
     public static String BUNDLE_BOOLEAN = "BUNDLE_BOOLEAN";
 
+    public static String Banner = "";
+
     public static String BUNDLE_FAMILY = "BUNDLE_FAMILY";
 
     public static String BUNDLE_SEARCH = "BUNDLE_SEARCH";

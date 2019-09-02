@@ -26,6 +26,7 @@ public class AccompanyUserInfoPresenterImpl extends BasePresenter<AccompanyUserI
         append(mModel.ACCOMPANY_USER_INFO_ENTITY_OBSERVABLE(currentMemberId), new NetObserver<AccompanyUserInfoEntity>(this) {
             @Override
             public void onNetNext(AccompanyUserInfoEntity result) {
+                if (result!=null)
                 mView.userInfoLoad(result);
             }
 

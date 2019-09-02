@@ -4,6 +4,7 @@ import com.chengfan.xiyou.domain.contract.CompleterInfoContract;
 import com.chengfan.xiyou.domain.model.CompleterInfoModelImpl;
 import com.chengfan.xiyou.domain.model.entity.MemberInfoBean;
 import com.chengfan.xiyou.domain.model.entity.UploadEntity;
+import com.chengfan.xiyou.domain.model.response.LoginResponse;
 import com.zero.ci.base.BaseApiResponse;
 import com.zero.ci.base.BasePresenter;
 import com.zero.ci.base.NetObserver;
@@ -51,4 +52,5 @@ public class CompleterInfoPresenterImpl
             }
         });
     }
+
 }

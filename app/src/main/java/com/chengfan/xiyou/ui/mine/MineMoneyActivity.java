@@ -1,5 +1,6 @@
 package com.chengfan.xiyou.ui.mine;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -9,9 +10,12 @@ import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.github.zackratos.ultimatebar.UltimateBar;
@@ -45,7 +49,14 @@ public class MineMoneyActivity extends BaseActivity {
                 .statusDark(true)
                 .create()
                 .drawableBar();
-        mMoneyWv.loadUrl("http://xy.gx11.cn/WapFinance/Wallet?id=" + AppData.getString(AppData.Keys.AD_USER_ID) + "&page=1&limit=0");
+        mMoneyWv.loadUrl(APIContents.HOST+"/WapFinance/Wallet?id=" + AppData.getString(AppData.Keys.AD_USER_ID) + "&page=1&limit=0");
+        mMoneyWv.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                mMoneyWv.loadUrl(url);
+                return true;
+            }
+        });
     }
 
     @OnClick({R.id.xy_back_btn})

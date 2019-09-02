@@ -15,7 +15,7 @@ import io.reactivex.Observable;
  */
 public interface AccompanyMoreContract {
     interface Model {
-        Observable<List<AccompanyMoreEntity>> MORE_OBSERVABLE();
+        Observable<List<AccompanyMoreEntity>> MORE_OBSERVABLE(String id);
     }
 
     interface View extends BaseView {
@@ -23,6 +23,6 @@ public interface AccompanyMoreContract {
     }
 
     interface Presenter {
-        void moreParameter();
+        void moreParameter(String id);
     }
 }

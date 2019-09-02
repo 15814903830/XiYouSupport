@@ -255,13 +255,20 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 ForwardUtil.getInstance(this).forward(CompleteVideoActivity.class, toBundle);
                 break;
             case R.id.edit_info_save_btn:
+
                 nameStr = mEditNameEt.getText().toString().trim();
                 ageStr = mEditAgeEt.getText().toString().trim();
                 wxStr = mEditWxEt.getText().toString().trim();
                 sexStr = mEditSexEt.getText().toString().trim();
                 MemberInfoBean bean = new MemberInfoBean();
                 bean.setId(AppData.getString(AppData.Keys.AD_USER_ID));
-                bean.setAvatarUrl(fileBase.getFilePath());
+
+                try {
+                    bean.setAvatarUrl(fileBase.getFilePath());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 bean.setNickname(nameStr);
                 bean.setAge(ageStr);
                 if (sexStr.equals("男"))
@@ -334,7 +341,6 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         File tempFile = new File(path.trim());
         String fileName = tempFile.getName();
         mUploadFile = new UploadFile(0, tempFile, fileName);
-
         Log.e("path", result.get(0).getPath());
         postimg(best64(result.get(0).getPath()));
         //mPresenter.uploadParameter(mUploadFile);
@@ -512,7 +518,6 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 .execute(new AbstractResponse<String>() {
                     @Override
                     public void onSuccess(String result) {
-
                         Type type = new TypeToken<SystemConfigEntity>() {
                         }.getType();
                         SystemConfigEntity systemConfigEntity = new Gson().fromJson(result, type);
@@ -535,8 +540,6 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 .execute(new AbstractResponse<String>() {
                     @Override
                     public void onSuccess(String result) {
-
-
                         Type type = new TypeToken<SystemConfigEntity>() {
                         }.getType();
                         SystemConfigEntity systemConfigEntity = new Gson().fromJson(result, type);
@@ -579,13 +582,14 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
 
 
     private void initView(GetMemberInfoEntity getMemberInfoEntity) {
+        Log.e("imgurl",APIContents.HOST + "/" + getMemberInfoEntity.getAvatarUrl());
+        Log.e("getAreaName",APIContents.HOST + "/" + getMemberInfoEntity.getAreaName());
         ImageLoaderManager.getInstance().showImage(mEditHeadCiv, APIContents.HOST + "/" + getMemberInfoEntity.getAvatarUrl());
         mEditAgeEt.setText(getMemberInfoEntity.getAge() + "");
         mEditNameEt.setText(getMemberInfoEntity.getNickname());
         mEditCityTv.setText(getMemberInfoEntity.getAreaName());
         mEditFaceTv.setText(getMemberInfoEntity.getExterior());
         mEditWxEt.setText(getMemberInfoEntity.getWeiXin());
-        Log.e("mEditWxEt", "" + getMemberInfoEntity.getWeiXin());
         if (getMemberInfoEntity.getGender() == 1) {
             mEditSexEt.setText("男");
         } else {
@@ -593,11 +597,6 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         }
 
         mEditJobTv.setText(getMemberInfoEntity.getJob());
-        if (getMemberInfoEntity.getGenderVideo() == null) {
-            mEditCheckTv.setText("暂未验证");
-        } else {
-            mEditCheckTv.setText("已验证");
-        }
     }
 
     @Override
@@ -627,9 +626,14 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
                 }
                 break;
             case 1:
-                Log.e("response1", response);
-                minEBase = JSON.parseObject(response, MinEBase.class);
-                mEditCheckTvSS.setText(minEBase.getRealNameTag());
+                try {
+                    Log.e("response1", response);
+                    minEBase = JSON.parseObject(response, MinEBase.class);
+                    mEditCheckTv.setText( minEBase.getVerificationGenderStatusTag());
+                    mEditCheckTvSS.setText(minEBase.getRealNameTag());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
         }
 

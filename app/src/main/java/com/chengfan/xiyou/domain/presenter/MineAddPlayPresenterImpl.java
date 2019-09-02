@@ -38,6 +38,9 @@ public class MineAddPlayPresenterImpl extends BasePresenter<MineAddPlayContract.
     }
 
 
+
+
+
     @Override
     public void mineUploadParameter(XYUploadEntity xyUploadEntity) {
 

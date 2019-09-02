@@ -1,15 +1,19 @@
 package com.chengfan.xiyou.ui.accompany;
 
 import android.annotation.SuppressLint;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.chengfan.xiyou.R;
@@ -38,6 +42,7 @@ import com.zero.ci.tool.ForwardUtil;
 import com.zero.ci.widget.CircleImageView;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,10 +83,19 @@ public class AccompanyDetailActivity extends
     BoldTextView mOrderPinglunNumTv;
     @BindView(R.id.order_rv)
     RecyclerView mOrderRv;
+    private boolean imgmp3=true;
 
     @BindView(R.id.order_bottom_ll)
     LinearLayout mOrderBottomLl;
 
+    MediaPlayer md = new MediaPlayer();
+
+
+    //语音文件保存路径
+    private String FileName = null;
+    //语音操作对象
+    private MediaPlayer mPlayer = null;
+    private MediaRecorder mRecorder = null;
     Bundle revBundle;
     int currentMemberId;
     AccompanyDetailEntity mAccompanyDetailEntity;
@@ -102,6 +116,15 @@ public class AccompanyDetailActivity extends
     RegularTextView orderTimeTvdd;
     @BindView(R.id.search_game_name_lldd)
     LinearLayout searchGameNameLldd;
+    @BindView(R.id.ll_mp3)
+    LinearLayout ll_mp3;
+
+    @BindView(R.id.iv_bfzt)
+    ImageView iv_bfzt;
+
+    @BindView(R.id.tv_mp3time)
+    TextView tv_mp3time;
+
     private HttpCallBack mHttpCallBack;
     private DetailBase detailBase;
     @SuppressLint("HandlerLeak")
@@ -127,8 +150,13 @@ public class AccompanyDetailActivity extends
 
         mHttpCallBack = this;
         revBundle = getIntent().getExtras();
-        if (revBundle != null)
+        if (revBundle != null){
             currentMemberId = revBundle.getInt(APPContents.E_CURRENT_MEMBER_ID);
+        }
+
+        if (currentMemberId==0){
+            currentMemberId=Integer.valueOf(getIntent().getStringExtra("currentMemberId"));
+        }
 
         mAccompanyDetailEntity = new AccompanyDetailEntity();
 
@@ -169,6 +197,16 @@ public class AccompanyDetailActivity extends
     @Override
     public void accompanyDetailLoad(AccompanyDetailEntity accompanyDetailEntity) {
         mAccompanyDetailEntity = accompanyDetailEntity;
+        try {
+            if (accompanyDetailEntity.getAudioPath()!=null){
+                FileName=APIContents.HOST+"/"+mAccompanyDetailEntity.getAudioPath();
+            }else {
+                ll_mp3.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            ll_mp3.setVisibility(View.GONE);
+        }
         initView(accompanyDetailEntity);
     }
 
@@ -217,6 +255,17 @@ public class AccompanyDetailActivity extends
     }
 
     private void initView(final AccompanyDetailEntity accompanyDetailEntity) {
+        try {
+            if (accompanyDetailEntity.getAudioPath()!=null)
+            md.setDataSource(APIContents.HOST+"/"+accompanyDetailEntity.getAudioPath());
+            md.prepare();
+            tv_mp3time.setText((md.getDuration()/1000)+"s");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
         mOrderGameNameTv.setText(accompanyDetailEntity.getTitle());
         ImageLoaderManager.getInstance().showImage(mOrderPicIv, APIContents.HOST + "/" + accompanyDetailEntity.getImages());
 
@@ -250,9 +299,7 @@ public class AccompanyDetailActivity extends
         mOrderRv.setLayoutManager(new LinearLayoutManager(this));
         mOrderRv.setAdapter(mAccompanyDetailAdapter);
         mOrderRv.setFocusableInTouchMode(false);
-
-        if (accompanyDetailEntity.getMemberId() ==
-                DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID))) {
+        if (accompanyDetailEntity.getMemberId() == DataFormatUtil.stringToInt(AppData.getString(AppData.Keys.AD_USER_ID))) {
             mOrderBottomLl.setVisibility(View.GONE);
             mOrderFocusTv.setVisibility(View.GONE);
         } else {
@@ -261,7 +308,7 @@ public class AccompanyDetailActivity extends
     }
 
 
-    @OnClick({R.id.order_back_btn, R.id.order_info_tv, R.id.order_xiadan_tv, R.id.order_user_lick_ll})
+    @OnClick({R.id.order_back_btn, R.id.order_info_tv, R.id.order_xiadan_tv, R.id.order_user_lick_ll,R.id.ll_mp3})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.order_back_btn:
@@ -269,6 +316,18 @@ public class AccompanyDetailActivity extends
                 break;
             case R.id.order_info_tv:
                 mPresenter.sayHiParameter(currentMemberId);
+                break;
+            case R.id.ll_mp3:
+                if (imgmp3){
+                    iv_bfzt.setSelected(true);
+                    imgmp3=true;
+                    playmusic();
+                }else {
+                    iv_bfzt.setSelected(false);
+                    stopplaymusic();
+                    imgmp3=false;
+                }
+
                 break;
             case R.id.order_xiadan_tv:
                 //                if ("true".equals(CheckVIP)) {
@@ -281,6 +340,7 @@ public class AccompanyDetailActivity extends
 
                 Bundle toBundle = new Bundle();
                 toBundle.putSerializable(APPContents.BUNDLE_FRAGMENT, mAccompanyDetailEntity);
+                toBundle.putSerializable("detailBase", detailBase);
                 ForwardUtil.getInstance(this).forward(AccompanyConfirmOrderActivity.class, toBundle);
 
 
@@ -292,7 +352,34 @@ public class AccompanyDetailActivity extends
                 break;
         }
     }
+    //播放录音
+    public void  playmusic(){
+        // TODO Auto-generated method stub
+        mPlayer = new MediaPlayer();
+        try{
+            mPlayer.setDataSource(FileName);
+            mPlayer.prepare();
+            mPlayer.start();
 
+            mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//播放完成
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+//                    iv_bfzt.setSelected(false);
+//                    imgmp3=false;
+//                    stopplaymusic();
+                }
+            });
+        }catch(IOException e){
+        }
+    }
+
+
+    //停止播放录音
+    public void  stopplaymusic(){
+        mPlayer.release();
+        mPlayer = null;
+    }
 
     @Override
     public void onResponse(String response, int requestId) {

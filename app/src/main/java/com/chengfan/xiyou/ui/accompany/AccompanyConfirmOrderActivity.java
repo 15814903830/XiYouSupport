@@ -35,6 +35,7 @@ import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.mine.MineMemberActivity;
 import com.chengfan.xiyou.ui.mine.MineOrderActivity;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.chengfan.xiyou.view.RegularTextView;
 import com.chengfan.xiyou.wxapi.Payutils;
@@ -106,6 +107,7 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
     private HttpCallBack mHttpCallBack;
     AccompanyDetailEntity mAccompanyDetailEntity;
 
+    private DetailBase mDetailBase;
     int time = 1;
     String remarkStr, selectStr, allStr;
     AccompanyConfirmOrderBean confirmOrderBean;
@@ -147,10 +149,17 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
         revBundle = getIntent().getExtras();
         if (revBundle != null) {
             mAccompanyDetailEntity = (AccompanyDetailEntity) revBundle.getSerializable(APPContents.BUNDLE_FRAGMENT);
+            mDetailBase= (DetailBase) revBundle.getSerializable("detailBase");
             ImageLoaderManager.getInstance().showImage(mConfirmGamePicIv, APIContents.HOST + "/" + mAccompanyDetailEntity.getImages());
             mConfirmGameNameTv.setText(mAccompanyDetailEntity.getNickname());
-            mConfirmGameTimeTv.setText(mAccompanyDetailEntity.getWeekDay() + "|" + mAccompanyDetailEntity.getServiceStartTime() + " " + mAccompanyDetailEntity.getServiceEndTime());
-            mConfirmTypeNameTv.setText(mAccompanyDetailEntity.getSubjectTitle());
+            String sum[]=mAccompanyDetailEntity.getWeekDay().split(",");
+            if (sum.length==7){
+                mConfirmGameTimeTv.setText("全天可陪练"+ " | " + mAccompanyDetailEntity.getServiceStartTime() + "至" + mAccompanyDetailEntity.getServiceEndTime());
+            }else {
+                mConfirmGameTimeTv.setText(DataFormatUtil.formatWeekDay(mAccompanyDetailEntity.getWeekDay())+ "|" + mAccompanyDetailEntity.getServiceStartTime() + "至" + mAccompanyDetailEntity.getServiceEndTime());
+            }
+
+            mConfirmTypeNameTv.setText(mDetailBase.getSubject().getTitle());
             mConfirmGameMoneyTv.setText("￥" + mAccompanyDetailEntity.getPrice() + "小时");
             mConfirmTimTv.setText(time + "");
             mConfirmHejiTimeTv.setText(time + "");
@@ -164,7 +173,6 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
         mConfirmZfbSelectIv.setVisibility(View.VISIBLE);
         mConfirmWxSelectIv.setVisibility(View.GONE);
         selectStr = "3";
-
     }
 
     @Override
@@ -191,10 +199,6 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
     @Override
     public void AccompanyConfirmOrderLoad(BaseApiResponse baseApiResponse) {
         paystart("" + baseApiResponse.getData());
-        //        if (baseApiResponse.isSuc()) {
-        //            ForwardUtil.getInstance(this).forward(AccompanyOrderSuccessActivity.class);
-        //        }
-        //        ToastUtil.show(baseApiResponse.getMsg());
     }
 
     @OnClick({R.id.xy_back_btn, R.id.confirm_time_jian_iv, R.id.confirm_time_jia_iv, R.id.confirm_zfb_select_rl, R.id.confirm_wx_select_rl, R.id.confirm_submit_btn})
@@ -270,11 +274,9 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
         }
     }
     private void paystart(final String info) {
-        Log.e("info", info);
         Runnable payRunnable = new Runnable() {
             @Override
             public void run() {
-                Log.e("info", info);
                 PayTask alipay = new PayTask(AccompanyConfirmOrderActivity.this);
                 Map<String, String> result = alipay.payV2(info, true);
                 Message msg = new Message();
@@ -298,14 +300,19 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-
+        Log.e("responsepay",response);
         switch (requestId) {
             case 3://支付宝
-                PayzfbBase base = JSON.parseObject(response, PayzfbBase.class);
-                paystart(base.getData());
+                try {
+                    PayzfbBase base = JSON.parseObject(response, PayzfbBase.class);
+                    if(base.isSuc()){
+                        paystart(base.getData());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case 2://微信
-                Log.e("response",response);
                 WxPayBase wxPayBase = JSON.parseObject(response, WxPayBase.class);
                 wxpay(wxPayBase.getData().getAppid(),
                         wxPayBase.getData().getPartnerid(),
@@ -342,6 +349,10 @@ public class AccompanyConfirmOrderActivity extends BaseActivity<AccompanyConfirm
                     jsonObject.put("paymentChannel", ""+paymentChannel);
                     jsonObject.put("remark", remark);//备注
                     OkHttpUtils.doPostJson(APIContents.CreateAccompanyPlayOrder, jsonObject.toString(), mHttpCallBack, paymentChannel);
+//                    Log.e("accompanyPlayId",accompanyPlayId);
+//                    Log.e("accompanyPlayId",memberId);
+//                    Log.e("accompanyPlayId",hour);
+//                    Log.e("accompanyPlayId",""+paymentChannel);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -48,4 +48,6 @@ public class CompleterInfoModelImpl implements CompleterInfoContract.Model {
                 .execute(new AdaptResponse<BaseApiResponse>() {
                 });
     }
+
+
 }

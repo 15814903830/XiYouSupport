@@ -14,7 +14,9 @@ import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.domain.contract.DynamicIssuedContract;
 import com.chengfan.xiyou.domain.model.entity.UploadEntity;
 import com.chengfan.xiyou.domain.presenter.DynamicIssuedPresenterImpl;
+import com.chengfan.xiyou.ui.UIApplication;
 import com.chengfan.xiyou.utils.GlideImageLoader;
+import com.chengfan.xiyou.utils.UserUtils;
 import com.chengfan.xiyou.utils.dialog.BaseNiceDialog;
 import com.chengfan.xiyou.utils.dialog.NiceDialog;
 import com.chengfan.xiyou.utils.dialog.ViewConvertListener;
@@ -57,14 +59,16 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
     @BindView(R.id.issued_ngv)
     NineGridView mIssuedNgv;
     String content;
-
+    TextView textView;
+    private int mimg=0;
+    private int mimgmax=0;
     private ArrayList<AlbumFile> mAlbumFiles;
     private List<UploadFile> mUploadFileList;
     List<NineGridBean> resultList;
     List<UploadEntity> mUploadEntityList;
     int requestNum = 1;
     private BaseNiceDialog mBaseNiceDialog;
-
+    private UserUtils userUtils;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,21 +89,24 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
         mUploadFileList = new ArrayList<>();
         resultList = new ArrayList<>();
         mUploadEntityList = new ArrayList<>();
-
+        userUtils = ((UIApplication)getApplication()).getUserUtils();
         setPhoneRgv();
     }
 
     @Override
     public void publistLoad(BaseApiResponse baseApiResponse) {
-        mBaseNiceDialog.dismiss();
+        userUtils.login(true);
         finish();
     }
 
     @Override
     public void uploadLoad(UploadEntity result) {
         mUploadEntityList.add(result);
-        if (mUploadEntityList.size() == mUploadFileList.size())
-            mPresenter.publishParameter(content, mUploadEntityList);
+        mimg--;
+        if (mimg<1){
+            mBaseNiceDialog.dismiss();
+        }
+        textView.setText("正在压缩上传剩余 "+mimg);
     }
 
     private void setPhoneRgv() {
@@ -288,11 +295,17 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
 
         for (int i = 0; i < mAlbumFiles.size(); i++) {
             String path = mAlbumFiles.get(i).getPath();
-
             File tempFile = new File(path.trim());
-
             String fileName = tempFile.getName();
             mUploadFileList.add(new UploadFile(0, tempFile, fileName));
+        }
+        showLoading();
+        Toast.makeText(this, "正在压缩图片上传,请等待", Toast.LENGTH_SHORT).show();
+        for (UploadFile uploadFile : mUploadFileList) {
+            mPresenter.uploadParameter(uploadFile);
+            requestNum++;
+            mimg++;
+            mimgmax++;
         }
     }
 
@@ -309,11 +322,8 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
                 else if (mUploadFileList.size() < 0)
                     ToastUtil.show("请选择图片或视频");
                 else {
-                    showLoading();
-                    for (UploadFile uploadFile : mUploadFileList) {
-                        mPresenter.uploadParameter(uploadFile);
-                        requestNum++;
-                    }
+                    if (mUploadEntityList.size() == mUploadFileList.size())
+                        mPresenter.publishParameter(content, mUploadEntityList);
                 }
                 break;
         }
@@ -324,16 +334,17 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
      */
     public void showLoading() {
         NiceDialog.init()
-                .setLayoutId(R.layout.dialog_loading_layout)
+                .setLayoutId(R.layout.dialog_imgloading_layout)
                 .setConvertListener(new ViewConvertListener() {
                     @Override
                     protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+                        textView=holder.getView(R.id.tv_dialog_sum);
                         mBaseNiceDialog = dialog;
                     }
                 })
                 .setOutCancel(false)
-                .setWidth(48)
-                .setHeight(48)
+                .setWidth(200)
+                .setHeight(200)
                 .setShowBottom(false)
                 .show(getSupportFragmentManager());
     }

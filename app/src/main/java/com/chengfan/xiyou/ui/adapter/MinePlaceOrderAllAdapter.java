@@ -1,7 +1,9 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -48,10 +50,9 @@ public class MinePlaceOrderAllAdapter extends BaseRVAdapter<MineOrderPlaceEntity
         helper.setText(R.id.order_game_name_money_tv, item.getAccompanyPlay().getSubject().getTitle() + ". ￥" + item.getAccompanyPlay().getPrice() + "/小时");
         helper.setText(R.id.order_time_tv, "×" + item.getHour());
         helper.setText(R.id.order_money_tv, "合计：" + item.getHour() * item.getAccompanyPlay().getPrice());
-
         helper.setText(R.id.order_user_name_tv, item.getAccompanyPlay().getMember().getNickname());
 
-
+        Log.e("wcjwc",item.getStatusTag());
         if (item.getStatus() == 5) {
             helper.getView(R.id.order_evaluate_tv).setVisibility(View.VISIBLE);
             helper.getView(R.id.order_evaluate_tv).setOnClickListener(new View.OnClickListener() {
@@ -77,6 +78,7 @@ public class MinePlaceOrderAllAdapter extends BaseRVAdapter<MineOrderPlaceEntity
                 iss=(24-(mytime-xitontime));
             }
 
+
             helper.setText(R.id.place_time_tv, iss+ "");
 
 
@@ -85,9 +87,11 @@ public class MinePlaceOrderAllAdapter extends BaseRVAdapter<MineOrderPlaceEntity
                 public void onClick(View v) {
                     //确认结束
                     mOrderUnprovedListener.onOrderUnprovedListener(helper.getAdapterPosition());
+
                 }
             });
         }
+
 
     }
 

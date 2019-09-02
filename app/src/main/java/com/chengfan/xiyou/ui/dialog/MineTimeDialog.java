@@ -124,7 +124,7 @@ public class MineTimeDialog extends Dialog {
         numericWheelAdapter.setLabel("");
         //		numericWheelAdapter.setTextSize(15);  设置字体大小
         hour.setViewAdapter(numericWheelAdapter);
-        hour.setCyclic(true);
+        hour.setCyclic(false);
     }
 
     /**
@@ -135,7 +135,7 @@ public class MineTimeDialog extends Dialog {
         numericWheelAdapter.setLabel("");
 //		numericWheelAdapter.setTextSize(15);  设置字体大小
         mins.setViewAdapter(numericWheelAdapter);
-        mins.setCyclic(true);
+        mins.setCyclic(false);
     }
 
     /**
@@ -146,7 +146,7 @@ public class MineTimeDialog extends Dialog {
         numericWheelAdapter.setLabel("");
         //		numericWheelAdapter.setTextSize(15);  设置字体大小
         hourTwo.setViewAdapter(numericWheelAdapter);
-        hourTwo.setCyclic(true);
+        hourTwo.setCyclic(false);
     }
 
     /**
@@ -157,7 +157,7 @@ public class MineTimeDialog extends Dialog {
         numericWheelAdapter.setLabel("");
 //		numericWheelAdapter.setTextSize(15);  设置字体大小
         minsTwo.setViewAdapter(numericWheelAdapter);
-        minsTwo.setCyclic(true);
+        minsTwo.setCyclic(false);
     }
 
 

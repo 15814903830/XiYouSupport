@@ -24,12 +24,10 @@
             android:id="@+id/bot_nav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/padding_60"
-            android:layout_marginRight="@dimen/padding_60"
-            android:background="@drawable/xy_nice_pacht"
-            app:itemTextColor="@color/selector_item_accompany_color"
+           app:itemTextColor="@color/selector_item_accompany_color"
+            android:layout_marginLeft="@dimen/padding_50"
+            android:layout_marginRight="@dimen/padding_50"
             app:menu="@menu/menu_navigation_order_flag"/>
-
 
     </RelativeLayout>
 

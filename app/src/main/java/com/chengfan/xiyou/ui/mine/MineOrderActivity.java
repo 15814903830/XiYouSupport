@@ -75,8 +75,8 @@ public class MineOrderActivity extends BaseActivity {
         //set enable
         mBotNav.enableItemShiftingMode(false);
         mBotNav.enableShiftingMode(false);
-        mBotNav.setLargeTextSize(20);
-        mBotNav.setSmallTextSize(15);
+        mBotNav.setLargeTextSize(22);
+        mBotNav.setSmallTextSize(17);
         mBotNav.setIconSize(0, 0);
         // set adapter
         adapter = new VpAdapter(getSupportFragmentManager(), fragments);

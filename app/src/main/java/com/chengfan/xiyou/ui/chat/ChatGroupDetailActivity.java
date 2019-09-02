@@ -123,15 +123,16 @@ public class ChatGroupDetailActivity
 
         mChatChangeNameDialog.setChangeListener(new ChatChangeNameDialog.ChangeListener() {
             @Override
-            public void onChangeListener(String numEt) {
+            public void onChangeListener(String numEt) {//修改群名称
+
                 updateGroupName = numEt;
                 UpdateTeamBean bean = new UpdateTeamBean();
                 bean.setId(mGroupDetailEntity.getId());
                 bean.setMemberId(mGroupDetailEntity.getMemberId());
                 bean.setName(updateGroupName);
-                Logger.d("onChangeGroupName  :  " + new Gson().toJson(bean));
                 mChatGroupDetailNameTv.setText(updateGroupName);
                 mPresenter.groupNameParameter(bean);
+
             }
         });
 
@@ -271,7 +272,6 @@ public class ChatGroupDetailActivity
             }
 
         }
-        ToastUtil.show(baseApiResponse.getMsg());
     }
 
     @Override

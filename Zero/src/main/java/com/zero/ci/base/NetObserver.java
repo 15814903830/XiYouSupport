@@ -59,7 +59,6 @@ public abstract class NetObserver<T> implements Observer<T> {
             Logger.e("NetObserver ==>> " + e.getMessage());
         }
         onNetError(e);
-
         cancelLoading();
     }
 

@@ -34,19 +34,20 @@ public class MultipleItemAdapter extends BaseMultiItemQuickAdapter<MyMultipleIte
             case MyMultipleItem.FIRST_TYPE:
                 ImageView imageView=helper.getView(R.id.ac_img_riv);
                 CircleImageView imghend=helper.getView(R.id.cirv_user_pic_civ);
-                Glide.with(mContext).load(APIContents.HOST+"/"+item.getData().getImages()).into(imageView);
+                Glide.with(mContext).load(APIContents.HOST+"/"+item.getData().getMemberNews().getImages()).into(imageView);
                 Glide.with(mContext).load(APIContents.HOST+"/"+item.getData().getAvatarUrl()).into(imghend);
 
                 helper.setText(R.id.tv_name,item.getData().getNickname())
-                .setText(R.id.tv_yxpw,item.getData().getSubjectId())
-                .setText(R.id.tv_subject_tv,item.getData().getTitle())
+//                .setText(R.id.tv_yxpw,item.getData().getSubjectId())
+                .setText(R.id.tv_subject_tv,item.getData().getMemberNews().getContent())
                 ;
-                if (item.getData().getSubjectId().equals("1")) {
-                    helper.setText(R.id.tv_yxpw, "游戏陪玩");
-                    helper.setText(R.id.jiage, "￥" + item.getData().getPrice() + "/小时");
-                } else {
-                    helper.getView(R.id.ll_dibu).setVisibility(View.GONE);
-                }
+//                if (item.getData().getSubjectId().equals("1")) {
+//                    helper.setText(R.id.tv_yxpw, "游戏陪玩");
+//                    helper.setText(R.id.jiage, "￥" + item.getData().getPrice() + "/小时");
+//                } else {
+//                    helper.getView(R.id.ll_dibu).setVisibility(View.GONE);
+//                }
+                helper.getView(R.id.ll_dibu).setVisibility(View.GONE);
                 break;
         }
 

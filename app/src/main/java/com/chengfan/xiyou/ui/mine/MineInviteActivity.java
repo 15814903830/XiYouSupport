@@ -9,9 +9,11 @@ import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.github.zackratos.ultimatebar.UltimateBar;
@@ -47,7 +49,14 @@ public class MineInviteActivity extends BaseActivity {
 
         mXyMiddleTv.setText(R.string.invite_title_txt);
 
-        mMineInviteWv.loadUrl("http://xy.gx11.cn/Wap/InviteFriends/" + AppData.getString(AppData.Keys.AD_USER_ID));
+        mMineInviteWv.loadUrl(APIContents.HOST+"/Wap/InviteFriends/" + AppData.getString(AppData.Keys.AD_USER_ID));
+        mMineInviteWv.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                mMineInviteWv.loadUrl(url);
+                return true;
+            }
+        });
 
     }
 

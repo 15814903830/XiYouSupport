@@ -11,13 +11,17 @@
         android:background="@drawable/xiyou_top_bg"
         >
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/xy_back_btn"
+            android:gravity="center_vertical"
+            android:layout_width="@dimen/padding_50"
+            android:layout_height="45dp">
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/icon_back"
             />
-
+        </LinearLayout>
 
         <com.chengfan.xiyou.view.MediumTextView
             android:id="@+id/xy_middle_tv"

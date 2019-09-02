@@ -1,5 +1,7 @@
 package com.chengfan.xiyou.domain.model;
 
+import android.util.Log;
+
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.AccompanyDetailContract;
@@ -25,6 +27,8 @@ import io.reactivex.Observable;
 public class AccompanyDetailModelImpl implements AccompanyDetailContract.Model {
     @Override
     public Observable<AccompanyDetailEntity> ACCOMPANY_DETAIL_OBSERVABLE(int currentMemberId) {
+        Log.e("E_ID",""+currentMemberId);
+        Log.e("E_ID",""+AppData.getString(AppData.Keys.AD_USER_ID));
         return HttpRequest.get(APIContents.ACCOMPANY_DETAIL)
                 .params(APPContents.E_ID, currentMemberId)
                 .params(APPContents.E_CURRENT_MEMBER_ID, AppData.getString(AppData.Keys.AD_USER_ID))

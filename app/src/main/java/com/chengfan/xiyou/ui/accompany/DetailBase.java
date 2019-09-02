@@ -1,5 +1,6 @@
 package com.chengfan.xiyou.ui.accompany;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  * @updateAuthor $Author$
  * @updateDes ${TODO}
  */
-public class DetailBase {
+public class DetailBase  implements Serializable {
 
     /**
      * id : 56
@@ -245,7 +246,7 @@ public class DetailBase {
         this.order = order;
     }
 
-    public static class SubjectBean {
+    public static class SubjectBean  implements Serializable{
         /**
          * id : 1
          * images : Img/1.png

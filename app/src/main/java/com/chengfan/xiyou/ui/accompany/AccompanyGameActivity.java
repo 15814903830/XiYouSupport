@@ -131,11 +131,11 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
                 .create()
                 .drawableBar();
         ButterKnife.bind(this);
-        mXyMiddleTv.setText(getResources().getText(R.string.main_pei_game_txt));
         mHttpCallBack=this;
         revBundle = getIntent().getExtras();
         if (revBundle != null)
             subjectId = revBundle.getString(APPContents.E_SUBJECT_ID);
+        mXyMiddleTv.setText(revBundle.getString("TITLE"));
         //mPresenter.gameParameter("3", 1, true);
         initZrl();
         getClassify();
@@ -184,7 +184,6 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
                     adapter.notifyDataSetChanged();
                     mListViewlist.setVisibility(View.VISIBLE);
                     mBooleanlist3=false;
-                    Log.e("listText3",listText3.get(0));
                 }else {
                     mListViewlist.setVisibility(View.GONE);
                     mBooleanlist3=true;
@@ -253,7 +252,7 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                OkHttpUtils.doGet("http://xy.gx11.cn/api/Member/ListByArea?isRecommend=true&subjectId=10048&newsCode=1101&page=1&limit=18", mHttpCallBack, 0);
+                OkHttpUtils.doGet(APIContents.HOST+"/api/Member/ListByArea?isRecommend=true&subjectId="+subjectId+"&newsCode=1101&page=1&limit=18", mHttpCallBack, 0);
             }
         }).start();
     }
@@ -264,7 +263,7 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                OkHttpUtils.doGet("http://xy.gx11.cn/api/AccompanyPlay/List?id="+AppData.getString(AppData.Keys.AD_USER_ID) +
+                OkHttpUtils.doGet(APIContents.HOST+"/api/AccompanyPlay/List?id="+AppData.getString(AppData.Keys.AD_USER_ID) +
                         "&subjectId="+subjectId +
                         "&sortOrder="+sortOrder +
                         "&areaTitle="+areaTitle +
@@ -285,10 +284,9 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-
+        Log.e("responseresponse",response);
         switch (requestId) {
             case 0://获取分类数据
-                Log.e("leibiao",response);
                 try {
                     ListduanweiBase listduanweiBase=JSON.parseObject(response,ListduanweiBase.class);
                     for (int i = 0; i < listduanweiBase.getSubject().size(); i++) {
@@ -300,10 +298,12 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
                                 try {
                                     String gradetitles = listduanweiBase.getSubject().get(i).getAreaTitles().split(":")[1];
                                     listText2 = Arrays.asList(gradetitles.split(","));
+                                    text2.setText(listduanweiBase.getSubject().get(i).getAreaTitles().split(":")[0]);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     String gradetitles = listduanweiBase.getSubject().get(i).getAreaTitles().split("：")[1];
                                     listText2 = Arrays.asList(gradetitles.split("，"));
+                                    text2.setText(listduanweiBase.getSubject().get(i).getAreaTitles().split(":")[0]);
                                 }
                             }
 

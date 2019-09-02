@@ -27,7 +27,7 @@ public class MineFamilyEntity implements Serializable {
     private String name;
     private String banner;
     private int memberId;
-    private Object avatarUrl;
+    private String avatarUrl;
     private String describe;
     private String createTime;
     private MemberBean member;
@@ -65,11 +65,11 @@ public class MineFamilyEntity implements Serializable {
         this.memberId = memberId;
     }
 
-    public Object getAvatarUrl() {
+    public String getAvatarUrl() {
         return avatarUrl;
     }
 
-    public void setAvatarUrl(Object avatarUrl) {
+    public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
 
@@ -216,7 +216,7 @@ public class MineFamilyEntity implements Serializable {
             this.isFans = isFans;
         }
 
-        public static class MemberBeanX {
+        public static class MemberBeanX implements Serializable{
             /**
              * id : 1013
              * userName : 18660180001

@@ -37,6 +37,7 @@ public class SearchUserAdapter extends BaseRVAdapter<SearchUserEntity, BaseViewH
     protected void convert(BaseViewHolder helper, SearchUserEntity item) {
         SignKeyWordTextView signKeyWordTextView = helper.getView(R.id.search_user_name_tv);
         signKeyWordTextView.setSignText(searchStr);
+        if (item.getNickname()!=null)
         helper.setText(R.id.search_user_name_tv, item.getNickname())
                 .setText(R.id.search_user_id_num_tv, item.getId() + "")
                 .setText(R.id.search_user_num_tv, item.getTotalFans() + "");

@@ -83,16 +83,16 @@ public class APIContents {
     /*个人中心我的关注*/
     public static String FinanceRecord = HOST + "/api/Account/FinanceRecord";
     /*外貌*/
-    public static String Face = "http://xy.gx11.cn/api/Common/SystemConfig/2";
+    public static String Face = HOST+"/api/Common/SystemConfig/2";
     /*工作*/
-    public static String Job = "http://xy.gx11.cn/api/Common/SystemConfig/3";
+    public static String Job = HOST+"/api/Common/SystemConfig/3";
     /*身高*/
-    public static String ShenGao = "http://xy.gx11.cn/api/Common/SystemConfig/4";
+    public static String ShenGao = HOST+"/api/Common/SystemConfig/4";
     /*体重*/
-    public static String TiZhong = "http://xy.gx11.cn/api/Common/SystemConfig/5";
-    public static String config= "http://xy.gx11.cn/api/Common/SystemConfigs/4%2C5%2C2";
+    public static String TiZhong = HOST+"/api/Common/SystemConfig/5";
+    public static String config= HOST+"/api/Common/SystemConfigs/4%2C5%2C2";
     /*个人中心--- 编辑资料*/
-    public static String GetMemberInfo = "http://xy.gx11.cn/api/Account/GetMemberInfo";
+    public static String GetMemberInfo = HOST+"/api/Account/GetMemberInfo";
     /*陪玩类型*/
     public static String AccompanyPlaySubject = HOST + "/api/AccompanyPlay/AccompanyPlaySubject";
     public static String Publish = HOST + "/api/AccompanyPlay/Publish";
@@ -145,5 +145,5 @@ public class APIContents {
     public static String AddressBookByTeamId = HOST + "/api/Member/AddressBookByTeamId";
     public static String AddTeamMemberMore = HOST + "/api/Member/AddTeamMemberMore";
 
-    public static String AppManage = HOST + "http://xy.gx11.cn/api/Common/AppManage";
+    public static String AppManage = HOST + "/api/Common/AppManage";
 }
