@@ -139,6 +139,7 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
         //mPresenter.gameParameter("3", 1, true);
         initZrl();
         getClassify();
+        Log.e("subjectIdsubjectId",""+subjectId);
         getlistbase(subjectId,sortOrder,areaTitle,gradeTitle);
         initDate();
     }
@@ -196,20 +197,20 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
         mAccompanyGameZrl.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                mAccompanyGameZrl.getLayout().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        page++;
-                        mPresenter.gameParameter(subjectId, page, false);
-                        mAccompanyGameZrl.finishLoadMore();
-                    }
-                }, 1000);
+//                mAccompanyGameZrl.getLayout().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        page++;
+//                        mPresenter.gameParameter(subjectId, page, false);
+//                        mAccompanyGameZrl.finishLoadMore();
+//                    }
+//                }, 1000);
+
+                mAccompanyGameZrl.finishLoadMore();
             }
 
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-
-
                 mAccompanyGameZrl.getLayout().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -224,7 +225,7 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
 
     @Override
     public void gameLoad(List<AccompanyGameEntity> gameEntityList, boolean isPtr) {
-
+        Log.e("gameLoad","position:---");
     }
 
 
@@ -234,10 +235,8 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("onItemClick","position:---"+position);
                 Bundle toBundle = new Bundle();
                 toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, list.get(position).getId());
-                Log.e("iddddd",""+list.get(position).getId());
                 ForwardUtil.getInstance(AccompanyGameActivity.this).forward(AccompanyDetailActivity.class, toBundle);
             }
         });
@@ -252,7 +251,8 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
         new Thread(new Runnable() {
             @Override
             public void run() {
-                OkHttpUtils.doGet(APIContents.HOST+"/api/Member/ListByArea?isRecommend=true&subjectId="+subjectId+"&newsCode=1101&page=1&limit=18", mHttpCallBack, 0);
+               // OkHttpUtils.doGet(APIContents.HOST+"/api/Member/ListByArea?isRecommend=true&subjectId="+subjectId+"&newsCode=1101&page=1&limit=18", mHttpCallBack, 0);
+                OkHttpUtils.doGet(APIContents.HOST+"/api/AccompanyPlay/AccompanyPlaySubject", mHttpCallBack, 0);
             }
         }).start();
     }
@@ -288,44 +288,43 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
         switch (requestId) {
             case 0://获取分类数据
                 try {
-                    ListduanweiBase listduanweiBase=JSON.parseObject(response,ListduanweiBase.class);
-                    for (int i = 0; i < listduanweiBase.getSubject().size(); i++) {
-                        if (Integer.parseInt(subjectId) == listduanweiBase.getSubject().get(i).getId()){
-                            if (listduanweiBase.getSubject().get(i).getAreaTitles()==null){
+                    List<ListduanweiBase> listduanweiBase;
+                     listduanweiBase=JSON.parseArray(response,ListduanweiBase.class);
+                    for (int i = 0; i < listduanweiBase.size(); i++) {
+                        if (Integer.parseInt(subjectId) == listduanweiBase.get(i).getId()){
+                            if (listduanweiBase.get(i).getAreaTitles()==null){
                                 mLinearLayout2.setVisibility(View.GONE);//大区不存在
 
                             }else{
                                 try {
-                                    String gradetitles = listduanweiBase.getSubject().get(i).getAreaTitles().split(":")[1];
+                                    String gradetitles = listduanweiBase.get(i).getAreaTitles().split(":")[1];
                                     listText2 = Arrays.asList(gradetitles.split(","));
-                                    text2.setText(listduanweiBase.getSubject().get(i).getAreaTitles().split(":")[0]);
+                                    text2.setText(listduanweiBase.get(i).getAreaTitles().split(":")[0]);
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    String gradetitles = listduanweiBase.getSubject().get(i).getAreaTitles().split("：")[1];
+                                    String gradetitles = listduanweiBase.get(i).getAreaTitles().split("：")[1];
                                     listText2 = Arrays.asList(gradetitles.split("，"));
-                                    text2.setText(listduanweiBase.getSubject().get(i).getAreaTitles().split(":")[0]);
+                                    text2.setText(listduanweiBase.get(i).getAreaTitles().split(":")[0]);
                                 }
                             }
 
-                            if (listduanweiBase.getSubject().get(i).getGradeTitles()==null){
+                            if (listduanweiBase.get(i).getGradeTitles()==null){
                                 mLinearLayout3.setVisibility(View.GONE);//段位不存在
                             }else{
                                 try {
                                     //存在
-                                    String gettitle = listduanweiBase.getSubject().get(i).getGradeTitles().split(":")[1];
-                                    text3.setText(listduanweiBase.getSubject().get(i).getGradeTitles().split(":")[0]);
+                                    String gettitle = listduanweiBase.get(i).getGradeTitles().split(":")[1];
+                                    text3.setText(listduanweiBase.get(i).getGradeTitles().split(":")[0]);
                                     listText3 = Arrays.asList(gettitle.split(","));
                                     Log.e("listText3",listText3.get(0));
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    String gettitle = listduanweiBase.getSubject().get(i).getGradeTitles().split("：")[1];
-                                    text3.setText(listduanweiBase.getSubject().get(i).getGradeTitles().split("：")[0]);
+                                    String gettitle = listduanweiBase.get(i).getGradeTitles().split("：")[1];
+                                    text3.setText(listduanweiBase.get(i).getGradeTitles().split("：")[0]);
                                     listText3 = Arrays.asList(gettitle.split(","));
                                     Log.e("listText3",listText3.get(0));
                                 }
                             }
-
-
 
                         }
                     }

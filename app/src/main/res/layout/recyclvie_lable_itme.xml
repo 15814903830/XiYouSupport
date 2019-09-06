@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_margin="@dimen/dp_10"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="77dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:layout_gravity="center"
+        android:src="@mipmap/dongtaitz01"
+        android:background="@drawable/lable"
+        android:scaleType="fitXY"
+        android:id="@+id/rv_lable_img"
+        android:layout_width="70dp"
+        android:layout_height="20dp" />
+        <View
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:id="@+id/view_backround"
+            android:background="@drawable/imglable"
+            android:layout_width="75dp"
+            android:layout_height="25dp"/>
+</FrameLayout>

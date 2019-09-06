@@ -43,6 +43,7 @@
                         android:padding="20dp">
 
                         <LinearLayout
+                            android:orientation="horizontal"
                             android:id="@+id/order_name_rl"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -69,6 +70,14 @@
                                 android:textSize="17sp" />
 
                         </LinearLayout>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_labless"
+                            android:layout_marginHorizontal="@dimen/padding_20"
+                            android:layout_marginTop="@dimen/padding_15"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
 
                         <LinearLayout
                             android:id="@+id/order_type_ll"

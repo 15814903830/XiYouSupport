@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -29,10 +30,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.baserv.MultipleItemAdapter;
@@ -44,8 +47,10 @@ import com.chengfan.xiyou.domain.model.entity.AccompanyEntity;
 import com.chengfan.xiyou.domain.model.entity.HomeBannerEntity;
 import com.chengfan.xiyou.domain.model.entity.JsonBean;
 import com.chengfan.xiyou.domain.presenter.AccompanyPresenterImpl;
+import com.chengfan.xiyou.ui.accompany.AccompanyUserInfoActivity;
 import com.chengfan.xiyou.ui.adapter.AccompanyJvAdapter;
 import com.chengfan.xiyou.ui.search.SearchActivity;
+import com.chengfan.xiyou.ui.search.Web2Activity;
 import com.chengfan.xiyou.utils.BaiDuEntity;
 import com.chengfan.xiyou.utils.GetJsonDataUtil;
 import com.chengfan.xiyou.utils.LocationUtils;
@@ -122,7 +127,7 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     private int areaCode;
     private String areaName;
     private ViewHolder holder;
-
+    Bundle toBundle;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -207,6 +212,8 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_accompany, null);
         mUnbinder = ButterKnife.bind(this, mView);
+        toBundle = new Bundle();
+        getdata();
         iniBanner();
         bottomInit();
         setAccompanyData();
@@ -313,7 +320,6 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
             }
         }, data_banner_string);
 
-        // mConvenientBanner.setPageIndicator(new int[]{R.mipmap.icon_home_banner_aa, R.mipmap.icon_home_banner_a});
         mConvenientBanner.setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
         mConvenientBanner.startTurning(5000);
         mConvenientBanner.setManualPageable(true);
@@ -337,14 +343,34 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
                 return new NetworkImageHolderView();
             }
         }, data_banner_string);
+
+        mConvenientBanner.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if (position>mHomeBannerEntity.getNews().size()){
+
+                }else {
+                    if (mHomeBannerEntity!=null){
+                        if (mHomeBannerEntity.getNews().get(position).getImgHref().split(":")[0].equals("http")){
+                            Intent intent=new Intent(getContext(), Web2Activity.class);
+                            intent.putExtra("url",mHomeBannerEntity.getNews().get(position).getImgHref());
+                            startActivity(intent);
+                        }else {
+                            toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, Integer.parseInt(mHomeBannerEntity.getNews().get(position).getImgHref()));
+                            ForwardUtil.getInstance(getActivity()).forward(AccompanyUserInfoActivity.class, toBundle);
+                        }
+                    }else {
+                        //后台未设置
+                    }
+                }
+            }
+        });
     }
 
     private void bottomInit() {
-
         mBotNav.enableItemShiftingMode(false);
         mBotNav.enableShiftingMode(false);
         mBotNav.enableAnimation(true);
-
         mBotNav.setLargeTextSize(18);
         mBotNav.setSmallTextSize(15);
         mBotNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -399,12 +425,25 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         pvOptions = new OptionsPickerBuilder(getActivity(), new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                String cityName = mCityList.get(options1).get(options2).getName();
-                areaCode = mCityList.get(options1).get(options2).getId();
-                String tx = cityName;
-                mSearchAddressTv.setText(tx);
-                mPresenter.accompanyBannerParameter(areaCode, 1);
+                String cityName = null;
+                int areaCode = 0;
+                if (options1 == 28) {
+                    cityName = "香港特别行政区";
+                } else if (options1 == 29) {
+                    cityName = "澳门特别行政区";
+                } else if (options1 == 27) {
+                    cityName = "台湾省";
+                } else {
+                    cityName = mCityList.get(options1).get(options2).getName();
+                    areaCode = mCityList.get(options1).get(options2).getId();
+                }
 
+                String tx = cityName;
+
+                Logger.d("选择的城市为：" + tx + " code : " + areaCode);
+                mSearchAddressTv.setText(tx);
+               // mPresenter.accompanyBannerParameter(areaCode, 1);//轮播图440100
+                mPresenter.accompanyBannerParameter(440100, 1);//轮播图440100
             }
         })
 
@@ -496,13 +535,6 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser) {
-            if (data) {
-                getdata();
-            } else {
-                data = false;
-            }
-        }
         super.setUserVisibleHint(isVisibleToUser);
     }
 

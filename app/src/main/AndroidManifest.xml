@@ -37,7 +37,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".view.WebKeFuActivity"></activity>
+        <activity android:name=".ui.search.Web2Activity"></activity>
+        <activity android:name=".ui.accompany.AccomPanyActivity"></activity>
+        <activity android:name=".ui.main.SubmitLabelActivity" />
+        <activity android:name=".ui.main.AddcontexActivity" />
+        <activity android:name=".view.WebKeFuActivity" />
         <activity android:name=".ui.chat.Web2Activity" />
         <activity android:name=".ui.mine.order.AutonymtrueforflaseActivity2" />
         <activity

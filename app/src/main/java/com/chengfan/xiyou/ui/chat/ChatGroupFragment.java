@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,10 +87,10 @@ public class ChatGroupFragment
         mGroupMemberDialog.setGroupMemberListener(new ChatGroupMemberDialog.GroupMemberListener() {
             @Override
             public void onGroupMemberListener() {
+
                 RemoveTeamBean removeTeamBean = new RemoveTeamBean();
                 removeTeamBean.setId(mChatGroupEntityList.get(pos).getTeam().getId());
                 removeTeamBean.setMemberId(mChatGroupEntityList.get(pos).getTeam().getMemberId());
-
                 //解散群聊
                 mPresenter.removeTeamParameter(removeTeamBean);
             }
@@ -98,7 +99,6 @@ public class ChatGroupFragment
         mNoMemberDialog.setGroupNoMemberListener(new ChatGroupNoMemberDialog.GroupNoMemberListener() {
             @Override
             public void onGroupNoMemberListener() {
-
                 RemoveTeamMemberBean removeTeamMemberBean = new RemoveTeamMemberBean();
                 removeTeamMemberBean.setTeamId(String.valueOf(mChatGroupEntityList.get(pos).getTeam().getId()));
                 removeTeamMemberBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
@@ -133,15 +133,22 @@ public class ChatGroupFragment
     }
 
     private SwipeMenuCreator swipeMenuCreator = new SwipeMenuCreator() {
+
         @Override
         public void onCreateMenu(SwipeMenu swipeLeftMenu, SwipeMenu swipeRightMenu, int position) {
+            Log.e("menuBridgeswipeLeftMenu",""+position);
             int width = getResources().getDimensionPixelSize(R.dimen.padding_80);
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            String text;
+                if (mChatGroupEntityList.get(position).getTeam().getMemberId()==Integer.parseInt(AppData.getString(AppData.Keys.AD_USER_ID))){
+                    text="解散";
+                }else {
+                    text="删除";
+                }
 
             {
-
                 SwipeMenuItem addItem = new SwipeMenuItem(getActivity()).setBackground(R.color.color_F44336)
-                        .setText("删除")
+                        .setText(text)
                         .setTextColor(Color.WHITE)
                         .setWidth(width)
                         .setHeight(height);
@@ -153,6 +160,7 @@ public class ChatGroupFragment
     private OnItemMenuClickListener mMenuItemClickListener = new OnItemMenuClickListener() {
         @Override
         public void onItemClick(SwipeMenuBridge menuBridge, int position) {
+            Log.e("menuBridgeposition",""+position);
             menuBridge.closeMenu();
             pos = position;
             String userId = AppData.getString(AppData.Keys.AD_USER_ID);

@@ -111,6 +111,7 @@ public class RecommendFragment extends Fragment implements HttpCallBack {
         for (int i = 0; i < mAccompanyEntityList.getAccompanyPlay().size(); i++) {
             dast.add(new MyMultipleItem(MyMultipleItem.FIRST_TYPE, mAccompanyEntityList.getAccompanyPlay().get(i)));
         }
+
         //创建适配器
         adapter = new MultipleItemAdapter(dast);
         //给RecyclerView设置适配器
@@ -127,9 +128,7 @@ public class RecommendFragment extends Fragment implements HttpCallBack {
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                Log.e("onLoadMoreRequested","onLoadMoreRequested");
               //  commitanswers(++page);
-                //这里设置的监听但是没有使用,使用自己判断的上拉加载,调用BaseRecyclerview的监听是因为要使用它的加载中加载失败加载完毕的布局
             }
         }, mAccompanyRv);
 
@@ -147,9 +146,9 @@ public class RecommendFragment extends Fragment implements HttpCallBack {
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-        Log.e("responsesss",response);
+        Log.e("responsesssrecpm",response);
         try {
-                mAccompanyEntityList = JSON.parseObject(response,AccompanyEntity.class);
+            mAccompanyEntityList = JSON.parseObject(response,AccompanyEntity.class);
             initAdapter(mAccompanyEntityList);
             adapter.loadMoreEnd();
         } catch (Exception e) {

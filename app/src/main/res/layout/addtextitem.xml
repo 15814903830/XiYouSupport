@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/padding_20"
+        android:layout_marginHorizontal="@dimen/padding_15"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_tapy_text"
+            android:textSize="13sp"
+            android:text="点赞通知"
+            android:textColor="#D1AE81"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_time"
+            android:textSize="13sp"
+            android:text="2019.08.19 12:12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:backgroundTint="#E01818"
+            android:id="@+id/tv_redtext"
+            android:layout_marginLeft="@dimen/padding_5"
+            android:background="@drawable/quan"
+            android:layout_width="5dp"
+            android:layout_height="5dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/padding_5"
+        android:layout_marginHorizontal="@dimen/padding_15"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_name"
+            android:text="caicaicai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/tv_context_text"
+        android:layout_marginTop="@dimen/padding_5"
+        android:layout_marginHorizontal="@dimen/padding_15"
+        android:textColor="#D1AE81"
+        android:text="发发发广告的废话废话废话废话"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_marginTop="@dimen/padding_15"
+        android:background="#E6E6E6"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"/>
+</LinearLayout>

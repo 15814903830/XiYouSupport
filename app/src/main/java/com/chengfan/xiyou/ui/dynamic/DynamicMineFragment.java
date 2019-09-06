@@ -105,7 +105,7 @@ public class DynamicMineFragment extends
 
 
     private void iniRv() {
-        mDynamicMineAdapter = new DynamicMineAdapter(R.layout.adapter_dynamic_mine, mDynamicMineEntityList);
+        mDynamicMineAdapter = new DynamicMineAdapter(R.layout.adapter_dynamic_mine2, mDynamicMineEntityList);
         mDynamicMineRv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mDynamicMineRv.setAdapter(mDynamicMineAdapter);
         mDynamicMineAdapter.setOnItemClickListener(new BaseRVAdapter.OnItemClickListener() {
@@ -135,10 +135,6 @@ public class DynamicMineFragment extends
                         .execute(new AbstractResponse<BaseApiResponse>() {
                             @Override
                             public void onSuccess(BaseApiResponse result) {
-                                Log.e("setMemberId",AppData.getString(AppData.Keys.AD_USER_ID));
-                                Log.e("setMemberNewsId",String.valueOf(mDynamicMineEntityList.get(position).getId()));
-
-
                                 if (result.isSuc()) {
                                     if (mDynamicMineEntityList.get(position).isHavePraise()) {
                                         mDynamicMineEntityList.get(position).setHavePraise(false);
@@ -254,6 +250,7 @@ public class DynamicMineFragment extends
             intent.putExtra(WebActivity.KEY_URL, url);
             startActivity(intent);
         } else {
+            Log.e("mDynamicMineEntityList:",mDynamicMineEntityList.get(position).getId() + "");
             Bundle toBundle = new Bundle();
             toBundle.putString(APPContents.BUNDLE_DYNAMIC_ID, mDynamicMineEntityList.get(position).getId() + "");
             ForwardUtil.getInstance(getActivity()).forward(DynamicDetailActivity.class, toBundle);

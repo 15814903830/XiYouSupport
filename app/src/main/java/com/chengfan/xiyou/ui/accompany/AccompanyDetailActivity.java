@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.AccompanyDetailContract;
 import com.chengfan.xiyou.domain.model.entity.AccompanyDetailEntity;
+import com.chengfan.xiyou.domain.model.entity.ApplyLableListBean;
 import com.chengfan.xiyou.domain.model.entity.CheckLetterEntity;
 import com.chengfan.xiyou.domain.presenter.AccompanyDetailPresenterImpl;
 import com.chengfan.xiyou.im.UserIMInfo;
@@ -30,6 +32,7 @@ import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.adapter.AccompanyDetailAdapter;
 import com.chengfan.xiyou.ui.dialog.CheckLetterDialog;
 import com.chengfan.xiyou.ui.dialog.CheckVIPDialog;
+import com.chengfan.xiyou.ui.main.LableAdapter2;
 import com.chengfan.xiyou.ui.mine.MineMemberActivity;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.DataFormatUtil;
@@ -124,7 +127,8 @@ public class AccompanyDetailActivity extends
 
     @BindView(R.id.tv_mp3time)
     TextView tv_mp3time;
-
+    LableAdapter2 lableAdapter2;
+    RecyclerView recyclerView;
     private HttpCallBack mHttpCallBack;
     private DetailBase detailBase;
     @SuppressLint("HandlerLeak")
@@ -143,7 +147,6 @@ public class AccompanyDetailActivity extends
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accompany_order);
         ButterKnife.bind(this);
-
         //修改状态栏的文字颜色为黑色
         int flag = StatusBarUtil.StatusBarLightMode(this);
         StatusBarUtil.StatusBarLightMode(this, flag);
@@ -179,7 +182,51 @@ public class AccompanyDetailActivity extends
                 ForwardUtil.getInstance(AccompanyDetailActivity.this).forward(MineMemberActivity.class);
             }
         });
+        recyclerView=findViewById(R.id.rv_labless);
         getdata();
+        getlabes();
+    }
+
+    private void initrecyclview(AccomLableBase accomLableBase) {
+        Log.e("accomLableBase",accomLableBase.getApplyLableList().toString());
+        initlable(accomLableBase);
+    }
+
+    private void initlable(AccomLableBase accomLableBase) {
+        try {
+            GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
+            recyclerView.setLayoutManager(layoutManager);
+            if (accomLableBase.getApplyLableList()!=null){
+                List<ApplyLableListBean> lableListBeans=new ArrayList<>();
+                if (accomLableBase.getApplyLableList()!=null){
+                    for (int i=0;i<accomLableBase.getApplyLableList().size();i++){
+                        ApplyLableListBean applyLableListBean=new ApplyLableListBean();
+                        applyLableListBean.setEnabled(accomLableBase.getApplyLableList().get(i).isEnabled());
+                        applyLableListBean.setIcon(accomLableBase.getApplyLableList().get(i).getIcon());
+                        applyLableListBean.setId(accomLableBase.getApplyLableList().get(i).getId());
+                        applyLableListBean.setNeedApproval(accomLableBase.getApplyLableList().get(i).isNeedApproval());
+                        applyLableListBean.setText(accomLableBase.getApplyLableList().get(i).getText());
+                        lableListBeans.add(applyLableListBean);
+                    }
+                }
+                if (accomLableBase.getApprovalLableList()!=null){
+                    for (int i=0;i<accomLableBase.getApprovalLableList().size();i++){
+                        ApplyLableListBean applyLableListBean=new ApplyLableListBean();
+                        applyLableListBean.setEnabled(accomLableBase.getApprovalLableList().get(i).isEnabled());
+                        applyLableListBean.setIcon(accomLableBase.getApprovalLableList().get(i).getIcon());
+                        applyLableListBean.setId(accomLableBase.getApprovalLableList().get(i).getId());
+                        applyLableListBean.setNeedApproval(accomLableBase.getApprovalLableList().get(i).isNeedApproval());
+                        applyLableListBean.setText(accomLableBase.getApprovalLableList().get(i).getText());
+                        lableListBeans.add(applyLableListBean);
+                    }
+                }
+                lableAdapter2 = new LableAdapter2(this, lableListBeans);
+                recyclerView.setAdapter(lableAdapter2);
+                lableAdapter2.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void getdata() {
@@ -194,6 +241,18 @@ public class AccompanyDetailActivity extends
         }).start();
     }
 
+
+    private void getlabes() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<RequestParams> list = new ArrayList<>();
+                list.add(new RequestParams("memberId", AppData.getString(AppData.Keys.AD_USER_ID)));
+                OkHttpUtils.doGet("http://api.maihui111.com/api/MemberNews/DetailById/"+currentMemberId, list, mHttpCallBack, 1);
+                Log.e("MemberNews/DetailById",""+currentMemberId);
+            }
+        }).start();
+    }
     @Override
     public void accompanyDetailLoad(AccompanyDetailEntity accompanyDetailEntity) {
         mAccompanyDetailEntity = accompanyDetailEntity;
@@ -391,14 +450,28 @@ public class AccompanyDetailActivity extends
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-        try {
-            detailBase = JSON.parseObject(response, DetailBase.class);
-            orderTimeTvbb.setText(detailBase.getServiceStartTime() + "至" + detailBase.getServiceEndTime() + "可陪玩");//陪玩时间
-            orderTimeTvllcc.setText(detailBase.getAreaTitle().equals("") ? "暂无大区" : "大区—" + detailBase.getAreaTitle());
-            orderTimeTvdd.setText(detailBase.getGradeTitle().equals("") ? "暂无段位" : "段位—" + detailBase.getGradeTitle());
-            mOrderTypeTv.setText(detailBase.getSubject().getTitle());
-        } catch (Exception e) {
-            e.printStackTrace();
+        switch (requestId){
+            case 0:
+                try {
+                    detailBase = JSON.parseObject(response, DetailBase.class);
+                    orderTimeTvbb.setText(detailBase.getServiceStartTime() + "至" + detailBase.getServiceEndTime() + "可陪玩");//陪玩时间
+                    orderTimeTvllcc.setText(detailBase.getAreaTitle().equals("") ? "暂无大区" : "大区—" + detailBase.getAreaTitle());
+                    orderTimeTvdd.setText(detailBase.getGradeTitle().equals("") ? "暂无段位" : "段位—" + detailBase.getGradeTitle());
+                    mOrderTypeTv.setText(detailBase.getSubject().getTitle());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 1:
+                Log.e("responseresponsesss",response);
+                try {
+                    AccomLableBase accomLableBase=JSON.parseObject(response,AccomLableBase.class);
+                    initrecyclview(accomLableBase);
+                } catch (Exception e) {
+                    Log.e("responseresponsesss",e.toString());
+                }
+                break;
+
         }
     }
 }

@@ -44,6 +44,45 @@ public class MInePlay2Base {
     private String images;
     private int price;
     private String remark;
+
+    @Override
+    public String toString() {
+        return "MInePlay2Base{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", images='" + images + '\'' +
+                ", price=" + price +
+                ", remark='" + remark + '\'' +
+                ", weekDay='" + weekDay + '\'' +
+                ", subjectId=" + subjectId +
+                ", memberId=" + memberId +
+                ", areaTitle='" + areaTitle + '\'' +
+                ", audioPath='" + audioPath + '\'' +
+                ", gradeTitle='" + gradeTitle + '\'' +
+                ", status=" + status +
+                ", serviceEndTime='" + serviceEndTime + '\'' +
+                ", serviceStartTime='" + serviceStartTime + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", gender=" + gender +
+                ", userName='" + userName + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", age=" + age +
+                ", areaCode=" + areaCode +
+                ", areaName='" + areaName + '\'' +
+                ", lableAudio=" + lableAudio +
+                ", applyLable=" + applyLable +
+                ", approvalLable=" + approvalLable +
+                ", lableStatus=" + lableStatus +
+                ", totalFans=" + totalFans +
+                ", vip=" + vip +
+                ", subject=" + subject +
+                ", isFans=" + isFans +
+                ", commentTotal=" + commentTotal +
+                ", order=" + order +
+                '}';
+    }
+
     private String weekDay;
     private int subjectId;
     private int memberId;
@@ -329,6 +368,19 @@ public class MInePlay2Base {
     }
 
     public static class SubjectBean {
+        @Override
+        public String toString() {
+            return "{" +
+                    "id:" + id +
+                    ", images:'" + images + '\'' +
+                    ", title:'" + title + '\'' +
+                    ", areaTitles:'" + areaTitles + '\'' +
+                    ", gradeTitles:'" + gradeTitles + '\'' +
+                    ", sore:" + sore +
+                    ", accompanyPlay:" + accompanyPlay +
+                    '}';
+        }
+
         /**
          * id : 1
          * images : Img/1.png

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:layout_marginTop="@dimen/padding_5"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="70dp"
+    android:layout_height="20dp">
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/rv_lable_img"
+        android:layout_width="70dp"
+        android:layout_height="20dp" />
+</FrameLayout>

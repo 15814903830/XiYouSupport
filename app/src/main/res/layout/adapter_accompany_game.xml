@@ -4,21 +4,52 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
+    <FrameLayout
+        android:id="@+id/fg_sssd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <com.zero.ci.widget.CircleImageView
         android:id="@+id/accompany_game_civ"
         android:layout_width="@dimen/padding_75"
-        android:layout_height="@dimen/padding_75"
+        android:layout_height="95dp"
         android:layout_marginLeft="@dimen/padding_20"
         android:layout_marginTop="@dimen/padding_20"
         android:src="@mipmap/ic_launcher"/>
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ll_accomgane_play"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/padding_5"
+            android:background="@drawable/voled"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_gravity="bottom|center"
+            android:layout_width="55dp"
+            android:layout_height="@dimen/padding_20">
 
+            <ImageView
+                android:id="@+id/iv_bfzt_img"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:background="@drawable/img_bfzt_drawable"
+                android:layout_width="6dp"
+                android:layout_height="6dp" />
+            <TextView
+                android:id="@+id/tv_time"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:textColor="#D1AE81"
+                android:text="12s"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </FrameLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/padding_10"
         android:layout_marginTop="@dimen/padding_20"
-        android:layout_toEndOf="@id/accompany_game_civ"
-        android:layout_toRightOf="@id/accompany_game_civ">
+        android:layout_toEndOf="@id/fg_sssd"
+        android:layout_toRightOf="@id/fg_sssd">
 
 
         <RelativeLayout
@@ -40,6 +71,7 @@
                     android:textSize="@dimen/text_size_15"/>
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/accompany_game_hy_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,6 +79,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -60,6 +93,15 @@
                     android:text=""
                     android:textColor="@color/color_D1AE81"
                     android:textSize="@dimen/text_size_15"/>
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_marginTop="11dp"
+                    android:id="@+id/tv_totle"
+                    android:textColor="#999999"
+                    android:textSize="11sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
         </RelativeLayout>

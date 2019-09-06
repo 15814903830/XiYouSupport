@@ -59,6 +59,21 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
     protected void convert(final BaseViewHolder helper, DynamicMineEntity item) {
         ImageLoaderManager.getInstance().showImage(helper.getView(R.id.attention_user_pic_civ),
                 APIContents.HOST + "/" + item.getMember().getAvatarUrl());
+
+
+        if (item.getMemberNewsComment().size()==1){
+            ImageLoaderManager.getInstance().showImage(helper.getView(R.id.cir_pl_imghead),
+                    APIContents.HOST + "/" + item.getMemberNewsComment().get(0).getMember().getAvatarUrl());
+            helper.setText(R.id.tv_pl_time,DataFormatUtil.formatDate(item.getMemberNewsComment().get(0).getCreateTime()).split(" ")[0]);
+            helper.setText(R.id.tv_pl_name,item.getMemberNewsComment().get(0).getMember().getNickname());
+            helper.setText(R.id.tv_pl_text,item.getMemberNewsComment().get(0).getContent());
+            helper.getView(R.id.ll_pl_llll).setVisibility(View.VISIBLE);
+        }else {
+            helper.getView(R.id.ll_pl_llll).setVisibility(View.GONE);
+        }
+
+
+
         if (item.getMember().isVip()) {
             helper.getView(R.id.attention_is_hy_iv).setVisibility(View.VISIBLE);
         } else {

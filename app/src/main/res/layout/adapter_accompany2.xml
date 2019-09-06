@@ -23,7 +23,6 @@
         android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/ac_img_riv"
-            android:background="#BD4747"
             android:layout_width="200dp"
             android:layout_height="wrap_content" />
         <TextView

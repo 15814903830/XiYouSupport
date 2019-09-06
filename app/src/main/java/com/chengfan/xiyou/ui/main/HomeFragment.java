@@ -2,6 +2,7 @@ package com.chengfan.xiyou.ui.main;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,10 +20,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
@@ -30,10 +34,12 @@ import com.chengfan.xiyou.domain.model.entity.HomeBannerEntity;
 import com.chengfan.xiyou.domain.model.entity.JsonBean;
 import com.chengfan.xiyou.domain.model.entity.MemberBean;
 import com.chengfan.xiyou.domain.presenter.HomePresenterImpl;
+import com.chengfan.xiyou.ui.WebActivity;
 import com.chengfan.xiyou.ui.accompany.AccompanyUserInfoActivity;
 import com.chengfan.xiyou.ui.adapter.HomeAdapter;
 import com.chengfan.xiyou.ui.dialog.SayHiDialog;
 import com.chengfan.xiyou.ui.search.SearchActivity;
+import com.chengfan.xiyou.ui.search.Web2Activity;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.BaiDuEntity;
 import com.chengfan.xiyou.utils.GetJsonDataUtil;
@@ -86,6 +92,8 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
 
     @BindView(R.id.search_address_tv)
     TextView mSearchAddressTv;
+    @BindView(R.id.swp_news)
+    SwipeRefreshLayout swp_news;
 
     Unbinder unbinder;
     int page;
@@ -106,12 +114,11 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
 
-    private int areaCode;
+    private int areaCodes;
     private String areaName;
-
     List<MemberBean> mMemberBeanList;
-
     SayHiDialog mSayHiDialog;
+    private boolean aBooleantu=true;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -154,12 +161,14 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                                                                 for (int c = 0; c < mJsonBeanArrayList.get(i).getCity().size(); c++) {
                                                                     Logger.d("areaCode : " + mJsonBeanArrayList.get(i).getCity().get(c).getName() + "   ===  " + addressStr);
                                                                     if (mJsonBeanArrayList.get(i).getCity().get(c).getName().contains(addressStr)) {
-                                                                        areaCode = mCityList.get(i).get(c).getId();
-                                                                        Logger.d("areaCode = mCityList.get(i).get(a).getId() :" + areaCode);
+                                                                        areaCodes = mCityList.get(i).get(c).getId();
+                                                                        Logger.d("areaCode = mCityList.get(i).get(a).getId() :" + areaCodes);
                                                                     }
                                                                 }
                                                             }
-                                                            mPresenter.homePageParameter(areaCode, 1);
+
+                                                            Log.e("areaCodeareaCode", "onSuccess: "+areaCodes );
+                                                            mPresenter.homePageParameter(areaCodes, 1);
 
                                                         }
                                                     });
@@ -198,6 +207,15 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
         iniBanner();
         initZrl();
         mSayHiDialog = new SayHiDialog(getActivity());
+
+        swp_news.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.homePageParameter(areaCodes, 1);
+                Log.e("swp_news0","swp_news");
+            }
+        });
+
         return mView;
     }
 
@@ -250,6 +268,29 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                 return new NetworkImageHolderView();
             }
         }, data_banner_string);
+        mConvenientBanner.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if (position>mHomeBannerEntity.getNews().size()){
+
+                }else {
+                    if (mHomeBannerEntity!=null){
+                        Log.e("getImgHref",mHomeBannerEntity.getNews().get(position).getImgHref());
+                        if (mHomeBannerEntity.getNews().get(position).getImgHref().split(":")[0].equals("http")){
+                            Intent intent=new Intent(getContext(), Web2Activity.class);
+                            intent.putExtra("url",mHomeBannerEntity.getNews().get(position).getImgHref());
+                            startActivity(intent);
+                        }else {
+                            toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, Integer.parseInt(mHomeBannerEntity.getNews().get(position).getImgHref()));
+                            ForwardUtil.getInstance(getActivity()).forward(AccompanyUserInfoActivity.class, toBundle);
+                        }
+                    }else {
+                        //后台未设置
+                    }
+                }
+
+            }
+        });
     }
 
 
@@ -261,9 +302,9 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                     @Override
                     public void run() {
                         page++;
-                        mPresenter.homePageMoreParameter(areaCode, page);
+                        mPresenter.homePageMoreParameter(areaCodes, page);
                         mHomeZrl.finishLoadMore();
-                        Log.e("pageonLoadMore",""+areaCode);
+                        Log.e("pageonLoadMore",""+areaCodes);
                     }
                 }, 1000);
             }
@@ -274,7 +315,7 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                     @Override
                     public void run() {
                         page = 1;
-                        mPresenter.homePageParameter(areaCode, 1);
+                        mPresenter.homePageParameter(areaCodes, 1);
                         mHomeZrl.finishRefresh();
                         Log.e("pageonRefresh",""+page);
                     }
@@ -287,25 +328,22 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
     public void homePageMoreLoad(List<MemberBean> memberBeanList) {
         mMemberBeanList.addAll(memberBeanList);
         mHomeAdapter.setNewData(mMemberBeanList);
-        Log.e("pagehomePageMoreLoad",""+page);
     }
 
     @Override
     public void homePageLoad(HomeBannerEntity result) {
-        Log.e("homePageLoad",""+result.getMember().size());
         hideLoading();
-        for (HomeBannerEntity.NewsBean bannerBean : result.getNews()) {
-            data_banner_string.add(APIContents.HOST + "/" + bannerBean.getImgUrl());
-        }
-        mHomeBannerEntity = result;
-        showBanner();
-        mMemberBeanList = mHomeBannerEntity.getMember();
-        mHomeAdapter.addData(mMemberBeanList);
-
-//        if (AppData.getBoole(AppData.Keys.AD_SHOW_SAY_HI)) {
-//            mSayHiDialog.show();
-//            AppData.putBoolen(AppData.Keys.AD_SHOW_SAY_HI, false);
-//        }
+            for (HomeBannerEntity.NewsBean bannerBean : result.getNews()) {
+                data_banner_string.add(APIContents.HOST + "/" + bannerBean.getImgUrl());
+            }
+            mHomeBannerEntity=null;
+            mHomeBannerEntity = result;
+            showBanner();
+            mMemberBeanList.clear();
+            mMemberBeanList = mHomeBannerEntity.getMember();
+            mHomeAdapter.setNewData(mMemberBeanList);
+            swp_news.setRefreshing(false);
+            aBooleantu=false;
 
     }
 
@@ -333,7 +371,6 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
 
 
     private void showPickerView() {
-
         pvOptions = new OptionsPickerBuilder(getActivity(), new OnOptionsSelectListener() {
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
@@ -352,6 +389,7 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
 
                 String tx = cityName;
 
+                areaCodes=areaCode;
                 Logger.d("选择的城市为：" + tx + " code : " + areaCode);
                 mSearchAddressTv.setText(tx);
                 mPresenter.homePageParameter(areaCode, 1);
@@ -386,7 +424,6 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
             for (int c = 0; c < jsonBean.get(i).getCity().size(); c++) {
                 cityList.add(jsonBean.get(i).getCity().get(c));
             }
-
 
             mCityList.add(cityList);
 

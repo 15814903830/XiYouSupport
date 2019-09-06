@@ -45,7 +45,7 @@ public class HomeBannerEntity  implements Serializable {
         private int typeCode;
         private String title;
         private String imgUrl;
-        private Object imgHref;
+        private String imgHref;
         private String pubTime;
         private boolean enable;
 
@@ -81,11 +81,11 @@ public class HomeBannerEntity  implements Serializable {
             this.imgUrl = imgUrl;
         }
 
-        public Object getImgHref() {
+        public String getImgHref() {
             return imgHref;
         }
 
-        public void setImgHref(Object imgHref) {
+        public void setImgHref(String imgHref) {
             this.imgHref = imgHref;
         }
 

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -157,6 +158,7 @@ public class MineFragment extends BaseFragment {
         mXiYouBeanList.add(new XiYouBean(R.drawable.mine_yaoqing, getResources().getString(R.string.mine_yaoqing_txt), "1"));
         mXiYouBeanList.add(new XiYouBean(R.drawable.mine_jiazu, getResources().getString(R.string.mine_familys_txt), "1"));
         mXiYouBeanList.add(new XiYouBean(R.drawable.mine_xiaofei, getResources().getString(R.string.mine_xiaofei_txt), "1"));
+        mXiYouBeanList.add(new XiYouBean(R.drawable.ss, "提交认证", "1"));
         mXiYouBeanList.add(new XiYouBean(R.drawable.mine_kefu, getResources().getString(R.string.mine_kefu_txt), "1"));
         mXiYouBeanList.add(new XiYouBean(R.drawable.mine_about, getResources().getString(R.string.mine_about_txt), "1"));
         mXiYouBeanList.add(new XiYouBean(R.drawable.mine_logout, getResources().getString(R.string.mine_logout_txt), "1"));
@@ -186,21 +188,22 @@ public class MineFragment extends BaseFragment {
                         ForwardUtil.getInstance(getActivity()).forward(MineRecordActivity.class);
                         break;
                     case 3:
-                        /*联系客服*/
-//                        CSCustomServiceInfo.Builder csBuilder = new CSCustomServiceInfo.Builder();
-//                        CSCustomServiceInfo csInfo = csBuilder.nickName("嬉游客服").build();
-//                        RongIM.getInstance().startCustomerServiceChat(getActivity(), "gx123", "联系客服", csInfo);
-                        startActivity(new Intent(getContext(), WebKeFuActivity.class));
+                        /*提交认证*/
+                        ForwardUtil.getInstance(getActivity()).forward(SubmitLabelActivity.class);
                         break;
                     case 4:
+                        /*联系客服*/
+                        startActivity(new Intent(getContext(), WebKeFuActivity.class));
+                        break;
+                    case 5:
                         /*关于我们  =====>>>  wv*/
                         ForwardUtil.getInstance(getActivity()).forward(MineAboutActivity.class);
                         break;
-                    case 5:
+                    case 6:
                         /*退出账号*/
                         ForwardUtil.getInstance(getActivity()).forward(LoginActivity.class);
                         if (getActivity()!=null)
-                        getActivity().finish();
+                            getActivity().finish();
                         break;
 
                 }

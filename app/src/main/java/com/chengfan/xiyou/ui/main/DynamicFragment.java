@@ -1,7 +1,11 @@
 package com.chengfan.xiyou.ui.main;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,13 +13,21 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.adapter.VpAdapter;
 import com.chengfan.xiyou.ui.dynamic.DynamicAttentionFragment;
 import com.chengfan.xiyou.ui.dynamic.DynamicIssuedActivity;
 import com.chengfan.xiyou.ui.dynamic.DynamicMineFragment;
+import com.chengfan.xiyou.ui.mine.order.MineOrderDetailActivity;
 import com.chengfan.xiyou.utils.AppData;
 import com.zero.ci.base.BaseFragment;
 import com.zero.ci.navigation.BottomNavigationViewEx;
@@ -35,29 +47,36 @@ import butterknife.Unbinder;
  * @DATE : 2019-07-04/10:43
  * @Description: 动态
  */
-public class DynamicFragment extends BaseFragment {
+public class DynamicFragment extends BaseFragment implements HttpCallBack {
     View mView;
     @BindView(R.id.bot_nav)
     BottomNavigationViewEx mBotNav;
     @BindView(R.id.fragment_navigation_vp)
     ViewPager mFragmentNavigationVp;
     Unbinder mUnbinder;
+    @BindView(R.id.tv_redtext)
+    TextView tv_redtext;
 
     private VpAdapter adapter;
     private List<Fragment> fragments;
     DynamicMineFragment mDynamicMineFragment;
     DynamicAttentionFragment mDynamicAttentionFragment;
+    private HttpCallBack mHttpCallBack;
+    private ImageView imageView;
     private boolean data = true;
+    private Mylistviewaparter mylistviewaparter;
+    private List<AddTextBase> list;
+    private String stringlist;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_dynamic, null);
         mUnbinder = ButterKnife.bind(this, mView);
+        mHttpCallBack=this;
+        getdata();
         mBotNav.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), APPContents.FONTS_BOLD));
-
         bottomInit();
-
         return mView;
     }
 
@@ -92,9 +111,18 @@ public class DynamicFragment extends BaseFragment {
         }
     }
 
-    @OnClick(R.id.dynamic_go_issued_iv)
-    public void onClick() {
-        ForwardUtil.getInstance(getActivity()).forward(DynamicIssuedActivity.class);
+    @OnClick({R.id.dynamic_go_issued_iv, R.id.iv_context})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.dynamic_go_issued_iv:
+                ForwardUtil.getInstance(getActivity()).forward(DynamicIssuedActivity.class);
+                break;
+            case R.id.iv_context:
+                Intent intent=new Intent(getContext(),AddcontexActivity.class);
+                intent.putExtra("list",stringlist);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override
@@ -108,4 +136,50 @@ public class DynamicFragment extends BaseFragment {
 //            }
 //        }
     }
+
+    private void getdata() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<RequestParams> list=new ArrayList<>();
+                list.add(new RequestParams("memberId", AppData.getString(AppData.Keys.AD_USER_ID)));
+                OkHttpUtils.doGet(APIContents.HOST +"/api/MemberNews/NewsNotice",list,mHttpCallBack,0);
+            }
+        }).start();
+    }
+
+    @Override
+    public void onResponse(String response, int requestId) {
+        Message message = mHandler.obtainMessage();
+        message.what = requestId;
+        message.obj = response;
+        mHandler.sendMessage(message);
+    }
+
+    @Override
+    public void onHandlerMessageCallback(String response, int requestId) {
+        stringlist=response;
+        try {
+            list= JSON.parseArray(response,AddTextBase.class);
+           for (int i=0;i<list.size();i++){
+               if (list.get(i).isStatus()){
+                   tv_redtext.setVisibility(View.VISIBLE);
+               }
+           }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int requestId = msg.what;
+            String response = (String) msg.obj;
+            onHandlerMessageCallback(response, requestId);
+        }
+    };
 }

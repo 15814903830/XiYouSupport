@@ -12,25 +12,54 @@
         android:background="@color/color_FFFFFF"
         app:use_type="use_padding_top">
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <com.zero.ci.navigation.BottomNavigationViewEx
             android:id="@+id/bot_nav"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="48dp"
-            android:layout_marginRight="60dp"
             app:itemTextColor="@color/selector_item_accompany_color"
             app:menu="@menu/menu_navigation_dynamic_fab" />
 
-        <ImageView
-            android:id="@+id/dynamic_go_issued_iv"
-            android:layout_width="60dp"
-            android:layout_height="48dp"
-            android:layout_alignParentRight="true"
-            android:paddingLeft="20dp"
-            android:paddingTop="14dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="14dp"
-            android:src="@drawable/dynamic_c" />
-
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_context"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:src="@mipmap/dongtaitz01" />
+                <TextView
+                    android:visibility="gone"
+                    android:layout_marginRight="@dimen/sp_12"
+                    android:layout_marginTop="@dimen/padding_15"
+                    android:layout_gravity="right"
+                    android:backgroundTint="#E01818"
+                    android:id="@+id/tv_redtext"
+                    android:layout_marginLeft="@dimen/padding_5"
+                    android:background="@drawable/quan"
+                    android:layout_width="5dp"
+                    android:layout_height="5dp" />
+            </FrameLayout>
+            <ImageView
+                android:id="@+id/dynamic_go_issued_iv"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:paddingTop="14dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="14dp"
+                android:src="@drawable/dynamic_c" />
+        </LinearLayout>
+        </LinearLayout>
     </com.chengfan.xiyou.view.StatusBarHeightView>
 
     <android.support.v4.view.ViewPager

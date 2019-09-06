@@ -9,6 +9,33 @@ package com.chengfan.xiyou.ui.accompany;
  */
 public class ListviewBase {
 
+    @Override
+    public String toString() {
+        return "ListviewBase{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", price=" + price +
+                ", status=" + status +
+                ", images='" + images + '\'' +
+                ", memberId=" + memberId +
+                ", subjectId=" + subjectId +
+                ", areaTitle='" + areaTitle + '\'' +
+                ", audioPath='" + audioPath + '\'' +
+                ", gradeTitle='" + gradeTitle + '\'' +
+                ", recommendTime=" + recommendTime +
+                ", age=" + age +
+                ", gender=" + gender +
+                ", nickname='" + nickname + '\'' +
+                ", userName='" + userName + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", areaCode=" + areaCode +
+                ", areaName='" + areaName + '\'' +
+                ", totalFans=" + totalFans +
+                ", vip=" + vip +
+                ", total=" + total +
+                '}';
+    }
+
     /**
      * id : 56
      * title : 123456

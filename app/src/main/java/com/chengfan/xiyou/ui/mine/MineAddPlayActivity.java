@@ -406,8 +406,6 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
             File file=new File(FileName);
             mUploadFile = new UploadFile(0, file, FileName);
             audioPath(FileToBase64.best64(mUploadFile));
-
-
     }
     }
 

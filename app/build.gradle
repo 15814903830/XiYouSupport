@@ -93,4 +93,5 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     implementation files('libs/bugly_crash_release.jar')
+    implementation 'com.loopj.android:android-async-http:1.4.9'
 }

@@ -1,16 +1,21 @@
 package com.chengfan.xiyou.ui.dynamic;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,21 +27,29 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.DynamicDetailContract;
+import com.chengfan.xiyou.domain.model.entity.ApplyLableListBean;
 import com.chengfan.xiyou.domain.model.entity.DynamicDetailEntity;
 import com.chengfan.xiyou.domain.model.entity.ImageEntity;
 import com.chengfan.xiyou.domain.model.entity.LikeBase;
 import com.chengfan.xiyou.domain.model.entity.MemberShipBean;
 import com.chengfan.xiyou.domain.model.entity.PublishCommentBean;
 import com.chengfan.xiyou.domain.presenter.DynamicDetailPresenterImpl;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.okhttp.RequestParams;
+import com.chengfan.xiyou.ui.accompany.AccomLableBase;
 import com.chengfan.xiyou.ui.accompany.AccompanyDetailActivity;
 import com.chengfan.xiyou.ui.accompany.AccompanyUserInfoActivity;
+import com.chengfan.xiyou.ui.accompany.DetailBase;
 import com.chengfan.xiyou.ui.adapter.CommentExpandAdapter;
 import com.chengfan.xiyou.ui.adapter.DynamicDetailAdapter;
 import com.chengfan.xiyou.ui.adapter.ViewPagerDialogAdapter;
+import com.chengfan.xiyou.ui.main.LableAdapter2;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.chengfan.xiyou.utils.MyToastUtil;
@@ -75,7 +88,17 @@ import butterknife.OnClick;
  */
 public class DynamicDetailActivity extends
         BaseActivity<DynamicDetailContract.View, DynamicDetailPresenterImpl>
-        implements DynamicDetailContract.View {
+        implements DynamicDetailContract.View , HttpCallBack {
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int requestId = msg.what;
+            String response = (String) msg.obj;
+            onHandlerMessageCallback(response, requestId);
+        }
+    };
 
     @BindView(R.id.detail_page_userLogo)
     CircleImageView mDetailPageUserLogo;
@@ -123,12 +146,12 @@ public class DynamicDetailActivity extends
     DynamicDetailEntity.ReplyDetailBean mReplyDetailBean = new DynamicDetailEntity.ReplyDetailBean();
     DynamicDetailEntity.MemberNewsCommentBean mCommentBean = new DynamicDetailEntity.MemberNewsCommentBean();
     private BottomSheetDialog dialog;
-
+    private HttpCallBack mHttpCallBack;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dynamic_detail);
-
+        mHttpCallBack = this;
         //修改状态栏的文字颜色为黑色
         int flag = StatusBarUtil.StatusBarLightMode(this);
         StatusBarUtil.StatusBarLightMode(this, flag);
@@ -140,7 +163,7 @@ public class DynamicDetailActivity extends
 
         mDynamicDetailEntity = new DynamicDetailEntity();
         commentsList = new ArrayList<>();
-
+        getlabes();
         mPresenter.dynamicDetailParameter(Integer.parseInt(dynamicID));
     }
 
@@ -243,6 +266,71 @@ public class DynamicDetailActivity extends
                 }
             }
         });
+    }
+
+    @Override
+    public void onResponse(String response, int requestId) {
+        Message message = mHandler.obtainMessage();
+        message.what = requestId;
+        message.obj = response;
+        mHandler.sendMessage(message);
+    }
+
+    @Override
+    public void onHandlerMessageCallback(String response, int requestId) {
+        switch (requestId){
+            case 1:
+                Log.e("responseresponsesss",response);
+                AccomLableBase accomLableBase=JSON.parseObject(response,AccomLableBase.class);
+                initrecyclview(accomLableBase);
+                break;
+
+        }
+    }
+    private void initrecyclview(AccomLableBase accomLableBase) {
+        initlable(accomLableBase);
+    }
+
+    private void initlable(AccomLableBase accomLableBase) {
+
+        LableAdapter2 lableAdapter2;
+        RecyclerView recyclerView;
+        try {
+            recyclerView = findViewById(R.id.rv_lable);
+            GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
+            recyclerView.setLayoutManager(layoutManager);
+            if (accomLableBase.getApplyLableList()!=null){
+                List<ApplyLableListBean> lableListBeans=new ArrayList<>();
+                if (accomLableBase.getApplyLableList()!=null){
+                    for (int i=0;i<accomLableBase.getApplyLableList().size();i++){
+                        ApplyLableListBean applyLableListBean=new ApplyLableListBean();
+                        applyLableListBean.setEnabled(accomLableBase.getApplyLableList().get(i).isEnabled());
+                        applyLableListBean.setIcon(accomLableBase.getApplyLableList().get(i).getIcon());
+                        applyLableListBean.setId(accomLableBase.getApplyLableList().get(i).getId());
+                        applyLableListBean.setNeedApproval(accomLableBase.getApplyLableList().get(i).isNeedApproval());
+                        applyLableListBean.setText(accomLableBase.getApplyLableList().get(i).getText());
+                        lableListBeans.add(applyLableListBean);
+                    }
+                }
+                if (accomLableBase.getApprovalLableList()!=null){
+                    for (int i=0;i<accomLableBase.getApprovalLableList().size();i++){
+                        ApplyLableListBean applyLableListBean=new ApplyLableListBean();
+                        applyLableListBean.setEnabled(accomLableBase.getApprovalLableList().get(i).isEnabled());
+                        applyLableListBean.setIcon(accomLableBase.getApprovalLableList().get(i).getIcon());
+                        applyLableListBean.setId(accomLableBase.getApprovalLableList().get(i).getId());
+                        applyLableListBean.setNeedApproval(accomLableBase.getApprovalLableList().get(i).isNeedApproval());
+                        applyLableListBean.setText(accomLableBase.getApprovalLableList().get(i).getText());
+                        lableListBeans.add(applyLableListBean);
+                    }
+                }
+                lableAdapter2 = new LableAdapter2(this, lableListBeans);
+                recyclerView.setAdapter(lableAdapter2);
+                lableAdapter2.notifyDataSetChanged();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private class MyPageChangeListener implements ViewPager.OnPageChangeListener {
@@ -541,4 +629,15 @@ public class DynamicDetailActivity extends
         dialog.show();
     }
 
+    private void getlabes() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<RequestParams> list = new ArrayList<>();
+                list.add(new RequestParams("memberId", AppData.getString(AppData.Keys.AD_USER_ID)));
+                OkHttpUtils.doGet("http://api.maihui111.com/api/MemberNews/DetailById/"+dynamicID, list, mHttpCallBack, 1);
+                Log.e("MemberNews/DetailById",""+dynamicID);
+            }
+        }).start();
+    }
 }

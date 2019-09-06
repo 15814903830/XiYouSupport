@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.util.UniversalTimeScale;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
@@ -43,6 +44,7 @@ import com.chengfan.xiyou.ui.dialog.MineTimeDialog;
 import com.chengfan.xiyou.ui.mine.order.AddPlayClassifyBase;
 import com.chengfan.xiyou.ui.mine.order.FileBase;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.chengfan.xiyou.utils.FileToBase64;
 import com.chengfan.xiyou.utils.dialog.BaseNiceDialog;
 import com.chengfan.xiyou.utils.dialog.NiceDialog;
@@ -78,10 +80,19 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Cache;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * @author: Zero Yuan
@@ -136,19 +147,20 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
             ImageView imgbfzt;
     @BindView(R.id.tv_new)//重新录制
             TextView tvnew;
-    FileBase myfileBase;
+    FileBase myfileBase=new FileBase();
+    private boolean imgbaseboolean=false;
     private static final String LOG_TAG = "AudioRecordTest";
     //语音文件保存路径
-    private String FileName = null;
+    private String FileName = "";
     //语音操作对象
     private MediaPlayer mPlayer = null;
     private MediaRecorder mRecorder = null;
     MInePlay2Base mInePlay2Base;
-    String titleStr="", subjectStr="", startTimeStr="", endTimeStr="", priceStr="", remarkStr="", weekStr="";
+    String titleStr = "", subjectStr = "", startTimeStr = "", endTimeStr = "", priceStr = "", remarkStr = "", weekStr = "";
     private AddPlayClassifyBase addPlayClassifyBase;
     private ArrayList<AlbumFile> mAlbumFiles;
     UploadFile mUploadFile;
-    private FileBase fileBase=new FileBase();//上传图片
+    private FileBase fileBase = new FileBase();//上传图片
     private List<String> list;
     private HttpCallBack mHttpCallBack;
     List<MineAddPlayEntity> mAddPlayEntityList;
@@ -159,11 +171,10 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
     BaseNiceDialog mBaseNiceDialog;
     List<String> regionAas = new ArrayList<>();
     List<String> regionAas0 = new ArrayList<>();
-    private CountDownTimer timer,timer1;
-    private int luztime=0;
+    private CountDownTimer timer, timer1;
+    private int luztime = 0;
     int str;
-    private boolean img=true;
-    AudioRecorder audioRecorder;
+    private boolean img = true;
     @SuppressLint("HandlerLeak")
     private Handler mHandlere = new Handler() {
         @Override
@@ -218,15 +229,14 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
         //设置sdcard的路径
         FileName = Environment.getExternalStorageDirectory().getAbsolutePath();
         FileName += "/audiorecordtest.3gp";
-        getdate(""+getIntent().getStringExtra("currentMemberId"));
+        getdate("" + getIntent().getStringExtra("currentMemberId"));
     }
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @OnClick({R.id.xy_back_btn, R.id.xy_more_tv, R.id.add_type_rl, R.id.add_data_rl,
             R.id.add_time_rl, R.id.add_update_ll, R.id.add_type_rl77, R.id.add_type_rl66,
-            R.id.tv_luying,R.id.ll_two,R.id.iv_bfzt,R.id.tv_new})
+            R.id.tv_luying, R.id.ll_two, R.id.iv_bfzt, R.id.tv_new})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.xy_back_btn:
@@ -296,17 +306,17 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
                 llthree.setVisibility(View.VISIBLE);
                 lltwo.setVisibility(View.GONE);
                 llone.setVisibility(View.GONE);
-                finish.setText("录制完成"+luztime+"s");
+                finish.setText("录制完成" + luztime + "s");
                 stopmusic();
                 break;
             case R.id.iv_bfzt://播放暂停
-                if (img){
+                if (img) {
                     imgbfzt.setSelected(true);
-                    img=false;
+                    img = false;
                     playmusic();
-                }else {
+                } else {
                     imgbfzt.setSelected(false);
-                    img=true;
+                    img = true;
                     stopplaymusic();
                 }
                 break;
@@ -323,7 +333,7 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
     }
 
     //开始录音
-    public void  startmusic(){
+    public void startmusic() {
         // TODO Auto-generated method stub
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
@@ -340,8 +350,8 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
 
     //停止录音
 
-    public void  stopmusic(){
-        if (mRecorder!=null){
+    public void stopmusic() {
+        if (mRecorder != null) {
             mRecorder.stop();
             mRecorder.release();
             mRecorder = null;
@@ -349,144 +359,144 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
     }
 
     //播放录音
-    public void  playmusic(){
+    public void playmusic() {
         // TODO Auto-generated method stub
         mPlayer = new MediaPlayer();
-        try{
+        try {
             mPlayer.setDataSource(FileName);
             mPlayer.prepare();
             mPlayer.start();
-        }catch(IOException e){
-            Log.e(LOG_TAG,"播放失败");
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "播放失败");
         }
     }
 
 
     //停止播放录音
-    public void  stopplaymusic(){
+    public void stopplaymusic() {
         mPlayer.release();
         mPlayer = null;
     }
-
 
 
     private void xymoretv() {
         priceStr = mAddPriceEt.getText().toString().trim();
         remarkStr = mAddIntroduceEt.getText().toString().trim();
         titleStr = mAddGameNameEt.getText().toString().trim();
-
-        if (FileName.equals("")){
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         JSONObject jsonObject = new JSONObject();
-                        jsonObject.put("id", ""+AppData.getString(AppData.Keys.AD_USER_ID));
-                        jsonObject.put("subjectId", subjectStr==null?mInePlay2Base.getSubjectId():subjectStr);
-                        jsonObject.put("memberId", getIntent().getStringExtra("currentMemberId"));
-                        jsonObject.put("images", fileBase.getFilePath()==null?mInePlay2Base.getImages():fileBase.getFilePath());
-                        jsonObject.put("title", titleStr==null?mInePlay2Base.getImages():fileBase.getFilePath());
-                        jsonObject.put("weekDay", weekStr.equals("")?mInePlay2Base.getWeekDay():getweekStr());
-                        jsonObject.put("serviceStartTime", startTimeStr==null?mInePlay2Base.getServiceStartTime():startTimeStr);
-                        jsonObject.put("serviceEndTime", endTimeStr==null?mInePlay2Base.getServiceEndTime():endTimeStr);
-                        jsonObject.put("price", priceStr==null?mInePlay2Base.getPrice():priceStr);
-                        jsonObject.put("remark", remarkStr==null?mInePlay2Base.getRemark():remarkStr);
-                        jsonObject.put("areaTitle", mAdd77.getText().toString()==null?mInePlay2Base.getAreaTitle():mAdd77.getText().toString());
-                        jsonObject.put("gradeTitle", mAdd66.getText().toString()==null?mInePlay2Base.getGradeTitle():mAdd66.getText().toString());
-                        jsonObject.put("audioPath", myfileBase.getFilePath()==null?mInePlay2Base.getAudioPath():myfileBase.getFilePath());
-                        OkHttpUtils.doPostJson(APIContents.HOST+"/api/AccompanyPlay/UpdateAccompanyPlay", jsonObject.toString(), mHttpCallBack, 0);
+                        jsonObject.put("title", titleStr.equals("") ? mInePlay2Base.getTitle() : titleStr);
+                        jsonObject.put("id",  getIntent().getStringExtra("currentMemberId"));
+                        jsonObject.put("images",!imgbaseboolean ? mInePlay2Base.getImages() : fileBase.getFilePath());
+                        jsonObject.put("price", priceStr == null ? mInePlay2Base.getPrice() : priceStr);
+                        jsonObject.put("remark", remarkStr == null ? mInePlay2Base.getRemark() : remarkStr);
+                        jsonObject.put("weekDay", weekStr.equals("") ? mInePlay2Base.getWeekDay() : getweekStr());
+                        jsonObject.put("subjectId", subjectStr.equals("") ? mInePlay2Base.getSubjectId() : subjectStr);
+                        jsonObject.put("memberId", AppData.getString(AppData.Keys.AD_USER_ID));
+                        jsonObject.put("serviceStartTime", startTimeStr.equals("") ? mInePlay2Base.getServiceStartTime() : startTimeStr);
+                        jsonObject.put("serviceEndTime", endTimeStr.equals("") ? mInePlay2Base.getServiceEndTime() : endTimeStr);
+                        jsonObject.put("areaTitle", mAdd77.getText().toString().equals("") ? mInePlay2Base.getAreaTitle() : mAdd77.getText().toString());
+                        jsonObject.put("gradeTitle", mAdd66.getText().toString().equals("") ? mInePlay2Base.getGradeTitle() : mAdd66.getText().toString());
+                        jsonObject.put("audioPath", myfileBase.getFilePath().equals("")?mInePlay2Base.getAudioPath():myfileBase.getFilePath());
+                        jsonObject.put("status", mInePlay2Base.getStatus());
+                        jsonObject.put("createTime", mInePlay2Base.getCreateTime());
+                        jsonObject.put("gender", mInePlay2Base.getGender());
+                        jsonObject.put("nickname", mInePlay2Base.getNickname());
+                        jsonObject.put("userName", mInePlay2Base.getUserName());
+                        jsonObject.put("avatarUrl", mInePlay2Base.getAvatarUrl());
+                        jsonObject.put("age", mInePlay2Base.getAge());
+                        jsonObject.put("areaName", mInePlay2Base.getAreaName());
+                        jsonObject.put("areaCode", mInePlay2Base.getAreaCode());
+                        Log.e("jsonObject", jsonObject.toString());
+                        OkHttpUtils.doPostJson(APIContents.HOST + "/api/AccompanyPlay/UpdateAccompanyPlay", jsonObject.toString(), mHttpCallBack, 5);
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Log.e("jsonObjectee", e.toString());
                     }
                 }
             }).start();
-        }else {
-            File file=new File(FileName);
-            mUploadFile = new UploadFile(0, file, FileName);
-            audioPath(FileToBase64.best64(mUploadFile));
         }
 
 
-
-    }
 
     private String getweekStr() {
         String str[] = weekStr.split(",");
         for (int i = 0; i < str.length; i++) {
-            Log.e("length",""+str.length+"i"+i);
-            if (str[i].equals("星期一")){
-                if (i==str.length-1){
-                    Log.e("length星期一",""+i);
-                    str[i]="1";
-                }else {
-                    Log.e("length星期一,",""+i);
-                    str[i]="1";
+            Log.e("length", "" + str.length + "i" + i);
+            if (str[i].equals("星期一")) {
+                if (i == str.length - 1) {
+                    Log.e("length星期一", "" + i);
+                    str[i] = "1";
+                } else {
+                    Log.e("length星期一,", "" + i);
+                    str[i] = "1";
                 }
             }
 
-            if (str[i].equals("星期二")){
-                if (i==str.length-1){
-                    str[i]="2";
-                }else {
-                    str[i]="2";
+            if (str[i].equals("星期二")) {
+                if (i == str.length - 1) {
+                    str[i] = "2";
+                } else {
+                    str[i] = "2";
                 }
             }
 
-            if (str[i].equals("星期三")){
-                if (i==str.length-1){
-                    str[i]="3";
-                }else {
-                    str[i]="3";
+            if (str[i].equals("星期三")) {
+                if (i == str.length - 1) {
+                    str[i] = "3";
+                } else {
+                    str[i] = "3";
                 }
             }
 
-            if (str[i].equals("星期四")){
-                if (i==str.length-1){
-                    str[i]="4";
-                }else {
-                    str[i]="4";
+            if (str[i].equals("星期四")) {
+                if (i == str.length - 1) {
+                    str[i] = "4";
+                } else {
+                    str[i] = "4";
                 }
             }
 
-            if (str[i].equals("星期五")){
-                if (i==str.length-1){
-                    str[i]="5";
-                }else {
-                    str[i]="5";
+            if (str[i].equals("星期五")) {
+                if (i == str.length - 1) {
+                    str[i] = "5";
+                } else {
+                    str[i] = "5";
                 }
             }
 
-            if (str[i].equals("星期六")){
-                if (i==str.length-1){
-                    str[i]="6";
-                }else {
-                    str[i]="6";
+            if (str[i].equals("星期六")) {
+                if (i == str.length - 1) {
+                    str[i] = "6";
+                } else {
+                    str[i] = "6";
                 }
             }
-            if (str[i].equals("星期日")){
-                if (i==str.length-1){
-                    str[i]="0";
-                }else {
-                    str[i]="0";
+            if (str[i].equals("星期日")) {
+                if (i == str.length - 1) {
+                    str[i] = "0";
+                } else {
+                    str[i] = "0";
                 }
             }
         }
 
 
-
         int[] ints = new int[str.length];
 
-        for(int i=0;i<str.length;i++){
+        for (int i = 0; i < str.length; i++) {
 
             ints[i] = Integer.parseInt(str[i]);
 
         }
 
 
-
         for (int i = 0; i < ints.length - 1; i++) {//排序
             for (int j = i + 1; j > 0; j--) {
-                if (ints[j]<ints[j - 1]) {
+                if (ints[j] < ints[j - 1]) {
                     int temp = ints[j];
                     ints[j] = ints[j - 1];
                     ints[j - 1] = temp;
@@ -496,15 +506,11 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
 
 
         String s = "";
-        for(int i=0;i<ints.length;i++)
-        {
-            if(i<ints.length-1)
-            {
-                s+=ints[i]+",";
-            }
-            else if(i==ints.length-1)
-            {
-                s+=ints[i];
+        for (int i = 0; i < ints.length; i++) {
+            if (i < ints.length - 1) {
+                s += ints[i] + ",";
+            } else if (i == ints.length - 1) {
+                s += ints[i];
             }
         }
 
@@ -540,6 +546,7 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
                 })
                 .start();
     }
+
     private void timeronFinish() {
         llone.setVisibility(View.GONE);
         lltwo.setVisibility(View.VISIBLE);
@@ -547,20 +554,21 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
             @Override
             public void onTick(long millisUntilFinished) {
                 timer.cancel();
-                secondover.setText((30-(millisUntilFinished / 1000)) + "s");
+                secondover.setText((30 - (millisUntilFinished / 1000)) + "s");
                 plan.setMax(30);
-                plan.setProgress((int)(30-(millisUntilFinished / 1000)));
-                luztime=(int)(30-(millisUntilFinished / 1000));
+                plan.setProgress((int) (30 - (millisUntilFinished / 1000)));
+                luztime = (int) (30 - (millisUntilFinished / 1000));
             }
 
             @Override
             public void onFinish() {
                 llthree.setVisibility(View.VISIBLE);
                 lltwo.setVisibility(View.GONE);
-                finish.setText("录制完成"+luztime+"s");
+                finish.setText("录制完成" + luztime + "s");
             }
         }.start();
     }
+
     private void notifyData(ArrayList<AlbumFile> result) {
         String path = mAlbumFiles.get(0).getPath();
         File tempFile = new File(path.trim());
@@ -587,7 +595,7 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
                     String gettitle = addPlayClassifyBase.getSubject().get(options1).getAreaTitles().split(":")[1];
                     regionAas0 = Arrays.asList(gettitle.split(","));
 
-                    Log.e("regionAas0",regionAas0.get(0));
+                    Log.e("regionAas0", regionAas0.get(0));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -605,7 +613,7 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
                             String gettitle = addPlayClassifyBase.getSubject().get(options1).getAreaTitles().split(":")[1];
                             regionAas0 = Arrays.asList(gettitle.split(","));
 
-                            Log.e("regionAas0",regionAas0.get(0));
+                            Log.e("regionAas0", regionAas0.get(0));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -625,6 +633,7 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 String str = regionAas0.get(options1);
+                mInePlay2Base.getSubject().setAreaTitles(str);
                 mAdd77.setText(str);
             }
         })
@@ -644,6 +653,7 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
             @Override
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 String str = regionAas.get(options1);
+                mInePlay2Base.getSubject().setGradeTitles(str);
                 mAdd66.setText(str);
             }
         })
@@ -663,7 +673,7 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
         new Thread(new Runnable() {
             @Override
             public void run() {
-                OkHttpUtils.doGet(APIContents.HOST+"/api/Member/ListByArea?isRecommend=true&subjectId=10048&newsCode=1101&page=1&limit=18", mHttpCallBack, 2);
+                OkHttpUtils.doGet(APIContents.HOST + "/api/Member/ListByArea?isRecommend=true&subjectId=10048&newsCode=1101&page=1&limit=18", mHttpCallBack, 2);
             }
         }).start();
     }
@@ -673,20 +683,21 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<RequestParams> list=new ArrayList<>();
-                list.add(new RequestParams("currentMemberId",""+AppData.getString(AppData.Keys.AD_USER_ID)));
-                list.add(new RequestParams("id",currentMemberIds));
-                OkHttpUtils.doGet(APIContents.HOST+"/api/AccompanyPlay/Detail",list, mHttpCallBack, 4);
+                List<RequestParams> list = new ArrayList<>();
+                list.add(new RequestParams("currentMemberId", "" + AppData.getString(AppData.Keys.AD_USER_ID)));
+                list.add(new RequestParams("id", currentMemberIds));
+                Log.e("id", "" + currentMemberIds);
+                OkHttpUtils.doGet(APIContents.HOST + "/api/AccompanyPlay/Detail", list, mHttpCallBack, 4);
             }
         }).start();
     }
 
     @Override
     public void mineAddLoad(BaseApiResponse response) {
-        if (response!=null)
-        Toast.makeText(this, response.getMsg(), Toast.LENGTH_SHORT).show();
+        if (response != null)
+            Toast.makeText(this, response.getMsg(), Toast.LENGTH_SHORT).show();
         if (!isDestroyed())
-        finish();
+            finish();
     }
 
     @Override
@@ -738,10 +749,11 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-        Log.e("myfileBase", ""+requestId);
+        Log.e("myfileBase", "-----" + response);
         switch (requestId) {
             case 0:
                 try {
+                    imgbaseboolean=true;
                     fileBase = JSON.parseObject(response, FileBase.class);
                     ToastUtil.show(fileBase.getMsg());
                     mBaseNiceDialog.dismiss();
@@ -753,7 +765,6 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
                 try {
                     addPlayClassifyBase = JSON.parseObject(response, AddPlayClassifyBase.class);
                     list = new ArrayList<>();
-
                     for (int i = 0; i < addPlayClassifyBase.getSubject().size(); i++) {
                         list.add(addPlayClassifyBase.getSubject().get(i).getTitle());
                     }
@@ -764,45 +775,33 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
                 Log.e("responseaddPlay", response);
                 break;
             case 1:
-                  myfileBase = JSON.parseObject(response, FileBase.class);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("id", ""+AppData.getString(AppData.Keys.AD_USER_ID));
-                            jsonObject.put("subjectId", subjectStr==null?mInePlay2Base.getSubjectId():subjectStr);
-                            jsonObject.put("memberId", getIntent().getStringExtra("currentMemberId"));
-                            jsonObject.put("images", fileBase.getFilePath()==null?mInePlay2Base.getImages():fileBase.getFilePath());
-                            jsonObject.put("title", titleStr==null?mInePlay2Base.getImages():fileBase.getFilePath());
-                            jsonObject.put("weekDay", weekStr.equals("")?mInePlay2Base.getWeekDay():getweekStr());
-                            jsonObject.put("serviceStartTime", startTimeStr==null?mInePlay2Base.getServiceStartTime():startTimeStr);
-                            jsonObject.put("serviceEndTime", endTimeStr==null?mInePlay2Base.getServiceEndTime():endTimeStr);
-                            jsonObject.put("price", priceStr==null?mInePlay2Base.getPrice():priceStr);
-                            jsonObject.put("remark", remarkStr==null?mInePlay2Base.getRemark():remarkStr);
-                            jsonObject.put("areaTitle", mAdd77.getText().toString()==null?mInePlay2Base.getAreaTitle():mAdd77.getText().toString());
-                            jsonObject.put("gradeTitle", mAdd66.getText().toString()==null?mInePlay2Base.getGradeTitle():mAdd66.getText().toString());
-                            jsonObject.put("audioPath", myfileBase.getFilePath()==null?mInePlay2Base.getAudioPath():myfileBase.getFilePath());
-
-                            Log.e("jsonObject",jsonObject.toString());
-
-                            OkHttpUtils.doPostJson(APIContents.HOST+"/api/AccompanyPlay/UpdateAccompanyPlay", jsonObject.toString(), mHttpCallBack, 5);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
-              //  mPresenter.mineAddParameter(mineAddBean);
-                mXyMoreTv.setEnabled(false);
+                myfileBase = JSON.parseObject(response, FileBase.class);
+               // mXyMoreTv.setEnabled(false);
                 break;
 
             case 4:
-                Log.e("myfileBasess", "response4444"+response);
-                mInePlay2Base= JSON.parseObject(response,MInePlay2Base.class);
-                Glide.with(this).load(APIContents.HOST+"/"+mInePlay2Base.getImages()).into(mAddContentImage);
+                Log.e("myfileBasess", "response4444" + response);
+                mInePlay2Base = JSON.parseObject(response, MInePlay2Base.class);
+                Glide.with(this).load(APIContents.HOST + "/" + mInePlay2Base.getImages()).into(mAddContentImage);
+                mAdd66.setText(mInePlay2Base.getGradeTitle());
+                mAdd77.setText(mInePlay2Base.getAreaTitle());
+                mAddGameNameEt.setText(mInePlay2Base.getTitle());
+                mAddTypeTv.setText(mInePlay2Base.getSubject().getTitle());
+                mAddDataTv.setText(DataFormatUtil.formatWeekDay(mInePlay2Base.getWeekDay()));
+                mAddTimeTv.setText(mInePlay2Base.getServiceStartTime().split(":")[0] + ":" + mInePlay2Base.getServiceStartTime().split(":")[1] + "至" + mInePlay2Base.getServiceEndTime().split(":")[0] + ":" + mInePlay2Base.getServiceEndTime().split(":")[1]);
+                mAddPriceEt.setText("" + mInePlay2Base.getPrice());
+                mAddIntroduceEt.setText(mInePlay2Base.getRemark());
                 break;
             case 5:
+                JSONObject  jsonObject = null;
+                try {
+                      jsonObject = new JSONObject(response);
+                    if (jsonObject.getString("suc").equals("true")){
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 Log.e("responseaddPlay5", response);
                 break;
         }
@@ -841,5 +840,6 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
             }
         }).start();
     }
+
 
 }

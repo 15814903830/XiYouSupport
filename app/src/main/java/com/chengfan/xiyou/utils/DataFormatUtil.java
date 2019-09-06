@@ -1,7 +1,16 @@
 package com.chengfan.xiyou.utils;
 
-public class DataFormatUtil {
+import android.content.Context;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.zero.ci.widget.imageloader.base.ImageLoaderOptions;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class DataFormatUtil {
     /**
      * String转int
      * 如果格式错误，返回-1
@@ -101,6 +110,7 @@ public class DataFormatUtil {
         return weekDay;
     }
 
+
     /**
      * 判断路径是否是视频
      *
@@ -110,5 +120,7 @@ public class DataFormatUtil {
     public static boolean isVideo(String path) {
         return path.contains(".mp4");
     }
+
+
 
 }

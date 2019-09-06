@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.model.entity.XiYouBean;
+import com.chengfan.xiyou.ui.accompany.AccomPanyActivity;
 import com.chengfan.xiyou.ui.accompany.AccompanyGameActivity;
 import com.chengfan.xiyou.widget.viewpager.JazzyViewPager;
 import com.chengfan.xiyou.widget.viewpager.OutlineContainer;
@@ -79,11 +81,16 @@ public class AccompanyJvAdapter extends PagerAdapter {
         xiYouSelectAdapter.setOnItemClickListener(new BaseRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseRVAdapter adapter, View view, int position) {
-                Logger.e("AccompanyFragment  subject Id  " + mXiYouBeanList.get(position).getSubjectId());
-                Bundle toBundle = new Bundle();
-                toBundle.putString(APPContents.E_SUBJECT_ID, mXiYouBeanList.get(position).getSubjectId());
-                toBundle.putString("TITLE", mXiYouBeanList.get(position).getTitle());
-                ForwardUtil.getInstance(context).forward(AccompanyGameActivity.class, toBundle);
+                if (mXiYouBeanList.get(position).getSubjectId().equals("0")){
+                    Intent intent=new Intent(context, AccomPanyActivity.class);
+                    context.startActivity(intent);
+
+                }else {
+                    Bundle toBundle = new Bundle();
+                    toBundle.putString(APPContents.E_SUBJECT_ID, mXiYouBeanList.get(position).getSubjectId());
+                    toBundle.putString("TITLE", mXiYouBeanList.get(position).getTitle());
+                    ForwardUtil.getInstance(context).forward(AccompanyGameActivity.class, toBundle);
+                }
             }
         });
         container.addView(view);

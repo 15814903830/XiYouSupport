@@ -101,7 +101,12 @@
                         android:textColor="@color/color_D1AE81"
                         android:textSize="12sp" />
                 </LinearLayout>
-
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_lable"
+                    android:layout_marginHorizontal="@dimen/padding_20"
+                    android:layout_marginTop="@dimen/padding_15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
                 <com.chengfan.xiyou.view.RegularTextView
                     android:id="@+id/detail_page_title"
                     android:layout_width="wrap_content"

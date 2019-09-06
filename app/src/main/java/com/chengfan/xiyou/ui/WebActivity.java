@@ -34,7 +34,6 @@ public class WebActivity extends BaseActivity {
         setContentView(R.layout.activity_web);
         mUrl = getIntent().getStringExtra(KEY_URL);
         showLoading();
-        Log.e("mUrl",mUrl);
         initView();
         initEvents();
         initWebSettings();

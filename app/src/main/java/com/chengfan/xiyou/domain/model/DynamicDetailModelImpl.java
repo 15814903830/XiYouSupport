@@ -1,5 +1,7 @@
 package com.chengfan.xiyou.domain.model;
 
+import android.util.Log;
+
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.domain.contract.DynamicDetailContract;
 import com.chengfan.xiyou.domain.model.entity.DynamicDetailEntity;
@@ -21,6 +23,7 @@ import io.reactivex.Observable;
 public class DynamicDetailModelImpl implements DynamicDetailContract.Model {
     @Override
     public Observable<DynamicDetailEntity> DYNAMIC_DETAIL_OBSERVABLE(int id) {
+        Log.e("Observableid",""+id);
         return HttpRequest.get(APIContents.DynamicDetail + id)
                 .params("memberId", AppData.getString(AppData.Keys.AD_USER_ID))
                 .execute(new AdaptResponse<DynamicDetailEntity>() {
