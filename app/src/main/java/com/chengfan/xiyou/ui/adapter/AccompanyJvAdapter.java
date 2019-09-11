@@ -7,6 +7,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,13 +79,13 @@ public class AccompanyJvAdapter extends PagerAdapter {
         mAccompanyGameRv.setLayoutManager(gridLayoutManager);
         mAccompanyGameRv.setAdapter(xiYouSelectAdapter);
 
+
         xiYouSelectAdapter.setOnItemClickListener(new BaseRVAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseRVAdapter adapter, View view, int position) {
                 if (mXiYouBeanList.get(position).getSubjectId().equals("0")){
                     Intent intent=new Intent(context, AccomPanyActivity.class);
                     context.startActivity(intent);
-
                 }else {
                     Bundle toBundle = new Bundle();
                     toBundle.putString(APPContents.E_SUBJECT_ID, mXiYouBeanList.get(position).getSubjectId());

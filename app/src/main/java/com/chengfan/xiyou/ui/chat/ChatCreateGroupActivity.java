@@ -113,7 +113,6 @@ public class ChatCreateGroupActivity
     private void initRv() {
         mSelectList = new ArrayList<>();
         mChatCreteEntityList = new ArrayList<>();
-        Log.e("listsize", "" + mChatCreteEntityList.size());
         mChatCreateGroupAdapter = new ChatCreateGroupAdapter(R.layout.adapter_chat_create_group, mChatCreteEntityList);
         mChatCreateGroupRv.setLayoutManager(new LinearLayoutManager(this));
         mChatCreateGroupRv.setAdapter(mChatCreateGroupAdapter);
@@ -146,13 +145,11 @@ public class ChatCreateGroupActivity
                         public void run() {
                             String code = RongCreateGroup.CreateGroup(mSelectList, createGroupEntity.getData(), mStringBuffer.toString());
                             if (code.equals("200")) {
-
                                 GroupChatInfo info = new GroupChatInfo();
                                 info.setTargetId(createGroupEntity.getData());
                                 info.setName(mStringBuffer.toString());
                                 info.setImage(mGroupChatImage);
                                 info.save();
-
                                 finish();
                                 RongIM.getInstance().startGroupChat(ChatCreateGroupActivity.this, createGroupEntity.getData(), mStringBuffer.toString());
                             }
@@ -172,7 +169,6 @@ public class ChatCreateGroupActivity
             mChatCreateGroupAdapter.setEmptyView(emptyView);
         } else {
             mChatCreteEntityList = chatCreteEntityList;
-
             mChatCreateGroupAdapter.setNewData(mChatCreteEntityList);
         }
     }
@@ -212,7 +208,6 @@ public class ChatCreateGroupActivity
                     public void onStart() {
                         Log.e("TAG", "onStart -- 开始合成图片");
                     }
-
                     @Override
                     public void onComplete(Bitmap bitmap) {
                         String data = BitmapCompressor.compreeBitmapToString(bitmap, 200, 200);
@@ -234,13 +229,11 @@ public class ChatCreateGroupActivity
                 super.run();
                 try {
                     String filename = createFileName();
-
                     JSONObject object = new JSONObject();
                     object.put("MemberId", AppData.getString(AppData.Keys.AD_USER_ID));
                     object.put("Source", 0);
                     object.put("FileName", filename);
                     object.put("FileData", data);
-
                     String url = APIContents.HOST + "/api/Upload/UploadFile";
                     OkHttpUtils.doPostJson(url, object.toString(), mCallBack, 0);
                 } catch (Exception e) {
@@ -279,8 +272,7 @@ public class ChatCreateGroupActivity
         bean.setAvatarUrl(imagePath);
 
         mGroupChatImage = APIContents.HOST + "/" + imagePath;
-
-        Logger.d("ChatCreateGroupActivity ===>>>  " + new Gson().toJson(bean));
+       // Logger.d("ChatCreateGroupActivity ===>>>  " + new Gson().toJson(bean));
         mPresenter.createParameter(bean);
     }
 
@@ -361,7 +353,6 @@ public class ChatCreateGroupActivity
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-        Log.e("TAG", "onHandlerMessageCallback -- " + requestId + "\n" + response);
         hideLoading();
         String imagePath = "";
         try {

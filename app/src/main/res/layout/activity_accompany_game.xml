@@ -75,10 +75,10 @@
             android:id="@+id/accompany_game_zrl"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <ListView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/list_mylistview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></ListView>
+                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
         </com.zero.ci.refresh.ZRefreshLayout>
         <ListView
             android:divider="#00000000"

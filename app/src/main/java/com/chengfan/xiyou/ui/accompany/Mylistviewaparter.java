@@ -2,6 +2,8 @@ package com.chengfan.xiyou.ui.accompany;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +16,16 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
+import com.chengfan.xiyou.domain.model.entity.ApplyLableListBean;
+import com.chengfan.xiyou.ui.main.LableAdapter;
+import com.chengfan.xiyou.ui.main.LableAdapter2;
+import com.chengfan.xiyou.ui.main.LableAdapter4;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.chengfan.xiyou.view.RegularTextView;
 import com.zero.ci.widget.CircleImageView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +39,8 @@ import java.util.List;
 public class Mylistviewaparter extends BaseAdapter {
     private  Context context;
     private MediaPlayer mPlayer = null;
+    private  List<String>  icon=new ArrayList<>();
+
     public void setList( List<ListviewBase>  list) {
         this.list = list;
     }
@@ -39,11 +48,12 @@ public class Mylistviewaparter extends BaseAdapter {
     public void setContext(Context context) {
         this.context = context;
     }
-
+    List<LableBase> listlable;
     private  List<ListviewBase>  list;
-    public Mylistviewaparter(Context context, List<ListviewBase>  list){
+    public Mylistviewaparter(Context context, List<ListviewBase>  list,List<LableBase> listlable){
         this.context=context;
         this.list=list;
+        this.listlable=listlable;
     }
     @Override
     public int getCount() {
@@ -64,7 +74,6 @@ public class Mylistviewaparter extends BaseAdapter {
         VH vh=null;
         if (convertView==null){
             convertView=LayoutInflater.from(context).inflate(R.layout.adapter_accompany_game,null);
-
             vh=new VH();
             vh.tvmoney=convertView.findViewById(R.id.accompany_game_money_tv);
             vh.tvname=convertView.findViewById(R.id.accompany_game_name_tv);
@@ -77,11 +86,11 @@ public class Mylistviewaparter extends BaseAdapter {
             vh.textView=convertView.findViewById(R.id.tv_totle);
             vh.bfzt=convertView.findViewById(R.id.iv_bfzt_img);
             vh.tv_time=convertView.findViewById(R.id.tv_time);
+            vh.recyclerView=convertView.findViewById(R.id.rv_labless);
             convertView.setTag(vh);
         }else {
             vh = (VH) convertView.getTag();
         }
-//        vh.tvmoney.setText(list.get(position).getGradeTitle()+" ¥ "+list.get(position).getPrice());
         vh.tvmoney.setText(" ¥ "+list.get(position).getPrice()+"/小时");
         vh.tvname.setText(""+list.get(position).getNickname());
         vh.age.setText(""+list.get(position).getAge()+"岁");
@@ -89,7 +98,40 @@ public class Mylistviewaparter extends BaseAdapter {
         vh.place.setText(""+list.get(position).getAreaName());
         vh.textView.setText("接单量： "+list.get(position).getTotal());
 
-        Log.e("listtostring",list.get(position).toString());
+        icon.clear();
+        try {
+            if (list.get(position).getMember().getApplyLable()!=null){
+              String []icons= list.get(position).getMember().getApplyLable().split(",");
+              if (icons.length>0){
+                  for (int i=0;i<icons.length;i++){
+                      for (int j=0;j<listlable.size();j++){
+                          if (listlable.get(j).getId()== Integer.parseInt(icons[i])){
+                              icon.add(listlable.get(i).getIcon());
+                          }
+                      }
+                  }
+              }
+                if (list.get(position).getMember().getApprovalLable()!=null) {
+                    String[] icons2 = list.get(position).getMember().getApprovalLable().split(",");
+                    if (icons2.length > 0) {
+                        for (int i = 0; i < icons2.length; i++) {
+                            for (int j = 0; j < listlable.size(); j++) {
+                                if (listlable.get(j).getId() == Integer.parseInt(icons2[i])) {
+                                    icon.add(listlable.get(i).getIcon());
+                                }
+                            }
+                        }
+                    }
+                    GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
+                    vh.recyclerView.setLayoutManager(layoutManager);
+                    LableAdapter4 lableAdapter4 = new LableAdapter4(context, icon);
+                    vh.recyclerView.setAdapter(lableAdapter4);
+                    lableAdapter4.notifyDataSetChanged();
+                }
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
 
         try {
             if (list.get(position).getAudioPath().equals("")){
@@ -141,7 +183,6 @@ public class Mylistviewaparter extends BaseAdapter {
         return convertView;
     }
 
-
     class VH{
         CircleImageView headimg;//头像
         MediumTextView tvmoney;//价格
@@ -154,7 +195,7 @@ public class Mylistviewaparter extends BaseAdapter {
         TextView textView;//订单量
         ImageView bfzt;//播放暂停
         TextView tv_time;//视频时间
-
+        RecyclerView recyclerView;
     }
 
     //播放录音

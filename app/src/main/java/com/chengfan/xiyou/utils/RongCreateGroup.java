@@ -96,4 +96,52 @@ public class RongCreateGroup {
         return buf.toString();
     }
 
+
+    public static String CreateGroupone(String groupId, String groupName) {
+        StringBuffer res = new StringBuffer();
+        String url = "http://api-cn.ronghub.com/group/create.json";
+        String App_Key = "pwe86ga5p4qc6"; //开发者平台分配的 App Key。
+        String App_Secret = "rpqjT7A5mxx";
+        String Timestamp = String.valueOf(System.currentTimeMillis() / 1000);//时间戳，从 1970 年 1 月 1 日 0 点 0 分 0 秒开始到现在的秒数。
+        String Nonce = String.valueOf(Math.floor(Math.random() * 1000000));//随机数，无长度限制。
+        String Signature = sha1(App_Secret + Nonce + Timestamp);//数据签名。
+        Logger.e("CreateGroup ====>>" + Signature);
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("App-Key", App_Key);
+        httpPost.setHeader("Timestamp", Timestamp);
+        httpPost.setHeader("Nonce", Nonce);
+        httpPost.setHeader("Signature", Signature);
+        httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
+
+        List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(1);
+
+        nameValuePair.add(new BasicNameValuePair("groupId", groupId));
+        nameValuePair.add(new BasicNameValuePair("groupName", groupName));
+
+        HttpResponse httpResponse = null;
+        try {
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair, "utf-8"));
+            httpResponse = httpClient.execute(httpPost);
+            BufferedReader br = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                res.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Logger.d("CreateGroup  >>>>  " + res.toString());
+        Type type = new TypeToken<RongEntity>() {
+        }.getType();
+        RongEntity userRespone = new Gson().fromJson(res.toString(), type);
+        Logger.e("CreateGroup  >>>>  " + userRespone.getCode() + "");
+        return userRespone.getCode();
+    }
+
+
+
+
 }

@@ -9,60 +9,34 @@ package com.chengfan.xiyou.ui.accompany;
  */
 public class ListviewBase {
 
-    @Override
-    public String toString() {
-        return "ListviewBase{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                ", status=" + status +
-                ", images='" + images + '\'' +
-                ", memberId=" + memberId +
-                ", subjectId=" + subjectId +
-                ", areaTitle='" + areaTitle + '\'' +
-                ", audioPath='" + audioPath + '\'' +
-                ", gradeTitle='" + gradeTitle + '\'' +
-                ", recommendTime=" + recommendTime +
-                ", age=" + age +
-                ", gender=" + gender +
-                ", nickname='" + nickname + '\'' +
-                ", userName='" + userName + '\'' +
-                ", avatarUrl='" + avatarUrl + '\'' +
-                ", areaCode=" + areaCode +
-                ", areaName='" + areaName + '\'' +
-                ", totalFans=" + totalFans +
-                ", vip=" + vip +
-                ", total=" + total +
-                '}';
-    }
-
     /**
-     * id : 56
-     * title : 123456
-     * price : 0.01
+     * id : 69
+     * title : 吃鸡啦 欢迎来撩
+     * price : 5
      * status : 0
-     * images : UploadFiles/AccompanyPlay/20190816/Editor/4f06a5af-9f9c-444d-ad02-06882e707cfe.mp4
-     * memberId : 1072
-     * subjectId : 1
-     * areaTitle :
-     * audioPath :
-     * gradeTitle :
+     * images : UploadFiles/AccompanyPlay/20190821/Editor/08747209-3ca3-4a7a-bba9-cb8462fa9e70.mp4
+     * memberId : 1127
+     * subjectId : 2
+     * areaTitle : 微信
+     * audioPath : UploadFiles/Member/20190821/Editor/13b44ecf-cfbd-4540-af86-c7c6b9285cc3.aac
+     * gradeTitle : 荣耀皇冠
      * recommendTime : null
-     * age : 22
-     * gender : 0
-     * nickname : 国彬测试（女）
-     * userName : 15625105974
-     * avatarUrl : UploadFiles/Member/20190814/Editor/b60c08b1-fd11-4431-88c1-a2939afae917.png
+     * age : 20
+     * gender : 1
+     * nickname : 蜗牛超车
+     * userName : 13800139000
+     * avatarUrl : UploadFiles/Member/20190823/Editor/0f69aa9c-ab01-40b6-92a0-ef6312993b99.png
      * areaCode : 440100
      * areaName : 广东省 广州市
-     * totalFans : 4
-     * vip : true
+     * totalFans : 1
+     * vip : false
+     * member : {"age":20,"gender":1,"nickname":"蜗牛超车","userName":"13800139000","avatarUrl":"UploadFiles/Member/20190823/Editor/0f69aa9c-ab01-40b6-92a0-ef6312993b99.png","areaCode":440100,"areaName":"广东省 广州市","lableAudio":"0d104a48-6ec6-4306-a7a7-49169e251eb0.aac","applyLable":"1,2,3,4","approvalLable":"6,7","totalFans":1,"vip":false}
      * total : 0
      */
 
     private int id;
     private String title;
-    private double price;
+    private int price;
     private int status;
     private String images;
     private int memberId;
@@ -80,6 +54,7 @@ public class ListviewBase {
     private String areaName;
     private int totalFans;
     private boolean vip;
+    private MemberBean member;
     private int total;
 
     public int getId() {
@@ -98,11 +73,11 @@ public class ListviewBase {
         this.title = title;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -242,11 +217,145 @@ public class ListviewBase {
         this.vip = vip;
     }
 
+    public MemberBean getMember() {
+        return member;
+    }
+
+    public void setMember(MemberBean member) {
+        this.member = member;
+    }
+
     public int getTotal() {
         return total;
     }
 
     public void setTotal(int total) {
         this.total = total;
+    }
+
+    public static class MemberBean {
+        /**
+         * age : 20
+         * gender : 1
+         * nickname : 蜗牛超车
+         * userName : 13800139000
+         * avatarUrl : UploadFiles/Member/20190823/Editor/0f69aa9c-ab01-40b6-92a0-ef6312993b99.png
+         * areaCode : 440100
+         * areaName : 广东省 广州市
+         * lableAudio : 0d104a48-6ec6-4306-a7a7-49169e251eb0.aac
+         * applyLable : 1,2,3,4
+         * approvalLable : 6,7
+         * totalFans : 1
+         * vip : false
+         */
+
+        private int age;
+        private int gender;
+        private String nickname;
+        private String userName;
+        private String avatarUrl;
+        private int areaCode;
+        private String areaName;
+        private String lableAudio;
+        private String applyLable;
+        private String approvalLable;
+        private int totalFans;
+        private boolean vip;
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        public int getGender() {
+            return gender;
+        }
+
+        public void setGender(int gender) {
+            this.gender = gender;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public String getAvatarUrl() {
+            return avatarUrl;
+        }
+
+        public void setAvatarUrl(String avatarUrl) {
+            this.avatarUrl = avatarUrl;
+        }
+
+        public int getAreaCode() {
+            return areaCode;
+        }
+
+        public void setAreaCode(int areaCode) {
+            this.areaCode = areaCode;
+        }
+
+        public String getAreaName() {
+            return areaName;
+        }
+
+        public void setAreaName(String areaName) {
+            this.areaName = areaName;
+        }
+
+        public String getLableAudio() {
+            return lableAudio;
+        }
+
+        public void setLableAudio(String lableAudio) {
+            this.lableAudio = lableAudio;
+        }
+
+        public String getApplyLable() {
+            return applyLable;
+        }
+
+        public void setApplyLable(String applyLable) {
+            this.applyLable = applyLable;
+        }
+
+        public String getApprovalLable() {
+            return approvalLable;
+        }
+
+        public void setApprovalLable(String approvalLable) {
+            this.approvalLable = approvalLable;
+        }
+
+        public int getTotalFans() {
+            return totalFans;
+        }
+
+        public void setTotalFans(int totalFans) {
+            this.totalFans = totalFans;
+        }
+
+        public boolean isVip() {
+            return vip;
+        }
+
+        public void setVip(boolean vip) {
+            this.vip = vip;
+        }
     }
 }

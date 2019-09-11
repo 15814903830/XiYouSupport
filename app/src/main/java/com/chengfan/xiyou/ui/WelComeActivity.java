@@ -23,6 +23,7 @@ import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
 import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.login.LoginActivity;
+import com.chengfan.xiyou.ui.login.WeiXingActivity;
 import com.chengfan.xiyou.ui.main.VersionBase;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.BaseUtils;
@@ -93,7 +94,7 @@ public class WelComeActivity extends BaseActivity implements HttpCallBack {
                         String uid = AppData.getString(AppData.Keys.AD_USER_ID);
 
                         if (uid.equals("") || uid == null) {
-                            ForwardUtil.getInstance(WelComeActivity.this).forward(LoginActivity.class);
+                            ForwardUtil.getInstance(WelComeActivity.this).forward(WeiXingActivity.class);
                             finish();
                         } else {
                             if (mBoolean){

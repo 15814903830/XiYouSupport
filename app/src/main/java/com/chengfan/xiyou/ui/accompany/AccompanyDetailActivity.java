@@ -131,6 +131,7 @@ public class AccompanyDetailActivity extends
     RecyclerView recyclerView;
     private HttpCallBack mHttpCallBack;
     private DetailBase detailBase;
+    private List<ApplyLableListBean> lableListBeans;
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -188,16 +189,16 @@ public class AccompanyDetailActivity extends
     }
 
     private void initrecyclview(AccomLableBase accomLableBase) {
-        Log.e("accomLableBase",accomLableBase.getApplyLableList().toString());
         initlable(accomLableBase);
     }
 
     private void initlable(AccomLableBase accomLableBase) {
+        Log.e("initlable","accomLableBase:"+accomLableBase.getApplyLableList().toString());
         try {
             GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
             recyclerView.setLayoutManager(layoutManager);
             if (accomLableBase.getApplyLableList()!=null){
-                List<ApplyLableListBean> lableListBeans=new ArrayList<>();
+               lableListBeans=new ArrayList<>();
                 if (accomLableBase.getApplyLableList()!=null){
                     for (int i=0;i<accomLableBase.getApplyLableList().size();i++){
                         ApplyLableListBean applyLableListBean=new ApplyLableListBean();
@@ -220,10 +221,11 @@ public class AccompanyDetailActivity extends
                         lableListBeans.add(applyLableListBean);
                     }
                 }
-                lableAdapter2 = new LableAdapter2(this, lableListBeans);
-                recyclerView.setAdapter(lableAdapter2);
-                lableAdapter2.notifyDataSetChanged();
             }
+            Log.e("initlable",lableListBeans.toString());
+            lableAdapter2 = new LableAdapter2(this, lableListBeans);
+            recyclerView.setAdapter(lableAdapter2);
+            lableAdapter2.notifyDataSetChanged();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -463,12 +465,12 @@ public class AccompanyDetailActivity extends
                 }
                 break;
             case 1:
-                Log.e("responseresponsesss",response);
+                Log.e("AccomLableBase",response);
                 try {
                     AccomLableBase accomLableBase=JSON.parseObject(response,AccomLableBase.class);
                     initrecyclview(accomLableBase);
                 } catch (Exception e) {
-                    Log.e("responseresponsesss",e.toString());
+                    Log.e("AccomLableBase",e.toString());
                 }
                 break;
 

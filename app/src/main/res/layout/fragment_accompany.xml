@@ -103,6 +103,7 @@
                     android:layout_height="wrap_content"
                     />
 
+
                 <com.chengfan.xiyou.widget.viewpager.JazzyViewPager
                     android:id="@+id/accompany_jvp"
                     android:layout_width="match_parent"

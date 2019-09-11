@@ -9,7 +9,7 @@ import java.util.List;
  * @DATE : 2019-07-18/00:55
  * @Description:
  */
-public class DynamicDetailEntity implements Serializable {
+public class    DynamicDetailEntity implements Serializable {
 
 
     /**

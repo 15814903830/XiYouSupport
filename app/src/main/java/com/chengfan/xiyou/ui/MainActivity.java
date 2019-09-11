@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
@@ -64,7 +65,8 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
     LinearLayout ll_four;
     @BindView(R.id.ll_tab_five_main)
     LinearLayout ll_five;
-
+    @BindView(R.id.tv_notice_dot)
+    public TextView tvNoticeDot;
     private static final String TAG_ONE = "one";
     private static final String TAG_TWO = "two";
     private static final String TAG_THREE = "three";
@@ -100,8 +102,6 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
         initView();
 
         initUserInfo();
-
-//        bottomInit();
 
         getGroupChatInfo();
 
@@ -149,6 +149,11 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
                 showFragment(mMineFragment, TAG_FIVE);
                 break;
         }
+    }
+
+    //收到推送
+    public void receiveThePush(String text) {
+        tvNoticeDot.setVisibility(View.VISIBLE);
     }
 
     /**

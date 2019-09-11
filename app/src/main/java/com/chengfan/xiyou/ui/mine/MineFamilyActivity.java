@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -136,6 +137,13 @@ public class MineFamilyActivity extends BaseActivity<MineFamilyContract.View, Mi
         mPresenter.familyParameter();
         initZrl();
         initWebSettings();
+
+//        webView.setWebViewClient(new WebViewClient(){
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                return super.shouldOverrideUrlLoading(view, url);
+//            }
+//        });
     }
     private void getdata() {
         new Thread(new Runnable() {
@@ -342,7 +350,6 @@ public class MineFamilyActivity extends BaseActivity<MineFamilyContract.View, Mi
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-
         try {
             ChatBase chatBase= JSON.parseObject(response,ChatBase.class);
             webView.loadUrl("http://api.maihui111.com/Wap/FamilyDetail?id=" + AppData.getString(AppData.Keys.AD_USER_ID) + "&familyId="+chatBase.getFamilyMember().get(0).getFamilyId());

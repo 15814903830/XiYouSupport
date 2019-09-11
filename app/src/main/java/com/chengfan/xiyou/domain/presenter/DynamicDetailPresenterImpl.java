@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.domain.presenter;
 
 import android.renderscript.BaseObj;
+import android.util.Log;
 
 import com.chengfan.xiyou.domain.contract.DynamicDetailContract;
 import com.chengfan.xiyou.domain.model.DynamicDetailModelImpl;
@@ -29,11 +30,12 @@ public class DynamicDetailPresenterImpl extends BasePresenter<DynamicDetailContr
             @Override
             public void onNetNext(DynamicDetailEntity result) {
                 mView.dynamicDetailLoad(result);
+                Log.e("dynamicDetailParameter0","----------");
             }
 
             @Override
             public void onNetError(Throwable e) {
-
+                Log.e("dynamicDetailParameter0",e.toString());
             }
         });
     }

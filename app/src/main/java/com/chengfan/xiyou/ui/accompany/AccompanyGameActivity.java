@@ -1,12 +1,14 @@
 package com.chengfan.xiyou.ui.accompany;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,11 +29,16 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.contract.AccompanyGameContract;
 import com.chengfan.xiyou.domain.model.entity.AccompanyGameEntity;
+import com.chengfan.xiyou.domain.model.entity.ApplyLableListBean;
 import com.chengfan.xiyou.domain.model.entity.ChatGroupEntity;
 import com.chengfan.xiyou.domain.presenter.AccompanyGamePresenterImpl;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.okhttp.RequestParams;
+import com.chengfan.xiyou.ui.accompany.reclcyviewbase.AddressAdapter;
 import com.chengfan.xiyou.ui.adapter.AccompanyGameAdapter;
+import com.chengfan.xiyou.ui.main.LableAdapter2;
+import com.chengfan.xiyou.ui.main.LableAdapter4;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.github.zackratos.ultimatebar.UltimateBar;
@@ -66,7 +73,7 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
     @BindView(R.id.xy_middle_tv)
     MediumTextView mXyMiddleTv;
     @BindView(R.id.list_mylistview)
-    ListView mListView;
+    RecyclerView recyclerView;
     @BindView(R.id.accompany_game_zrl)
     ZRefreshLayout mAccompanyGameZrl;
 
@@ -96,6 +103,7 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
     private List<String> listText3=new ArrayList<String>();
     //创建适配器对象
     private MyAdapter adapter;
+    private List<String> icon=new ArrayList<>();
 
 
     List<ListviewBase> list=new ArrayList<>();
@@ -110,6 +118,9 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
     private boolean mBooleanlist1=true;
     private boolean mBooleanlist2=true;
     private boolean mBooleanlist3=true;
+    LableAdapter2 lableAdapter2;
+    int currentMemberId;
+    private List<LableBase> listlable;
     private Handler mHandlere = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -135,13 +146,15 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
         revBundle = getIntent().getExtras();
         if (revBundle != null)
             subjectId = revBundle.getString(APPContents.E_SUBJECT_ID);
+
+        currentMemberId=Integer.parseInt(subjectId);
         mXyMiddleTv.setText(revBundle.getString("TITLE"));
         //mPresenter.gameParameter("3", 1, true);
         initZrl();
         getClassify();
-        Log.e("subjectIdsubjectId",""+subjectId);
         getlistbase(subjectId,sortOrder,areaTitle,gradeTitle);
         initDate();
+        //getlabes();
     }
 
 
@@ -229,17 +242,35 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
     }
 
 
-    public void initlistadapter() {
-         mylistviewaparter=new Mylistviewaparter(this,list);
-        mListView.setAdapter(mylistviewaparter);
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    public void initlistadapter(List<LableBase> listlable) {
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        AddressAdapter addressAdapter = new AddressAdapter(this,list,listlable);
+        recyclerView.setAdapter(addressAdapter);
+        addressAdapter.notifyDataSetChanged();
+        addressAdapter.setOnItemClickListener(new AddressAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(RecyclerView parent, View view, int position, int data,List<String> icon) {
                 Bundle toBundle = new Bundle();
-                toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, list.get(position).getId());
+                toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, data);
+               /// toBundle.putIntegerArrayList("icon", icon);
                 ForwardUtil.getInstance(AccompanyGameActivity.this).forward(AccompanyDetailActivity.class, toBundle);
             }
         });
+
+//         mylistviewaparter=new Mylistviewaparter(this,list,listlable);
+//        mListView.setAdapter(mylistviewaparter);
+//        addressAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                                Log.e("onItemClick",""+list.toString());
+//                Bundle toBundle = new Bundle();
+//                toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, list.get(position).getId());
+//                ForwardUtil.getInstance(AccompanyGameActivity.this).forward(AccompanyDetailActivity.class, toBundle);
+//            }
+//        });
+
     }
 
     @OnClick(R.id.xy_back_btn)
@@ -251,7 +282,6 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
         new Thread(new Runnable() {
             @Override
             public void run() {
-               // OkHttpUtils.doGet(APIContents.HOST+"/api/Member/ListByArea?isRecommend=true&subjectId="+subjectId+"&newsCode=1101&page=1&limit=18", mHttpCallBack, 0);
                 OkHttpUtils.doGet(APIContents.HOST+"/api/AccompanyPlay/AccompanyPlaySubject", mHttpCallBack, 0);
             }
         }).start();
@@ -335,9 +365,27 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
             case 1://获取分类数据
                 Log.e("duanwei",response);
                 list= JSONArray.parseArray(response, ListviewBase.class);
-                initlistadapter();
+                getlabes();
+                break;
+            case 2:
+                Log.e("responsere22",response);
+                try {
+                    listlable=JSON.parseArray(response,LableBase.class);
+                    initlistadapter(listlable);
+                } catch (Exception e) {
+                    Log.e("responsere22",e.toString());
+                }
                 break;
         }
+    }
+
+    private void getlabes() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpUtils.doGet("http://api.maihui111.com/api/Common/Lables", mHttpCallBack, 2);
+            }
+        }).start();
     }
 
     @Override

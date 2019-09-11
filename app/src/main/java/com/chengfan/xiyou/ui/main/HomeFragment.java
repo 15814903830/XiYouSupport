@@ -178,8 +178,6 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                                     message.setData(bundle);
                                     handler.sendMessage(message);
                                     Looper.loop();
-
-
                                 }
                             }
                     ).start();

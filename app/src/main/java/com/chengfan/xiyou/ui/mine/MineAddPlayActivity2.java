@@ -98,7 +98,7 @@ import okhttp3.Response;
  * @author: Zero Yuan
  * @Email: zero.yuan.xin@gmail.com
  * @DATE : 2019-07-07/16:22
- * @Description: 新增陪玩
+ * @Description: 修改陪玩
  */
 public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View, MineAddPlayPresenterImpl> implements MineAddPlayContract.View, HttpCallBack {
     @BindView(R.id.xy_middle_tv)
@@ -199,7 +199,7 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
         getClassify();
 
 
-        mXyMiddleTv.setText("修改陪玩");
+        mXyMiddleTv.setText("修改陪练");
         mXyMoreTv.setText("完成");
         mHttpCallBack = this;
         mAddPlayEntityList = new ArrayList<>();
@@ -586,7 +586,7 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
             public void onOptionsSelect(int options1, int options2, int options3, View v) {
                 String str = addPlayClassifyBase.getSubject().get(options1).getTitle();
                 subjectStr = mAddPlayEntityList.get(options1).getId() + "";
-                Log.e("str", "" + mAddPlayEntityList.get(options1).getTitle());
+                Log.e("str", "" + mAddPlayEntityList.get(options1).getTitle()+options1);
                 mAddTypeTv.setText(str);
                 try {
                     String gradetitles = addPlayClassifyBase.getSubject().get(options1).getGradeTitles().split(":")[1];
@@ -594,8 +594,6 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
 
                     String gettitle = addPlayClassifyBase.getSubject().get(options1).getAreaTitles().split(":")[1];
                     regionAas0 = Arrays.asList(gettitle.split(","));
-
-                    Log.e("regionAas0", regionAas0.get(0));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -791,6 +789,15 @@ public class MineAddPlayActivity2 extends BaseActivity<MineAddPlayContract.View,
                 mAddTimeTv.setText(mInePlay2Base.getServiceStartTime().split(":")[0] + ":" + mInePlay2Base.getServiceStartTime().split(":")[1] + "至" + mInePlay2Base.getServiceEndTime().split(":")[0] + ":" + mInePlay2Base.getServiceEndTime().split(":")[1]);
                 mAddPriceEt.setText("" + mInePlay2Base.getPrice());
                 mAddIntroduceEt.setText(mInePlay2Base.getRemark());
+                try {
+                    String gradetitles = addPlayClassifyBase.getSubject().get(0).getGradeTitles().split(":")[1];
+                    regionAas = Arrays.asList(gradetitles.split(","));
+                    String gettitle = addPlayClassifyBase.getSubject().get(0).getAreaTitles().split(":")[1];
+                    regionAas0 = Arrays.asList(gettitle.split(","));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 break;
             case 5:
                 JSONObject  jsonObject = null;

@@ -89,6 +89,8 @@ import butterknife.OnClick;
 public class DynamicDetailActivity extends
         BaseActivity<DynamicDetailContract.View, DynamicDetailPresenterImpl>
         implements DynamicDetailContract.View , HttpCallBack {
+
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -155,16 +157,15 @@ public class DynamicDetailActivity extends
         //修改状态栏的文字颜色为黑色
         int flag = StatusBarUtil.StatusBarLightMode(this);
         StatusBarUtil.StatusBarLightMode(this, flag);
-
         ButterKnife.bind(this);
         revBundle = getIntent().getExtras();
-        if (revBundle != null)
+        if (revBundle != null){
             dynamicID = revBundle.getString(APPContents.BUNDLE_DYNAMIC_ID);
-
+            mPresenter.dynamicDetailParameter(Integer.parseInt(dynamicID));
+        }
         mDynamicDetailEntity = new DynamicDetailEntity();
         commentsList = new ArrayList<>();
-        getlabes();
-        mPresenter.dynamicDetailParameter(Integer.parseInt(dynamicID));
+        //getlabes();
     }
 
     private void initAdapter() {
@@ -280,15 +281,15 @@ public class DynamicDetailActivity extends
     public void onHandlerMessageCallback(String response, int requestId) {
         switch (requestId){
             case 1:
-                Log.e("responseresponsesss",response);
-                AccomLableBase accomLableBase=JSON.parseObject(response,AccomLableBase.class);
-                initrecyclview(accomLableBase);
+//                Log.e("responseresponsesss",response);
+//                AccomLableBase accomLableBase=JSON.parseObject(response,AccomLableBase.class);
+//                initrecyclview(accomLableBase);
                 break;
 
         }
     }
     private void initrecyclview(AccomLableBase accomLableBase) {
-        initlable(accomLableBase);
+        //initlable(accomLableBase);
     }
 
     private void initlable(AccomLableBase accomLableBase) {

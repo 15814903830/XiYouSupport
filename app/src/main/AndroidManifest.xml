@@ -19,6 +19,35 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_ST ATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STAT E" />
+
+    <!--阿里移动推送相关权限-->
+    <!--Android 6.0版本可去除，用于选举信息（通道复用）的同步-->
+    <!--<uses-permission android:name="android.permission.WRITE_SETTINGS" />-->
+    <!--进行网络访问和网络状态监控相关的权限声明-->
+    <!--允许对sd卡进行读写操作-->
+    <!--网络库使用，当网络操作时需要确保事务完成不被杀掉-->
+    <!--用于读取手机硬件信息等，用于机型过滤-->
+    <!--选举使用，当应用有删除或者更新时需要重新选举，复用推送通道-->
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <!--补偿通道小米PUSH使用，不用可去除-->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!--补偿通道GCM使用，不使用可去除-->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!--允许监听启动完成事件-->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!--允许访问震动器-->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 允许task重排序 -->
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+
+
+
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
@@ -37,13 +66,25 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".ui.search.Web2Activity"></activity>
-        <activity android:name=".ui.accompany.AccomPanyActivity"></activity>
+        <activity android:name=".ui.login.WeiXingActivity" />
+        <activity android:name=".ui.search.Web2Activity" />
+        <activity android:name=".ui.accompany.AccomPanyActivity" />
         <activity android:name=".ui.main.SubmitLabelActivity" />
         <activity android:name=".ui.main.AddcontexActivity" />
         <activity android:name=".view.WebKeFuActivity" />
         <activity android:name=".ui.chat.Web2Activity" />
         <activity android:name=".ui.mine.order.AutonymtrueforflaseActivity2" />
+
+        <receiver android:name=".ui.CharNotificationReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".ui.WebActivity"
             android:launchMode="singleTop"
@@ -76,7 +117,13 @@
                 android:resource="@xml/rc_file_path" />
         </provider>
 
-        <activity android:name=".wxapi.WXEntryActivity" />
+        <activity
+            android:launchMode="singleTask"
+            android:exported="true"
+            android:name=".wxapi.WXEntryActivity" >
+
+
+        </activity>
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -91,6 +138,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.login.IsBoundActivity"></activity>
         <activity
             android:name=".ui.login.LoginActivity"
             android:screenOrientation="portrait" />
@@ -247,12 +295,123 @@
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentStatusTheme" />
         <activity android:name=".ui.chat.WebActivity" /> <!-- 配置APP ID -->
+
+
+        <!-- 消息接收监听器 （用户可自主扩展） -->
+        <receiver
+            android:name=".receiver.MyMessageReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_REMOVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.sdk.android.push.RECEIVE" />
+            </intent-filter>
+        </receiver>
+
+
+        <!--阿里云推送消息服务-->
+
+        <!-- 通道保持服务 -->
+        <service
+            android:name="com.alibaba.sdk.android.push.ChannelService"
+            android:exported="true"
+            android:process=":channel">
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.SERVICE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.PING_V4" />
+                <category android:name="taobao" />
+            </intent-filter>
+        </service>
+        <!-- 消息接收服务 -->
+        <service
+            android:name="com.alibaba.sdk.android.push.MsgService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.RECEIVE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.sdk.android.push.NOTIFY_ACTION" />
+            </intent-filter>
+        </service>
+        <!-- 消息接收增强服务（可提高通知/消息达到率）-->
+        <service
+            android:name="com.alibaba.sdk.android.push.channel.TaobaoRecvService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.android.agoo.client.MessageReceiverService" />
+            </intent-filter>
+        </service>
+
+
+
+        <service
+            android:name=".receiver.MyMessageIntentService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_REMOVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.COMMAND" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.taobao.taobao.intent.action.COMMAND" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.RECEIVE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </service>
+
+
+
+
+
+
+
+
+
+
+
         <meta-data
             android:name="BUGLY_APPID"
             android:value="91ac30603c" /> <!-- 配置APP版本号 -->
         <meta-data
             android:name="BUGLY_APP_VERSION"
             android:value="1.0.0" />
+
+
+
+
+
+        <meta-data
+            android:name="com.alibaba.app.appkey"
+            android:value="27807408" /> <!-- 请填写你自己的- appKey -->
+        <meta-data
+            android:name="com.alibaba.app.appsecret"
+            android:value="b76bbba4a03f6ff01d0006247f5085b1" /> <!-- 请填写你自己的appSecret -->
     </application>
+
+
 
 </manifest>

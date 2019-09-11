@@ -1,8 +1,20 @@
 package com.chengfan.xiyou.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
+import android.util.Log;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
+import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.im.GroupChatInfo;
 import com.chengfan.xiyou.im.MyReceiveMessageListener;
@@ -23,7 +35,10 @@ import java.util.List;
 import java.util.Locale;
 
 import io.rong.imkit.RongIM;
+import io.rong.imkit.RongNotificationManager;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Group;
+import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 import me.jessyan.autosize.AutoSize;
 import me.jessyan.autosize.AutoSizeConfig;
@@ -37,15 +52,21 @@ import me.jessyan.autosize.utils.LogUtils;
  * @Description:
  */
 public class UIApplication extends BaseApplication {
+    private static final String TAG = "UIApplication";
+    private static MainActivity mainActivity = null;
     private UserUtils userUtils;
     @Override
     public void onCreate() {
         super.onCreate();
+        initCloudChannel(this);//阿里云推送
         initAuto();
         LitePal.initialize(this);
         RongIM.init(this);
         //设置接收消息的监听器
+        // 设置推送消息监听
         RongIM.setOnReceiveMessageListener(new MyReceiveMessageListener());
+        //设置消息体内携带用户信息
+        RongIM.getInstance().setMessageAttachedUserInfo(true);
         RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
             @Override
             public UserInfo getUserInfo(String s) {
@@ -58,8 +79,6 @@ public class UIApplication extends BaseApplication {
                 return findGroupById(s);
             }
         }, true);
-        //设置消息体内携带用户信息
-        RongIM.getInstance().setMessageAttachedUserInfo(true);
 
         Album.initialize(AlbumConfig.newBuilder(this)
                 .setAlbumLoader(new MediaLoader())
@@ -69,10 +88,10 @@ public class UIApplication extends BaseApplication {
 
         GlobalConfig.setAppContext(mContext);
         AppData.data();
+
         CrashReport.initCrashReport(getApplicationContext(), "91ac30603c", true);
         userUtils = new UserUtils();
     }
-
 
 
     public UserUtils getUserUtils() {
@@ -162,5 +181,82 @@ public class UIApplication extends BaseApplication {
                 });
     }
 
+    /**
+     * 初始化云推送通道
+     *
+     * @param applicationContext
+     */
+    private void initCloudChannel(final Context applicationContext) {
+        // 创建notificaiton channel
+        this.createNotificationChannel();
 
+        PushServiceFactory.init(applicationContext);
+        final CloudPushService pushService = PushServiceFactory.getCloudPushService();
+        pushService.register(applicationContext, new CommonCallback() {
+            @SuppressLint("WrongConstant")
+            @Override
+            public void onSuccess(String response) {
+                Log.i(TAG, "init cloudchannel success");
+                receiveThePush("init cloudchannel success");
+                Intent intent = new Intent();
+                intent.setAction("org.agoo.android.intent.8.RECEIVE");
+                intent.setPackage("com.xsylsb.integrity");//pack为应用包名
+                intent.putExtra("type", "common-push");
+                intent.addFlags(32);
+                applicationContext.sendBroadcast(intent);
+
+            }
+
+            @Override
+            public void onFailed(String errorCode, String errorMessage) {
+                Log.e(TAG, "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+                receiveThePush("init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+            }
+        });
+
+//        MiPushRegister.register(applicationContext, "XIAOMI_ID", "XIAOMI_KEY"); // 初始化小米辅助推送
+//        HuaWeiRegister.register(this); // 接入华为辅助推送
+//        VivoRegister.register(applicationContext);
+//        OppoRegister.register(applicationContext, "OPPO_KEY", "OPPO_SECRET");
+//        MeizuRegister.register(applicationContext, "MEIZU_ID", "MEIZU_KEY");
+//        GcmRegister.register(applicationContext, "send_id", "application_id"); // 接入FCM/GCM初始化推送
+    }
+
+    public static void setMainActivity(MainActivity activity) {
+        mainActivity = activity;
+    }
+
+    public static void receiveThePush(String text) {
+        Log.e(TAG,text);
+        if (mainActivity != null && text != null) {
+            mainActivity.receiveThePush(text);
+        }
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.i(TAG, "手机版本大于26=====");
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            // 通知渠道的id
+            String id = "1";
+            // 用户可以看到的通知渠道的名字.
+            CharSequence name = "notification channel";
+            // 用户可以看到的通知渠道的描述
+            String description = "notification description";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(id, name, importance);
+            // 配置通知渠道的属性
+            mChannel.setDescription(description);
+            // 设置通知出现时的闪灯（如果 android 设备支持的话）
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            // 设置通知出现时的震动（如果 android 设备支持的话）
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            //最后在notificationmanager中创建该通知渠道
+            mNotificationManager.createNotificationChannel(mChannel);
+        } else {
+            Log.i(TAG, "手机版本小于26=====");
+        }
+    }
 }

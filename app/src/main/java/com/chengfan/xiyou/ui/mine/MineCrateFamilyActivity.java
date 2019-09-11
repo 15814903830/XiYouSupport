@@ -20,19 +20,26 @@ import com.alibaba.fastjson.JSON;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
+import com.chengfan.xiyou.domain.contract.ChatGroupCreateContract;
 import com.chengfan.xiyou.domain.contract.MineCrateFamilyContract;
+import com.chengfan.xiyou.domain.model.entity.ChatCreateGroupEntity;
+import com.chengfan.xiyou.domain.model.entity.ChatCreteEntity;
+import com.chengfan.xiyou.domain.model.entity.ChatGroupCreateBean;
 import com.chengfan.xiyou.domain.model.entity.CreateFamilyBean;
 import com.chengfan.xiyou.domain.model.entity.MineFamilyEntity;
 import com.chengfan.xiyou.domain.model.entity.UpdateFamilyBean;
 import com.chengfan.xiyou.domain.model.entity.XYUploadEntity;
 import com.chengfan.xiyou.domain.presenter.MineCrateFamilyPresenterImpl;
+import com.chengfan.xiyou.im.GroupChatInfo;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.ui.chat.ChatCreateGroupActivity;
 import com.chengfan.xiyou.ui.mine.order.FileBase;
 import com.chengfan.xiyou.ui.mine.order.MinEBase;
 import com.chengfan.xiyou.utils.AppData;
 import com.chengfan.xiyou.utils.FileToBase64;
 import com.chengfan.xiyou.utils.GlideImageLoader;
+import com.chengfan.xiyou.utils.RongCreateGroup;
 import com.chengfan.xiyou.utils.dialog.BaseNiceDialog;
 import com.chengfan.xiyou.utils.dialog.NiceDialog;
 import com.chengfan.xiyou.utils.dialog.ViewConvertListener;
@@ -66,6 +73,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
 
 /**
  * @author: Zero Yuan
@@ -73,7 +81,7 @@ import butterknife.OnClick;
  * @DATE : 2019-07-08/17:11
  * @Description: 创建家族
  */
-public class MineCrateFamilyActivity extends BaseActivity<MineCrateFamilyContract.View, MineCrateFamilyPresenterImpl> implements MineCrateFamilyContract.View, HttpCallBack {
+public class MineCrateFamilyActivity extends BaseActivity<MineCrateFamilyContract.View, MineCrateFamilyPresenterImpl> implements MineCrateFamilyContract.View, HttpCallBack, ChatGroupCreateContract.View {
     @BindView(R.id.xy_middle_tv)
     MediumTextView mXyMiddleTv;
     @BindView(R.id.xy_more_tv)
@@ -128,28 +136,36 @@ public class MineCrateFamilyActivity extends BaseActivity<MineCrateFamilyContrac
             if (isCreateNew) {
                 mXyMiddleTv.setText("编辑家族");
                 mMineFamilyEntity = AppData.getObject(AppData.Keys.AD_FAMILY_OBJECT, MineFamilyEntity.class);
-//                String imageStr = mMineFamilyEntity.getBanner();
-//                if (imageStr != null) {
-//                    String[] strArr = imageStr.split("\\|");
-//                    for (String str : strArr) {
-//                        Logger.d(APIContents.HOST + str);
-//                        NineGridBean nineGirdData = new NineGridBean(APIContents.HOST + "/" + str);
-//                        resultList.add(nineGirdData);
-//                        mCreateNgv.addData(resultList);
-//                    }
-//                }
             } else {
             }
         }
 
 
     }
-
+    /**
+     * 创建群聊
+     */
+    private void createGroupChat(String imagePath) {
+//        ChatGroupCreateBean bean = new ChatGroupCreateBean();
+//        ChatGroupCreateBean.TeamMemberBean teamMemberBean = new ChatGroupCreateBean.TeamMemberBean();
+//        teamMemberBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
+//        teamMemberBean.setRole("1");
+//        List<ChatGroupCreateBean.TeamMemberBean> teamMemberBeanList = new ArrayList<>();
+//        teamMemberBeanList.add(teamMemberBean);
+//        bean.setTeamMember(teamMemberBeanList);
+//        bean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
+//        bean.setName(mCreateNameEt.getText().toString()+"T");
+//        bean.setAvatarUrl(imagePath);
+//        Logger.d("ChatCreateGroupActivity ===>>>  " + new Gson().toJson(bean));
+//        mPresenter.createParameter(bean);
+//        mPresenter.chatGroupParameter();
+    }
 
     @Override
     public void createFamilyLoad(BaseApiResponse result) {
         if (result.getMsg().equals("添加成功")) {
             finish();
+          //  createGroupChat("");
         }
         Toast.makeText(this, result.getMsg(), Toast.LENGTH_SHORT).show();
     }
@@ -304,14 +320,12 @@ public class MineCrateFamilyActivity extends BaseActivity<MineCrateFamilyContrac
                     CreateFamilyBean createFamilyBean = new CreateFamilyBean();
                     createFamilyBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
                     createFamilyBean.setName(nameStr);
-
                     List<CreateFamilyBean.FamilyMemberBean> familyMemberBeans = new ArrayList<>();
                     CreateFamilyBean.FamilyMemberBean familyMemberBean = new CreateFamilyBean.FamilyMemberBean();
                     familyMemberBean.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
                     familyMemberBean.setRole("1");
                     createFamilyBean.setBanner(stringimg);
                     familyMemberBeans.add(familyMemberBean);
-
                     createFamilyBean.setFamilyMember(familyMemberBeans);
                     mPresenter.createFamilyParameter(createFamilyBean);
                     Log.e("createFamilyBean", "" + familyMemberBeans.size());
@@ -449,5 +463,44 @@ public class MineCrateFamilyActivity extends BaseActivity<MineCrateFamilyContrac
         if (mdialog != null) {
             mdialog.dismiss();
         }
+    }
+
+    @Override
+    public void createdLoad(final ChatCreateGroupEntity createGroupEntity) {
+//        final List<ChatCreteEntity> mSelectList=new ArrayList<>();
+//        ChatCreteEntity chatCreteEntity=new ChatCreteEntity();
+//        chatCreteEntity.setAvatarUrl("UploadFiles/AccompanyPlayNews/20190823/f15c9ea3-bd7d-4301-806f-53cb83b0b0eb");
+//        chatCreteEntity.setId(1083);
+//        chatCreteEntity.setm
+//        chatCreteEntity.setGender(0);
+//        chatCreteEntity.setNickname("胡椒");
+//        chatCreteEntity.setUserName("15814903830");
+//        mSelectList.add(chatCreteEntity);
+//            new Thread(
+//                    new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            String code = RongCreateGroup.CreateGroup(mSelectList, createGroupEntity.getData(),  mCreateNameEt.getText().toString()+"T");
+//                            Log.e("rongyuncode","code: "+code);
+//                            if (code.equals("200")) {
+//                                GroupChatInfo info = new GroupChatInfo();
+//                                info.setTargetId(createGroupEntity.getData());
+//                                info.setName(mCreateNameEt.getText().toString()+"T");
+//                                info.setImage("http://img0.imgtn.bdimg.com/it/u=2786741331,312930537&fm=26&gp=0.jpg");
+//                                info.save();
+//                                finish();
+//                                RongIM.getInstance().startGroupChat(MineCrateFamilyActivity.this, createGroupEntity.getData(), mCreateNameEt.getText().toString()+"T");
+//                            }
+//                        }
+//                    }
+//            ).start();
+    }
+
+    @Override
+    public void chatGroupLoad(List<ChatCreteEntity> chatCreteEntityList) {
+//        for (int i=0;i<chatCreteEntityList.size();i++){
+//            Log.e("chatCreteEntityList",chatCreteEntityList.get(i).getNickname());
+//        }
+
     }
 }

@@ -22,6 +22,7 @@ import com.chengfan.xiyou.domain.model.entity.MineEntity;
 import com.chengfan.xiyou.domain.model.entity.XiYouBean;
 import com.chengfan.xiyou.ui.adapter.XiYouSelectAdapter;
 import com.chengfan.xiyou.ui.login.LoginActivity;
+import com.chengfan.xiyou.ui.login.WeiXingActivity;
 import com.chengfan.xiyou.ui.mine.MineAboutActivity;
 import com.chengfan.xiyou.ui.mine.MineAttentionActivity;
 import com.chengfan.xiyou.ui.mine.MineEditInfoActivity;
@@ -201,7 +202,7 @@ public class MineFragment extends BaseFragment {
                         break;
                     case 6:
                         /*退出账号*/
-                        ForwardUtil.getInstance(getActivity()).forward(LoginActivity.class);
+                        ForwardUtil.getInstance(getActivity()).forward(WeiXingActivity.class);
                         if (getActivity()!=null)
                             getActivity().finish();
                         break;

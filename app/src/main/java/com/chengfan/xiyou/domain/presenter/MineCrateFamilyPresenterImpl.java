@@ -2,6 +2,9 @@ package com.chengfan.xiyou.domain.presenter;
 
 import com.chengfan.xiyou.domain.contract.MineCrateFamilyContract;
 import com.chengfan.xiyou.domain.model.MineCrateFamilyModelImpl;
+import com.chengfan.xiyou.domain.model.entity.ChatCreateGroupEntity;
+import com.chengfan.xiyou.domain.model.entity.ChatCreteEntity;
+import com.chengfan.xiyou.domain.model.entity.ChatGroupCreateBean;
 import com.chengfan.xiyou.domain.model.entity.CreateFamilyBean;
 import com.chengfan.xiyou.domain.model.entity.UpdateFamilyBean;
 import com.chengfan.xiyou.domain.model.entity.XYUploadEntity;
@@ -60,6 +63,33 @@ public class MineCrateFamilyPresenterImpl extends BasePresenter<MineCrateFamilyC
             @Override
             public void onNetNext(BaseApiResponse result) {
                 mView.updateFamilyLoad(result);
+            }
+
+            @Override
+            public void onNetError(Throwable e) {
+
+            }
+        });
+    }
+
+    public void createParameter(ChatGroupCreateBean bean) {
+        append(mModel.CREATE_RESPONSE_OBSERVABLE(bean), new NetObserver<ChatCreateGroupEntity>(this) {
+            @Override
+            public void onNetNext(ChatCreateGroupEntity result) {
+                mView.createdLoad(result);
+            }
+
+            @Override
+            public void onNetError(Throwable e) {
+            }
+        });
+    }
+
+    public void chatGroupParameter() {
+        append(mModel.CHAT_OBSERVABLE(), new NetObserver<List<ChatCreteEntity>>(this) {
+            @Override
+            public void onNetNext(List<ChatCreteEntity> result) {
+                mView.chatGroupLoad(result);
             }
 
             @Override

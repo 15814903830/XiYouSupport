@@ -114,7 +114,6 @@ public class LoginActivity
 
         } else {
             ToastUtil.show(loginResponse.getMsg());
-
         }
 
         }else {
