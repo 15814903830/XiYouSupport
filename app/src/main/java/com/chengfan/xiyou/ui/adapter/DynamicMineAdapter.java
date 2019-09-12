@@ -1,5 +1,7 @@
 package com.chengfan.xiyou.ui.adapter;
 
+import android.app.Activity;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -12,10 +14,14 @@ import com.chengfan.xiyou.domain.model.entity.ImageEntity;
 import com.chengfan.xiyou.ui.dialog.ViewPagerDialog;
 import com.chengfan.xiyou.utils.DataFormatUtil;
 import com.chengfan.xiyou.utils.GlideImageLoader;
+import com.chengfan.xiyou.utils.ImageLoader;
 import com.chengfan.xiyou.utils.Timeutils;
 import com.chengfan.xiyou.widget.ninegridview.NineGirdImageContainer;
 import com.chengfan.xiyou.widget.ninegridview.NineGridBean;
 import com.chengfan.xiyou.widget.ninegridview.NineGridView;
+import com.previewlibrary.GPreviewBuilder;
+import com.previewlibrary.ZoomMediaLoader;
+import com.previewlibrary.enitity.ThumbViewInfo;
 import com.zero.ci.base.adapter.BaseRVAdapter;
 import com.zero.ci.base.adapter.BaseViewHolder;
 import com.zero.ci.widget.imageloader.base.ImageLoaderManager;
@@ -53,6 +59,7 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
 
     public DynamicMineAdapter(int layoutResId, @Nullable List<DynamicMineEntity> data) {
         super(layoutResId, data);
+        ZoomMediaLoader.getInstance().init(new ImageLoader());
     }
 
     @Override
@@ -184,12 +191,37 @@ public class DynamicMineAdapter extends BaseRVAdapter<DynamicMineEntity, BaseVie
 
             @Override
             public void onNineGirdItemClick(int position, NineGridBean gridBean, NineGirdImageContainer imageContainer) {
-                List<ImageEntity> imageEntityList = new ArrayList<>();
-                for (int i = 0; i < nineGridView.getDataList().size(); i++) {
-                    imageEntityList.add(new ImageEntity(nineGridView.getDataList().get(i).getThumbUrl()));
+//                List<ImageEntity> imageEntityList = new ArrayList<>();
+//                for (int i = 0; i < nineGridView.getDataList().size(); i++) {
+//                    imageEntityList.add(new ImageEntity(nineGridView.getDataList().get(i).getThumbUrl()));
+//                }
+//                ViewPagerDialog viewPagerDialog = new ViewPagerDialog(mContext, imageEntityList);
+//                viewPagerDialog.show();
+
+                //组织数据
+                ArrayList<ThumbViewInfo> mThumbViewInfoList = new ArrayList<>(); // 这个最好定义成成员变量
+                ThumbViewInfo item;
+                mThumbViewInfoList.clear();
+                for (int i = 0;i < nineGridView.getDataList().size(); i++) {
+                    Rect bounds = new Rect();
+                    //new ThumbViewInfo(图片地址);
+                    item=new ThumbViewInfo(nineGridView.getDataList().get(i).getThumbUrl());
+                    item.setBounds(bounds);
+                    mThumbViewInfoList.add(item);
                 }
-                ViewPagerDialog viewPagerDialog = new ViewPagerDialog(mContext, imageEntityList);
-                viewPagerDialog.show();
+                //打开预览界面
+                GPreviewBuilder.from((Activity) mContext)
+                        //是否使用自定义预览界面，当然8.0之后因为配置问题，必须要使用
+                        // .to(ImageLookActivity.class)
+                        .setData(mThumbViewInfoList)
+                        .setCurrentIndex(position)
+                        .setSingleFling(true)
+                        .setType(GPreviewBuilder.IndicatorType.Number)
+                        // 小圆点
+                        .setType(GPreviewBuilder.IndicatorType.Dot)
+                        .start();//启动
+
+
             }
 
             @Override

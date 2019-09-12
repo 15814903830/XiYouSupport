@@ -1,6 +1,8 @@
 package com.chengfan.xiyou.ui;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
 import io.rong.push.PushType;
 import io.rong.push.notification.PushMessageReceiver;
@@ -14,6 +16,12 @@ public class CharNotificationReceiver extends PushMessageReceiver {
 
     @Override
     public boolean onNotificationMessageClicked(Context context, PushType pushType, PushNotificationMessage pushNotificationMessage) {
-        return false;
+        Log.e("PushType",pushType.getName());
+        if (pushType.getName().equals("MI")){
+            UIApplication.context.startActivity(new Intent( UIApplication.context,MainActivity.class));
+            return false;
+        }
+        return true;
     }
+
 }

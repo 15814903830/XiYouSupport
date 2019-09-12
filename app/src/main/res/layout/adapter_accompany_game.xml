@@ -95,25 +95,19 @@
                     android:textColor="@color/color_D1AE81"
                     android:textSize="@dimen/text_size_15"/>
 
-                <TextView
-                    android:layout_gravity="center"
-                    android:layout_marginTop="11dp"
-                    android:id="@+id/tv_totle"
-                    android:textColor="#999999"
-                    android:textSize="11sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
             </LinearLayout>
 
         </RelativeLayout>
 
 
         <LinearLayout
+            android:layout_marginTop="@dimen/padding_5"
+            android:orientation="horizontal"
             android:id="@+id/accompany_game_name_ll"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/accompany_game_name_rl"
-            android:gravity="center">
+            android:gravity="left">
 
             <ImageView
                 android:id="@+id/accompany_game_sex_iv"
@@ -144,6 +138,16 @@
                 android:text="0"
                 android:textColor="@color/color_999999"
                 android:textSize="@dimen/text_size_13"/>
+            <TextView
+                android:layout_marginRight="@dimen/padding_20"
+                android:gravity="right"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:id="@+id/tv_totle"
+                android:textColor="#999999"
+                android:textSize="11sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
 

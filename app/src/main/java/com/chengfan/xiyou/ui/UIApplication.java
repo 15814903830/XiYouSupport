@@ -10,12 +10,9 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
-
 import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.CommonCallback;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
-import com.chengfan.xiyou.R;
-import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.im.GroupChatInfo;
 import com.chengfan.xiyou.im.MyReceiveMessageListener;
 import com.chengfan.xiyou.im.UserIMInfo;
@@ -27,23 +24,20 @@ import com.yanzhenjie.album.Album;
 import com.yanzhenjie.album.AlbumConfig;
 import com.zero.ci.base.BaseApplication;
 import com.zero.ci.widget.lightkv.GlobalConfig;
-
 import org.litepal.LitePal;
 import org.litepal.crud.callback.FindMultiCallback;
-
 import java.util.List;
 import java.util.Locale;
-
 import io.rong.imkit.RongIM;
-import io.rong.imkit.RongNotificationManager;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Group;
-import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
+import io.rong.push.RongPushClient;
+import io.rong.push.pushconfig.PushConfig;
 import me.jessyan.autosize.AutoSize;
 import me.jessyan.autosize.AutoSizeConfig;
 import me.jessyan.autosize.onAdaptListener;
 import me.jessyan.autosize.utils.LogUtils;
+
 
 /**
  * @author: Zero Yuan
@@ -55,11 +49,31 @@ public class UIApplication extends BaseApplication {
     private static final String TAG = "UIApplication";
     private static MainActivity mainActivity = null;
     private UserUtils userUtils;
+    public static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
+        context=this;
         initCloudChannel(this);//阿里云推送
         initAuto();
+        PushConfig config = new PushConfig.Builder()
+                //.enableHWPush(true)
+               .enableMiPush("2882303761518159638", "5411815958638")
+//                .enableMeiZuPush("魅族 appId", "魅族 appKey")
+           //        .enableFCM(true)
+                .build();
+
+
+        //启用 OPPO vivo 推送服务
+//        PushConfig.Builder builder = new PushConfig.Builder();
+//        builder.enableVivoPush(true);
+//        builder.enableOppoPush(OPPO_App_KEY, OPPO_App_Secret);
+//        RongPushClient.setPushConfig(builder.build());
+
+
+
+
+        RongPushClient.setPushConfig(config);
         LitePal.initialize(this);
         RongIM.init(this);
         //设置接收消息的监听器
@@ -200,7 +214,7 @@ public class UIApplication extends BaseApplication {
                 receiveThePush("init cloudchannel success");
                 Intent intent = new Intent();
                 intent.setAction("org.agoo.android.intent.8.RECEIVE");
-                intent.setPackage("com.xsylsb.integrity");//pack为应用包名
+                intent.setPackage("com.chengfan.xiyou");//pack为应用包名
                 intent.putExtra("type", "common-push");
                 intent.addFlags(32);
                 applicationContext.sendBroadcast(intent);
@@ -220,6 +234,8 @@ public class UIApplication extends BaseApplication {
 //        OppoRegister.register(applicationContext, "OPPO_KEY", "OPPO_SECRET");
 //        MeizuRegister.register(applicationContext, "MEIZU_ID", "MEIZU_KEY");
 //        GcmRegister.register(applicationContext, "send_id", "application_id"); // 接入FCM/GCM初始化推送
+
+
     }
 
     public static void setMainActivity(MainActivity activity) {
@@ -228,10 +244,14 @@ public class UIApplication extends BaseApplication {
 
     public static void receiveThePush(String text) {
         Log.e(TAG,text);
+    }
+    public static void receiveThePushs(String text) {
+        Log.e(TAG,text);
         if (mainActivity != null && text != null) {
             mainActivity.receiveThePush(text);
         }
     }
+
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

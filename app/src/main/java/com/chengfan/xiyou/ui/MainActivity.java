@@ -1,18 +1,26 @@
 package com.chengfan.xiyou.ui;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.chengfan.xiyou.R;
 import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
@@ -51,6 +59,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import io.rong.pushperm.ResultCallback;
+import io.rong.pushperm.RongPushPremissionsCheckHelper;
 
 
 public class MainActivity extends BaseActivity implements HttpCallBack {
@@ -84,13 +94,14 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
     private FragmentManager fm;
     private String mTag;
     private Fragment mFragment;
-
+    private CloudPushService mPushService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mPushService = PushServiceFactory.getCloudPushService();
         ButterKnife.bind(this);
-
+        UIApplication.setMainActivity(this);
         //修改状态栏的文字颜色为黑色
         int flag = StatusBarUtil.StatusBarLightMode(this);
         StatusBarUtil.StatusBarLightMode(this, flag);
@@ -104,8 +115,66 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
         initUserInfo();
 
         getGroupChatInfo();
+        RongPushPremissionsCheckHelper.checkPermissionsAndShowDialog(this, new ResultCallback() {
+            @Override
+            public void onAreadlyOpened(String value) {
+
+            }
+
+            @Override
+            public boolean onBeforeShowDialog(String value) {
+                return false;
+            }
+
+            @Override
+            public void onGoToSetting(String value) {
+
+            }
+
+            @Override
+            public void onFailed(String value, FailedType type) {
+
+            }
+        });
+
 
     }
+    /**
+     * 绑定账户接口:CloudPushService.bindAccount调用示例
+     * 1. 绑定账号后,可以在服务端通过账号进行推送
+     * 2. 一个设备只能绑定一个账号
+     */
+    private void bindAccount() {
+        mPushService.bindAccount(AppData.getString(AppData.Keys.AD_USER_ID), new CommonCallback() {
+            @Override
+            public void onSuccess(String s) {
+                Log.e("MainActivity", "绑定账号成功：" + AppData.getString(AppData.Keys.AD_USER_ID));
+            }
+
+            @Override
+            public void onFailed(String errorCode, String errorMsg) {
+                Log.e("MainActivity", "绑定账号失败：" + AppData.getString(AppData.Keys.AD_USER_ID));
+            }
+        });
+    }
+    private void getImei() {
+        TelephonyManager TelephonyMgr = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this,"请允许获取设备信息权限",Toast.LENGTH_SHORT);
+            return;
+        }
+        String szImei = TelephonyMgr.getDeviceId();
+        Log.i("MainActivity","设备ID：" + szImei);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bindAccount();
+        getImei();
+    }
+
 
     private void initView() {
         if (mHomeFragment == null) {
@@ -131,6 +200,7 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
                 showFragment(mAccompanyFragment, TAG_TWO);
                 break;
             case R.id.ll_tab_three_main:
+                tvNoticeDot.setVisibility(View.GONE);
                 if (mChatFragment == null) {
                     mChatFragment = new ChatFragment();
                 }

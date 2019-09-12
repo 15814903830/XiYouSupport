@@ -33,6 +33,8 @@ public class MyMessageIntentService extends AliyunMessageIntentService {
     protected void onNotification(Context context, String title, String summary, Map<String, String> extraMap) {
         Log.i(REC_TAG,"收到一条推送通知 ： " + title + ", summary:" + summary);
         UIApplication.receiveThePush("收到一条推送通知 ： " + title + ", summary:" + summary);
+        UIApplication.receiveThePushs("收到一条推送通知 ： " + title + ", summary:" + summary);
+
     }
 
     /**
@@ -44,6 +46,7 @@ public class MyMessageIntentService extends AliyunMessageIntentService {
     protected void onMessage(Context context, CPushMessage cPushMessage) {
         Log.i(REC_TAG,"收到一条推送消息 ： " + cPushMessage.getTitle() + ", content:" + cPushMessage.getContent());
         UIApplication.receiveThePush(cPushMessage.getTitle() + ", content:" + cPushMessage.getContent());
+        UIApplication.receiveThePushs(cPushMessage.getTitle() + ", content:" + cPushMessage.getContent());
     }
 
     /**

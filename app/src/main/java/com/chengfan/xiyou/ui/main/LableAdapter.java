@@ -60,14 +60,35 @@ public class LableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, final int i) {
         final LableBase addressBean = mList.get(i);
         Glide.with(mContext).load(APIContents.HOST+"/"+addressBean.getIcon()).into(((ViewHolder) viewHolder).iv_lable);
-        ((ViewHolder) viewHolder).iv_lable.setOnClickListener(new View.OnClickListener() {
+
+
+        switch (i){
+            case 0:
+                Glide.with(mContext).load(R.drawable.biaoqian005).into(((ViewHolder) viewHolder).view);
+                break;
+            case 1:
+                Glide.with(mContext).load(R.drawable.biaoqian004).into(((ViewHolder) viewHolder).view);
+                break;
+            case 2:
+                Glide.with(mContext).load(R.drawable.biaoqian003).into(((ViewHolder) viewHolder).view);
+                break;
+            case 3:
+                Glide.with(mContext).load(R.drawable.biaoqian002).into(((ViewHolder) viewHolder).view);
+                break;
+            case 4:
+                Glide.with(mContext).load(R.drawable.biaoqian001).into(((ViewHolder) viewHolder).view);
+                break;
+        }
+
+
+        ((ViewHolder) viewHolder).view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((ViewHolder) viewHolder).view.getVisibility()==View.VISIBLE){
-                    ((ViewHolder) viewHolder).view.setVisibility(View.GONE);
+                if (((ViewHolder) viewHolder).iv_lable.getVisibility()==View.VISIBLE){
+                    ((ViewHolder) viewHolder).iv_lable.setVisibility(View.GONE);
                     defaultAddress.lableitemremove(addressBean.getId());
                 }else {
-                    ((ViewHolder) viewHolder).view.setVisibility(View.VISIBLE);
+                    ((ViewHolder) viewHolder).iv_lable.setVisibility(View.VISIBLE);
                     defaultAddress.lableitem(addressBean.getId());
                 }
             }
@@ -88,7 +109,7 @@ public class LableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView iv_lable;
-        View view;
+        ImageView view;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

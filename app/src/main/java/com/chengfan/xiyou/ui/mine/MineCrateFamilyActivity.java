@@ -277,7 +277,7 @@ public class MineCrateFamilyActivity extends BaseActivity<MineCrateFamilyContrac
         showLoading();
         imgsdialog=result.size();
         for (int i = 0; i < result.size(); i++) {
-            postimg(best64(result.get(i).getPath()));
+            postimg(FileToBase64.best64(result.get(i).getPath()));
         }
 
     }
@@ -336,49 +336,7 @@ public class MineCrateFamilyActivity extends BaseActivity<MineCrateFamilyContrac
         }
     }
 
-    public static String best64(String file) {
-        InputStream is = null;
-        byte[] data = null;
-        String result = null;
-        try {
-            is = new FileInputStream("" + file);
-            //创建一个字符流大小的数组。
-            data = new byte[is.available()];
-            //写入数组
-            is.read(data);
-            //用默认的编码格式进行编码
-            result = Base64.encodeToString(data, Base64.DEFAULT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (null != is) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
 
-        }
-        return result;
-    }
-
-    public static String listToString(List<UploadFile> mList) {
-        final String SEPARATOR = "|";
-        StringBuilder sb = new StringBuilder();
-        String convertedListStr = "";
-        if (null != mList && mList.size() > 0) {
-            for (UploadFile item : mList) {
-                sb.append(item.getKey());
-                sb.append(SEPARATOR);
-            }
-            convertedListStr = sb.toString();
-            convertedListStr = convertedListStr.substring(0, convertedListStr.length()
-                    - SEPARATOR.length());
-            return convertedListStr;
-        } else
-            return "List is null!!!";
-    }
 
     @SuppressLint("HandlerLeak")
     private Handler mHandlere = new Handler() {

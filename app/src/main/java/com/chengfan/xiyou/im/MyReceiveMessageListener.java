@@ -1,15 +1,23 @@
 package com.chengfan.xiyou.im;
 
+import android.content.Context;
 import android.util.Log;
 
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.push.PushType;
+import io.rong.push.notification.PushMessageReceiver;
+import io.rong.push.notification.PushNotificationMessage;
 
 /**
  * 融云消息接收器
  */
 public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageListener {
+
+
+
+    private String TAG="MyReceiveMessageListener";
 
     @Override
     public boolean onReceived(Message message, int i) {
@@ -37,4 +45,5 @@ public class MyReceiveMessageListener implements RongIMClient.OnReceiveMessageLi
             return -1;
         }
     }
+
 }

@@ -33,6 +33,7 @@ import com.chengfan.xiyou.ui.mine.order.AutonymtrueforflaseActivity;
 import com.chengfan.xiyou.ui.mine.order.FileBase;
 import com.chengfan.xiyou.ui.mine.order.MinEBase;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.FileToBase64;
 import com.chengfan.xiyou.utils.GetJsonDataUtil;
 import com.chengfan.xiyou.view.MediumTextView;
 import com.chengfan.xiyou.view.RegularEditText;
@@ -342,7 +343,7 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         String fileName = tempFile.getName();
         mUploadFile = new UploadFile(0, tempFile, fileName);
         Log.e("path", result.get(0).getPath());
-        postimg(best64(result.get(0).getPath()));
+        postimg(FileToBase64.best64(result.get(0).getPath()));
         //mPresenter.uploadParameter(mUploadFile);
         ImageLoaderManager.getInstance().showImage(mEditHeadCiv, result.get(0).getPath());
     }
@@ -667,32 +668,6 @@ public class MineEditInfoActivity extends BaseActivity<MineEditInfoContract.View
         }).start();
     }
 
-    public static String best64(String file) {
-        InputStream is = null;
-        byte[] data = null;
-        String result = null;
-        try {
-            is = new FileInputStream("" + file);
-            //创建一个字符流大小的数组。
-            data = new byte[is.available()];
-            //写入数组
-            is.read(data);
-            //用默认的编码格式进行编码
-            result = Base64.encodeToString(data, Base64.DEFAULT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (null != is) {
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }
-        return result;
-    }
 
 
     @SuppressLint("HandlerLeak")

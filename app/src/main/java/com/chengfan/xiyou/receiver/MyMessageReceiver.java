@@ -10,9 +10,6 @@ import com.chengfan.xiyou.ui.UIApplication;
 import java.util.Map;
 
 /**
- * @author: 正纬
- * @since: 15/4/9
- * @version: 1.1
  * @feature: 用于接收推送的通知和消息
  */
 public class MyMessageReceiver extends MessageReceiver {

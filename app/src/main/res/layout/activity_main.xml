@@ -76,6 +76,10 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/bottom_chat_select_drawable" />
                 <TextView
                     android:layout_marginLeft="@dimen/padding_15"
                     android:id="@+id/tv_notice_dot"
@@ -83,10 +87,6 @@
                     android:layout_width="8dp"
                     android:visibility="gone"
                     android:layout_height="8dp" />
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/bottom_chat_select_drawable" />
             </FrameLayout>
 
             <TextView
