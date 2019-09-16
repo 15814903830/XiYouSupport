@@ -20,18 +20,15 @@ import com.tencent.smtt.sdk.WebViewClient;
 
 public class WebKeFuActivity extends AppCompatActivity {
 
-    public static final String KEY_URL = "url";
 
     private ImageView iv_back;
     private WebView webView;
-    BaseNiceDialog baseNiceDialog;
     private String mUrl="https://chat56.live800.com/live800/chatClient/chatbox.jsp?companyID=1241500&configID=315645&jid=6863872405&s=1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lxkfweb);
-        showLoading();
         initView();
         initEvents();
         initWebSettings();
@@ -62,9 +59,6 @@ public class WebKeFuActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url)
             {
                 super.onPageFinished(view, url);
-                // 加载完成
-                if (baseNiceDialog!=null)
-                    baseNiceDialog.dismiss();
             }
 
             @Override
@@ -94,23 +88,23 @@ public class WebKeFuActivity extends AppCompatActivity {
         iv_back = findViewById(R.id.iv_back_web_view);
         webView = findViewById(R.id.web_view);
     }
-
-    /**
-     * 显示loading
-     */
-    public void showLoading() {
-        NiceDialog.init()
-                .setLayoutId(R.layout.dialog_loading_layout)
-                .setConvertListener(new ViewConvertListener() {
-                    @Override
-                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
-                        baseNiceDialog=dialog;
-                    }
-                })
-                .setOutCancel(false)
-                .setWidth(200)
-                .setHeight(200)
-                .setShowBottom(false)
-                .show(getSupportFragmentManager());
-    }
+//
+//    /**
+//     * 显示loading
+//     */
+//    public void showLoading() {
+//        NiceDialog.init()
+//                .setLayoutId(R.layout.dialog_loading_layout)
+//                .setConvertListener(new ViewConvertListener() {
+//                    @Override
+//                    protected void convertView(ViewHolder holder, BaseNiceDialog dialog) {
+//                        baseNiceDialog=dialog;
+//                    }
+//                })
+//                .setOutCancel(false)
+//                .setWidth(200)
+//                .setHeight(200)
+//                .setShowBottom(false)
+//                .show(getSupportFragmentManager());
+//    }
 }

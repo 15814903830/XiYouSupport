@@ -36,6 +36,7 @@ import com.chengfan.xiyou.ui.main.DynamicFragment;
 import com.chengfan.xiyou.ui.main.HomeFragment;
 import com.chengfan.xiyou.ui.main.MineFragment;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.Attention;
 import com.chengfan.xiyou.utils.RongGetToken;
 import com.chengfan.xiyou.utils.UserStorage;
 import com.chengfan.xiyou.utils.status.StatusBarUtil;
@@ -63,7 +64,7 @@ import io.rong.pushperm.ResultCallback;
 import io.rong.pushperm.RongPushPremissionsCheckHelper;
 
 
-public class MainActivity extends BaseActivity implements HttpCallBack {
+public class MainActivity extends BaseActivity implements HttpCallBack , Attention {
 
     @BindView(R.id.ll_tab_one_main)
     LinearLayout ll_one;
@@ -99,6 +100,7 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ((UIApplication) this.getApplication()).getUserUtils().setattention(this);
         mPushService = PushServiceFactory.getCloudPushService();
         ButterKnife.bind(this);
         UIApplication.setMainActivity(this);
@@ -280,7 +282,7 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
     private void initUserInfo() {
         HttpRequest.get(APIContents.Conter)
                 .params(APPContents.E_ID, AppData.getString(AppData.Keys.AD_USER_ID))
-                .execute(new AbstractResponse<String>() {
+                .execute(   new AbstractResponse<String>() {
                     @Override
                     public void onSuccess(String result) {
                         if (result.isEmpty()) {
@@ -447,4 +449,12 @@ public class MainActivity extends BaseActivity implements HttpCallBack {
             onHandlerMessageCallback(response, requestId);
         }
     };
+
+    @Override
+    public void attention() {
+        if (mDynamicFragment == null) {
+            mDynamicFragment = new DynamicFragment();
+        }
+        showFragment(mDynamicFragment, TAG_FOUR);
+    }
 }

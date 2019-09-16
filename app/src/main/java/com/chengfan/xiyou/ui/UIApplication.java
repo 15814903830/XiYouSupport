@@ -66,10 +66,6 @@ public class UIApplication extends BaseApplication {
                 .build();
         RongPushClient.setPushConfig(config);
 
-
-
-
-
         RongPushClient.setPushConfig(config);
         LitePal.initialize(this);
         RongIM.init(this);

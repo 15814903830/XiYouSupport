@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
 import com.chengfan.xiyou.domain.model.entity.MineEntity;
 import com.chengfan.xiyou.domain.model.entity.XiYouBean;
+import com.chengfan.xiyou.ui.UIApplication;
 import com.chengfan.xiyou.ui.adapter.XiYouSelectAdapter;
 import com.chengfan.xiyou.ui.login.LoginActivity;
 import com.chengfan.xiyou.ui.login.WeiXingActivity;
@@ -35,6 +37,7 @@ import com.chengfan.xiyou.ui.mine.MineMoneyActivity;
 import com.chengfan.xiyou.ui.mine.MineOrderActivity;
 import com.chengfan.xiyou.ui.mine.MineRecordActivity;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.UserUtils;
 import com.chengfan.xiyou.view.BoldTextView;
 import com.chengfan.xiyou.view.RegularTextView;
 import com.chengfan.xiyou.view.WebKeFuActivity;
@@ -90,7 +93,7 @@ public class MineFragment extends BaseFragment {
     LinearLayout mMineMoneyLl;
     @BindView(R.id.mine_rv)
     RecyclerView mMineRv;
-
+    private UserUtils userUtils;
     Unbinder mUnbinder;
     private boolean data = true;
     List<XiYouBean> mXiYouBeanList;
@@ -106,6 +109,7 @@ public class MineFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_mine, null);
         mUnbinder = ButterKnife.bind(this, mView);
+        userUtils = ((UIApplication)getActivity().getApplication()).getUserUtils();
         mXiYouBeanList = new ArrayList<>();
         mMineEntity = new MineEntity();
         setMineData();
@@ -135,8 +139,10 @@ public class MineFragment extends BaseFragment {
                 ForwardUtil.getInstance(getActivity()).forward(MineFansActivity.class);
                 break;
             case R.id.mine_dong_ll:
-                if (mAttentionSelectListener != null)
-                    mAttentionSelectListener.onAttentionSelectListener();
+//                if (mAttentionSelectListener != null)
+//                    mAttentionSelectListener.onAttentionSelectListener();
+                Log.e("mine_dong_ll","mine_dong_ll");
+                userUtils.attention();
                 break;
             case R.id.mine_order_ll:
                 /*陪玩订单*/

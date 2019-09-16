@@ -63,7 +63,7 @@ import butterknife.Unbinder;
  * @DATE : 2019-07-06/18:54
  * @Description: 我的动态
  */
-public class DynamicMineFragment extends
+public  class DynamicMineFragment extends
         BaseFragment<DynamicMineContract.View, DynamicMinePresenterImpl>
         implements DynamicMineContract.View , Myinter {
     View mView;
