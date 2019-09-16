@@ -1,19 +1,30 @@
 package com.chengfan.xiyou.ui.chat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.chengfan.xiyou.R;
+import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.common.APPContents;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.utils.AppData;
 import com.github.zackratos.ultimatebar.UltimateBar;
 import com.zero.ci.base.BaseActivity;
 import com.zero.ci.widget.logger.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Locale;
 
@@ -34,7 +45,7 @@ import io.rong.imlib.model.UserInfo;
  * @DATE : 2019-07-13/11:48
  * @Description: 聊天会话
  */
-public class ChatRongActivity extends BaseActivity {
+public class ChatRongActivity extends BaseActivity implements HttpCallBack {
     @BindView(R.id.xy_middle_tv)
     TextView mXyMiddleTv;
     @BindView(R.id.xy_more_tv)
@@ -50,8 +61,18 @@ public class ChatRongActivity extends BaseActivity {
     /**
      * 会话类型
      */
+    private HttpCallBack mHttpCallBack;
     private Conversation.ConversationType mConversationType;
-
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int requestId = msg.what;
+            String response = (String) msg.obj;
+            onHandlerMessageCallback(response, requestId);
+        }
+    };
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +83,7 @@ public class ChatRongActivity extends BaseActivity {
                 .statusDark(true)
                 .create()
                 .drawableBar();
-
         Intent intent = getIntent();
-
         if (intent == null || intent.getData() == null)
             return;
         mTargetId = intent.getData().getQueryParameter("targetId");
@@ -72,8 +91,14 @@ public class ChatRongActivity extends BaseActivity {
         mConversationType = Conversation.ConversationType.valueOf(intent.getData()
                 .getLastPathSegment().toUpperCase(Locale.US));
         Logger.e("mTargetId " + mTargetId);
-
         setActionBarTitle(mConversationType, mTargetId);
+        mHttpCallBack=this;
+        postfriend(mTargetId);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     /**
@@ -254,5 +279,33 @@ public class ChatRongActivity extends BaseActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onResponse(String response, int requestId) {
+        Message message = mHandler.obtainMessage();
+        message.what = requestId;
+        message.obj = response;
+        mHandler.sendMessage(message);
+    }
+
+    @Override
+    public void onHandlerMessageCallback(String response, int requestId) {
+        Log.e("postfriend---",response);
+    }
+    private void postfriend(final String id) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("memberId",""+id);
+                    jsonObject.put("friendId",""+AppData.getString(AppData.Keys.AD_USER_ID));
+                    OkHttpUtils.doPostJson("http://api.maihui111.com/api/Member/SayHi/"+AppData.getString(AppData.Keys.AD_USER_ID), "["+jsonObject.toString().trim()+"]", mHttpCallBack, 0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

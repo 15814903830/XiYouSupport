@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_marginLeft="@dimen/dp_10"
+    android:layout_marginTop="@dimen/padding_20"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="@dimen/padding_50"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_homeimg"
+        android:layout_width="@dimen/padding_50"
+        android:layout_height="@dimen/padding_50" />
+    <TextView
+        android:id="@+id/tv_hometext"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#333333"
+        android:textSize="12sp"
+        android:text="施瓦辛格"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

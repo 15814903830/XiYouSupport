@@ -300,9 +300,9 @@ public class DynamicIssuedActivity extends BaseActivity<DynamicIssuedContract.Vi
             mUploadFileList.add(new UploadFile(0, tempFile, fileName));
         }
         showLoading();
-        Toast.makeText(this, "正在压缩图片上传,请等待", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "正在压缩上传,请等待", Toast.LENGTH_SHORT).show();
         for (UploadFile uploadFile : mUploadFileList) {
-            mPresenter.uploadParameter(uploadFile);
+            mPresenter.uploadParameter(uploadFile,type);
             requestNum++;
             mimg++;
             mimgmax++;

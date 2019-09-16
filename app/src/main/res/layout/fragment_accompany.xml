@@ -105,10 +105,17 @@
 
 
                 <com.chengfan.xiyou.widget.viewpager.JazzyViewPager
+                    android:visibility="gone"
                     android:id="@+id/accompany_jvp"
                     android:layout_width="match_parent"
                     android:layout_height="180dp" />
 
+                <android.support.v7.widget.RecyclerView
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/rv_listbyarea"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp">
+                </android.support.v7.widget.RecyclerView>
                 <LinearLayout
                     android:id="@+id/linear"
                     android:layout_width="match_parent"

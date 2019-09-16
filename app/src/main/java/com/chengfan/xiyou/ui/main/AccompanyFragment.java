@@ -17,6 +17,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -32,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
@@ -47,7 +49,11 @@ import com.chengfan.xiyou.domain.model.entity.AccompanyEntity;
 import com.chengfan.xiyou.domain.model.entity.HomeBannerEntity;
 import com.chengfan.xiyou.domain.model.entity.JsonBean;
 import com.chengfan.xiyou.domain.presenter.AccompanyPresenterImpl;
+import com.chengfan.xiyou.okhttp.HttpCallBack;
+import com.chengfan.xiyou.okhttp.OkHttpUtils;
+import com.chengfan.xiyou.okhttp.RequestParams;
 import com.chengfan.xiyou.ui.accompany.AccompanyUserInfoActivity;
+import com.chengfan.xiyou.ui.accompany.reclcyviewbase.AddressAdapter;
 import com.chengfan.xiyou.ui.adapter.AccompanyJvAdapter;
 import com.chengfan.xiyou.ui.search.SearchActivity;
 import com.chengfan.xiyou.ui.search.Web2Activity;
@@ -84,7 +90,7 @@ import butterknife.Unbinder;
  * @DATE : 2019-07-04/10:43
  * @Description: 陪玩
  */
-public class AccompanyFragment extends BaseFragment<AccompanyContract.View, AccompanyPresenterImpl> implements AccompanyContract.View {
+public class AccompanyFragment extends BaseFragment<AccompanyContract.View, AccompanyPresenterImpl> implements AccompanyContract.View, HttpCallBack {
     View mView;
     @BindView(R.id.search_address_tv)
     TextView mSearchAddressTv;
@@ -100,6 +106,9 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     TabLayout mTabLayout;
     @BindView(R.id.vp_accompany)
     ViewPager mViewPager;
+
+    @BindView(R.id.rv_listbyarea)
+    RecyclerView recyclerView;
 
     private List<MyMultipleItem> dast = new ArrayList<>();
     Unbinder mUnbinder;
@@ -119,10 +128,10 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     private static final int MSG_LOAD_DATA = 0x0001;
     private static final int MSG_LOAD_SUCCESS = 0x0002;
     private static final int MSG_LOAD_FAILED = 0x0003;
-
+    private HttpCallBack mHttpCallBack;
     private List<RecommendFragment> mRecommendFragmentList = new ArrayList<>();
     private RecommendAdapter mRecommendAdapter;
-    List<String> mtitlelist=new ArrayList<>();
+    List<String> mtitlelist = new ArrayList<>();
 
     private int areaCode;
     private String areaName;
@@ -181,7 +190,7 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
 
                                                             }
                                                             mPresenter.accompanyBannerParameter(areaCode, 1);
-                                                           // Log.e("areaCode",""+areaCode);
+                                                            // Log.e("areaCode",""+areaCode);
 
                                                         }
                                                     });
@@ -206,13 +215,24 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         }
     };
 
-
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler2 = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int requestId = msg.what;
+            String response = (String) msg.obj;
+            onHandlerMessageCallback(response, requestId);
+        }
+    };
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_accompany, null);
+        mHttpCallBack=this;
         mUnbinder = ButterKnife.bind(this, mView);
         toBundle = new Bundle();
+        getdates();
         getdata();
         iniBanner();
         bottomInit();
@@ -220,6 +240,14 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         addvptab();
         return mView;
     }
+
+    private void getlabys(RecyBaee recyBaee) {
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 5);
+        recyclerView.setLayoutManager(layoutManager);
+        ListByAreaAdapter listByAreaAdapter = new ListByAreaAdapter(getContext(),recyBaee);
+        recyclerView.setAdapter(listByAreaAdapter);
+    }
+
 
     public void addvptab() {
         mtitlelist.add("推荐陪练");
@@ -233,18 +261,16 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         mtitlelist.add("陪聊倾诉");
         mtitlelist.add("哄睡FM");
         for (int i = 0; i < 10; i++) {
-            mRecommendFragmentList.add(RecommendFragment.getInstance(""+i));
+            mRecommendFragmentList.add(RecommendFragment.getInstance("" + i));
         }
-        mRecommendAdapter=new RecommendAdapter(getFragmentManager(),mRecommendFragmentList,mtitlelist);
+        mRecommendAdapter = new RecommendAdapter(getFragmentManager(), mRecommendFragmentList, mtitlelist);
         mViewPager.setAdapter(mRecommendAdapter);
         //设置TabLayout的模式
         mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.setOffscreenPageLimit(mRecommendFragmentList.size()-1);
+        mViewPager.setOffscreenPageLimit(mRecommendFragmentList.size() - 1);
         mTabLayout.setSelectedTabIndicatorHeight(0);
         setTabView();
     }
-
-
 
 
     private void getdata() {
@@ -347,19 +373,19 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         mConvenientBanner.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (position>mHomeBannerEntity.getNews().size()){
+                if (position > mHomeBannerEntity.getNews().size()) {
 
-                }else {
-                    if (mHomeBannerEntity!=null){
-                        if (mHomeBannerEntity.getNews().get(position).getImgHref().split(":")[0].equals("http")){
-                            Intent intent=new Intent(getContext(), Web2Activity.class);
-                            intent.putExtra("url",mHomeBannerEntity.getNews().get(position).getImgHref());
+                } else {
+                    if (mHomeBannerEntity != null) {
+                        if (mHomeBannerEntity.getNews().get(position).getImgHref().split(":")[0].equals("http")) {
+                            Intent intent = new Intent(getContext(), Web2Activity.class);
+                            intent.putExtra("url", mHomeBannerEntity.getNews().get(position).getImgHref());
                             startActivity(intent);
-                        }else {
+                        } else {
                             toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, Integer.parseInt(mHomeBannerEntity.getNews().get(position).getImgHref()));
                             ForwardUtil.getInstance(getActivity()).forward(AccompanyUserInfoActivity.class, toBundle);
                         }
-                    }else {
+                    } else {
                         //后台未设置
                     }
                 }
@@ -442,7 +468,7 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
 
                 Logger.d("选择的城市为：" + tx + " code : " + areaCode);
                 mSearchAddressTv.setText(tx);
-               // mPresenter.accompanyBannerParameter(areaCode, 1);//轮播图440100
+                // mPresenter.accompanyBannerParameter(areaCode, 1);//轮播图440100
                 mPresenter.accompanyBannerParameter(440100, 1);//轮播图440100
             }
         })
@@ -499,6 +525,29 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
     public void onDestroyView() {
         super.onDestroyView();
         mUnbinder.unbind();
+    }
+
+    @Override
+    public void onResponse(String response, int requestId) {
+        Message message = mHandler2.obtainMessage();
+        message.what = requestId;
+        message.obj = response;
+        mHandler2.sendMessage(message);
+    }
+
+    @Override
+    public void onHandlerMessageCallback(String response, int requestId) {
+        try {
+            RecyBaee recyBaee= JSON.parseObject(response,RecyBaee.class);
+            RecyBaee.SubjectBean subjectBeas=new RecyBaee.SubjectBean();
+            subjectBeas.setTitle("更多");
+            subjectBeas.setId(0);
+            recyBaee.getSubject().add(subjectBeas);
+
+            getlabys(recyBaee);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -595,9 +644,14 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         }
     }
 
-    //像素单位转换
-    public int dip2px(int dip) {
-        float density = getResources().getDisplayMetrics().density;
-        return (int) (dip * density + 0.5);
+    private void getdates() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<RequestParams> list=new ArrayList<>();
+                OkHttpUtils.doGet("http://api.maihui111.com/api/Member/ListByArea?id=10000" ,list,mHttpCallBack,1);
+            }
+        }).start();
     }
+
 }

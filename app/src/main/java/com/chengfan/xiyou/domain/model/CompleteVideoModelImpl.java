@@ -26,7 +26,7 @@ public class CompleteVideoModelImpl implements CompleteVideoContract.Model {
     public Observable<UpdateEntity> API_RESPONSE_OBSERVABLE(UploadFile uploadFile) {
 
         XYUploadEntity xyUploadEntity = new XYUploadEntity();
-        xyUploadEntity.setFileData(FileToBase64.best64(uploadFile));
+        xyUploadEntity.setFileData(FileToBase64.best64y(uploadFile));
         xyUploadEntity.setMemberId(AppData.getString(AppData.Keys.AD_USER_ID));
         xyUploadEntity.setFileName(uploadFile.getKey());
         xyUploadEntity.setSource("Member");
@@ -35,4 +35,5 @@ public class CompleteVideoModelImpl implements CompleteVideoContract.Model {
                 .execute(new AdaptResponse<UpdateEntity>() {
                 });
     }
+
 }

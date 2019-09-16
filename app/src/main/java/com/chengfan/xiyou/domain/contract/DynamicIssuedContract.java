@@ -19,7 +19,7 @@ public interface DynamicIssuedContract {
     interface Model {
         Observable<BaseApiResponse> PUBLIST_OBSERVABLE(String content, List<UploadEntity> fileList);
 
-        Observable<UploadEntity> UPLOAD_OBSERVABLE(UploadFile uploadFile);
+        Observable<UploadEntity> UPLOAD_OBSERVABLE(UploadFile uploadFile,int type);
     }
 
     interface View extends BaseView {
@@ -31,6 +31,6 @@ public interface DynamicIssuedContract {
     interface Presenter {
         void publishParameter(String content, List<UploadEntity> fileList);
 
-        void uploadParameter(UploadFile fileList);
+        void uploadParameter(UploadFile fileList,int type);
     }
 }

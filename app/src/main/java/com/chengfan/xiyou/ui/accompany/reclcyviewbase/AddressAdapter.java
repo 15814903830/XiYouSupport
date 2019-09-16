@@ -67,39 +67,44 @@ public class AddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         ((ViewHolder) viewHolder).textView.setText("接单量： " + mList.get(i).getTotal());
 
         icon.clear();
-        try {
-            if (mList.get(i).getMember().getApplyLable() != null) {
-                String[] icons = mList.get(i).getMember().getApplyLable().split(",");
-                if (icons.length > 0) {
-                    for (int k = 0; k < icons.length; k++) {
-                        for (int j = 0; j < listlable.size(); j++) {
-                            if (listlable.get(j).getId() == Integer.parseInt(icons[k])) {
-                                icon.add(listlable.get(k).getIcon());
-                            }
-                        }
-                    }
-                }
-                if (mList.get(i).getMember().getApprovalLable() != null) {
-                    String[] icons2 = mList.get(i).getMember().getApprovalLable().split(",");
-                    if (icons2.length > 0) {
-                        for (int k = 0; k < icons2.length; k++) {
+        if (mList.get(i).getMember().getLableStatus()==0){
+            //认证标签状态 0未通过
+        }else {
+            try {
+                if (mList.get(i).getMember().getApplyLable() != null) {
+                    String[] icons = mList.get(i).getMember().getApplyLable().split(",");
+                    if (icons.length > 0) {
+                        for (int k = 0; k < icons.length; k++) {
                             for (int j = 0; j < listlable.size(); j++) {
-                                if (listlable.get(j).getId() == Integer.parseInt(icons2[k])) {
+                                if (listlable.get(j).getId() == Integer.parseInt(icons[k])) {
                                     icon.add(listlable.get(k).getIcon());
                                 }
                             }
                         }
                     }
+                    if (mList.get(i).getMember().getApprovalLable() != null) {
+                        String[] icons2 = mList.get(i).getMember().getApprovalLable().split(",");
+                        if (icons2.length > 0) {
+                            for (int k = 0; k < icons2.length; k++) {
+                                for (int j = 0; j < listlable.size(); j++) {
+                                    if (listlable.get(j).getId() == Integer.parseInt(icons2[k])) {
+                                        icon.add(listlable.get(k).getIcon());
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
+
+                GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
+                ((ViewHolder) viewHolder).recyclerView.setLayoutManager(layoutManager);
+                LableAdapter4 lableAdapter4 = new LableAdapter4(mContext, icon);
+                ((ViewHolder) viewHolder).recyclerView.setAdapter(lableAdapter4);
+                Log.e("lableAdapter4","lableAdapter4");
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
             }
 
-            GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
-            ((ViewHolder) viewHolder).recyclerView.setLayoutManager(layoutManager);
-            LableAdapter4 lableAdapter4 = new LableAdapter4(mContext, icon);
-            ((ViewHolder) viewHolder).recyclerView.setAdapter(lableAdapter4);
-            Log.e("lableAdapter4","lableAdapter4");
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
         }
 
         try {

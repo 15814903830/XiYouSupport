@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
                 android:orientation="horizontal">
 
     <FrameLayout
+        android:layout_gravity="center_vertical"
         android:id="@+id/fg_sssd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     <com.zero.ci.widget.CircleImageView
+        android:layout_toLeftOf="@+id/accompany_game_address_tv"
+        android:layout_gravity="center_vertical"
         android:id="@+id/accompany_game_civ"
         android:layout_width="@dimen/padding_75"
         android:layout_height="95dp"
         android:layout_marginLeft="@dimen/padding_20"
-        android:layout_marginTop="@dimen/padding_20"
         android:src="@mipmap/ic_launcher"/>
         <LinearLayout
             android:visibility="gone"
@@ -178,4 +181,4 @@
     </RelativeLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

@@ -22,6 +22,7 @@ import com.chengfan.xiyou.common.APIContents;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.FileToBase64;
 import com.chengfan.xiyou.utils.dialog.BaseNiceDialog;
 import com.chengfan.xiyou.utils.dialog.NiceDialog;
 import com.chengfan.xiyou.utils.dialog.ViewConvertListener;
@@ -215,14 +216,14 @@ public class AutonymActivity extends AppCompatActivity implements View.OnClickLi
         Toast.makeText(this, "上传图片中", Toast.LENGTH_SHORT).show();
         Log.e("path", result.get(0).getPath());
         ImageLoaderManager.getInstance().showImage(ivIdcard1Auttonym, result.get(0).getPath());
-        postimg(best64(result.get(0).getPath()), 0);
+        postimg(FileToBase64.best64(result.get(0).getPath()), 0);
     }
 
     private void notifyData2(ArrayList<AlbumFile> result) {
         Toast.makeText(this, "上传图片中", Toast.LENGTH_SHORT).show();
         Log.e("path", result.get(0).getPath());
         ImageLoaderManager.getInstance().showImage(ivIdcard2Auttonym, result.get(0).getPath());
-        postimg(best64(result.get(0).getPath()), 1);
+        postimg(FileToBase64.best64(result.get(0).getPath()), 1);
     }
 
     @Override

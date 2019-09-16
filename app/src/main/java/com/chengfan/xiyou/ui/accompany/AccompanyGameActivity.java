@@ -259,17 +259,6 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
             }
         });
 
-//         mylistviewaparter=new Mylistviewaparter(this,list,listlable);
-//        mListView.setAdapter(mylistviewaparter);
-//        addressAdapter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                                Log.e("onItemClick",""+list.toString());
-//                Bundle toBundle = new Bundle();
-//                toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, list.get(position).getId());
-//                ForwardUtil.getInstance(AccompanyGameActivity.this).forward(AccompanyDetailActivity.class, toBundle);
-//            }
-//        });
 
     }
 
@@ -407,5 +396,9 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
             gradeTitle=name;
             getlistbase(subjectId,sortOrder,areaTitle,gradeTitle);
         }
+        mBooleanlist1=true;
+        mBooleanlist2=true;
+        mBooleanlist3=true;
+        mListViewlist.setVisibility(View.GONE);
     }
 }

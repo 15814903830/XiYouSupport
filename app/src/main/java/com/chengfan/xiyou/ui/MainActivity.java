@@ -115,7 +115,6 @@ public class MainActivity extends BaseActivity implements HttpCallBack , Attenti
         initView();
 
         initUserInfo();
-
         getGroupChatInfo();
         RongPushPremissionsCheckHelper.checkPermissionsAndShowDialog(this, new ResultCallback() {
             @Override

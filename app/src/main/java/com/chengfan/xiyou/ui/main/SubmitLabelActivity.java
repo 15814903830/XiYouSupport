@@ -366,27 +366,16 @@ public class SubmitLabelActivity extends AppCompatActivity implements HttpCallBa
 
     @Override
     public void lableitem(int i) {
+
         lableitemlist.add("" + i);
-        Log.e("lableitemlistsss", removeDuplicate(lableitemlist).toString());
     }
 
     @Override
     public void lableitemremove(int i) {
         lableitemlist.remove(""+i);
-        Log.e("lableitemlistsss", lableitemlist.toString());
     }
 
 
-    public     List  removeDuplicate(List<String> list)  {
-        for  ( int  i  =   0 ; i  <  list.size()  -   1 ; i ++ )  {
-            for  ( int  j  =  list.size()  -   1 ; j  >  i; j -- )  {
-                if  (list.get(j).equals(list.get(i)))  {
-                    list.remove(j);
-                }
-            }
-        }
-        return list;
-    }
     private void setPhoneRgv() {
         //设置图片加载器，这个是必须的，不然图片无法显示
         mIssuedNgv.setImageLoader(new GlideImageLoader());

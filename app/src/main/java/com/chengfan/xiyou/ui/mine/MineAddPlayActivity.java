@@ -405,7 +405,7 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
         else {
             File file=new File(FileName);
             mUploadFile = new UploadFile(0, file, FileName);
-            audioPath(FileToBase64.best64(mUploadFile));
+            audioPath(FileToBase64.best64y(mUploadFile));
     }
     }
 
@@ -724,7 +724,7 @@ public class MineAddPlayActivity extends BaseActivity<MineAddPlayContract.View, 
 
     @Override
     public void onHandlerMessageCallback(String response, int requestId) {
-
+        Log.e("onHandlerMessage", response);
         switch (requestId) {
             case 0:
                 try {

@@ -52,12 +52,9 @@ public class ChatFragment extends BaseFragment {
                 .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")
                 .build();
         fragment.setUri(uri);
-
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.rong_content, fragment);
         transaction.commit();
-
-
     }
 
     @Override

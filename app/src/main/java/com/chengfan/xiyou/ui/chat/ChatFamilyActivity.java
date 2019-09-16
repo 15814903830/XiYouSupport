@@ -55,14 +55,13 @@ public class ChatFamilyActivity extends BaseActivity {
                 .drawableBar();
         initView();
         mXyMiddleTv.setText("家族专区");
-        mChatFamilyWv.loadUrl("http://api.maihui111.com//Wap/Family?id=" + AppData.getString(AppData.Keys.AD_USER_ID));
+        mChatFamilyWv.loadUrl("http://api.maihui111.com/Wap/Family?id=" + AppData.getString(AppData.Keys.AD_USER_ID));
     }
     private void initView() {
         mChatFamilyWv.setWebViewClient(new WebViewClient() {
 
                                            @Override
                                            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                                               Log.e("urlurl",url);
                                                mChatFamilyWv.loadUrl(url);
                                                return true;
                                            }

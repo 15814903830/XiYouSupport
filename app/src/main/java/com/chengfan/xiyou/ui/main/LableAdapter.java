@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.chengfan.xiyou.R;
@@ -38,6 +39,7 @@ public class LableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void setList(List<LableBase> list) {
         mList = list;
     }
+    private int sum=0;
 
     private List<LableBase> mList;
     defaultAddress defaultAddress;
@@ -64,18 +66,39 @@ public class LableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         switch (i){
             case 0:
-                Glide.with(mContext).load(R.drawable.biaoqian005).into(((ViewHolder) viewHolder).view);
+                Glide.with(mContext).load(R.drawable.biaoqian014).into(((ViewHolder) viewHolder).view);
                 break;
             case 1:
-                Glide.with(mContext).load(R.drawable.biaoqian004).into(((ViewHolder) viewHolder).view);
+                Glide.with(mContext).load(R.drawable.biaoqian013).into(((ViewHolder) viewHolder).view);
                 break;
             case 2:
-                Glide.with(mContext).load(R.drawable.biaoqian003).into(((ViewHolder) viewHolder).view);
+                Glide.with(mContext).load(R.drawable.biaoqian011).into(((ViewHolder) viewHolder).view);
                 break;
             case 3:
-                Glide.with(mContext).load(R.drawable.biaoqian002).into(((ViewHolder) viewHolder).view);
+                Glide.with(mContext).load(R.drawable.biaoqian010).into(((ViewHolder) viewHolder).view);
                 break;
             case 4:
+                Glide.with(mContext).load(R.drawable.biaoqian009).into(((ViewHolder) viewHolder).view);
+                break;
+            case 5:
+                Glide.with(mContext).load(R.drawable.biaoqian007).into(((ViewHolder) viewHolder).view);
+                break;
+            case 6:
+                Glide.with(mContext).load(R.drawable.biaoqian006).into(((ViewHolder) viewHolder).view);
+                break;
+            case 7:
+                Glide.with(mContext).load(R.drawable.biaoqian005).into(((ViewHolder) viewHolder).view);
+                break;
+            case 8:
+                Glide.with(mContext).load(R.drawable.biaoqian004).into(((ViewHolder) viewHolder).view);
+                break;
+            case 9:
+                Glide.with(mContext).load(R.drawable.biaoqian003).into(((ViewHolder) viewHolder).view);
+                break;
+            case 10:
+                Glide.with(mContext).load(R.drawable.biaoqian002).into(((ViewHolder) viewHolder).view);
+                break;
+            case 11:
                 Glide.with(mContext).load(R.drawable.biaoqian001).into(((ViewHolder) viewHolder).view);
                 break;
         }
@@ -87,9 +110,15 @@ public class LableAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 if (((ViewHolder) viewHolder).iv_lable.getVisibility()==View.VISIBLE){
                     ((ViewHolder) viewHolder).iv_lable.setVisibility(View.GONE);
                     defaultAddress.lableitemremove(addressBean.getId());
+                    sum--;
                 }else {
-                    ((ViewHolder) viewHolder).iv_lable.setVisibility(View.VISIBLE);
-                    defaultAddress.lableitem(addressBean.getId());
+                    if (sum<4){
+                        sum++;
+                        ((ViewHolder) viewHolder).iv_lable.setVisibility(View.VISIBLE);
+                        defaultAddress.lableitem(addressBean.getId());
+                    }else {
+                        Toast.makeText(mContext, "最多选择4个标签", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

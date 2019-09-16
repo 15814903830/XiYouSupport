@@ -213,7 +213,7 @@ public class HomeFragment extends BaseFragment<HomeContract.View, HomePresenterI
                 Log.e("swp_news0","swp_news");
             }
         });
-
+        mHomeZrl.autoRefresh();
         return mView;
     }
 

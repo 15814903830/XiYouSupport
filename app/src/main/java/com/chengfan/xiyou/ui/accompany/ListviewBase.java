@@ -10,27 +10,27 @@ package com.chengfan.xiyou.ui.accompany;
 public class ListviewBase {
 
     /**
-     * id : 69
-     * title : 吃鸡啦 欢迎来撩
-     * price : 5
+     * id : 123
+     * title : uuu
+     * price : 11
      * status : 0
-     * images : UploadFiles/AccompanyPlay/20190821/Editor/08747209-3ca3-4a7a-bba9-cb8462fa9e70.mp4
-     * memberId : 1127
-     * subjectId : 2
-     * areaTitle : 微信
-     * audioPath : UploadFiles/Member/20190821/Editor/13b44ecf-cfbd-4540-af86-c7c6b9285cc3.aac
-     * gradeTitle : 荣耀皇冠
+     * images : UploadFiles/AccompanyPlayNews/20190916/d6463880-171c-4110-9cd4-6670f7f6b444
+     * memberId : 10000
+     * subjectId : 8
+     * areaTitle : 男
+     * audioPath : UploadFiles/AccompanyPlayNews/20190916/4e53f36f-6a50-4e46-aa61-140b80931e48
+     * gradeTitle : 情绪
      * recommendTime : null
-     * age : 20
-     * gender : 1
-     * nickname : 蜗牛超车
-     * userName : 13800139000
-     * avatarUrl : UploadFiles/Member/20190823/Editor/0f69aa9c-ab01-40b6-92a0-ef6312993b99.png
+     * age : 18
+     * gender : 0
+     * nickname : 尴尬
+     * userName : 15814903830
+     * avatarUrl : UploadFiles/AccompanyPlayNews/20190916/f2fc2322-b318-41ed-9fc6-fef546cdff8c
      * areaCode : 440100
-     * areaName : 广东省 广州市
-     * totalFans : 1
-     * vip : false
-     * member : {"age":20,"gender":1,"nickname":"蜗牛超车","userName":"13800139000","avatarUrl":"UploadFiles/Member/20190823/Editor/0f69aa9c-ab01-40b6-92a0-ef6312993b99.png","areaCode":440100,"areaName":"广东省 广州市","lableAudio":"0d104a48-6ec6-4306-a7a7-49169e251eb0.aac","applyLable":"1,2,3,4","approvalLable":"6,7","totalFans":1,"vip":false}
+     * areaName : 广州市
+     * totalFans : 0
+     * vip : true
+     * member : {"age":18,"gender":0,"nickname":"尴尬","userName":"15814903830","avatarUrl":"UploadFiles/AccompanyPlayNews/20190916/f2fc2322-b318-41ed-9fc6-fef546cdff8c","areaCode":440100,"areaName":"广州市","lableAudio":"UploadFiles/AccompanyPlayNews/20190916/4d740d6b-4d1d-49f4-844c-df64946ab752|UploadFiles/AccompanyPlayNews/20190916/4e72ed61-884f-4dcb-89c7-9f2346c9cac2|UploadFiles/AccompanyPlayNews/20190916/19c16c25-0b19-4b67-b702-e83c4714a5c3|","lableStatus":0,"applyLable":"9,13,5,2","approvalLable":null,"totalFans":0,"vip":true}
      * total : 0
      */
 
@@ -44,7 +44,7 @@ public class ListviewBase {
     private String areaTitle;
     private String audioPath;
     private String gradeTitle;
-    private Object recommendTime;
+    private String recommendTime;
     private int age;
     private int gender;
     private String nickname;
@@ -141,7 +141,7 @@ public class ListviewBase {
         return recommendTime;
     }
 
-    public void setRecommendTime(Object recommendTime) {
+    public void setRecommendTime(String recommendTime) {
         this.recommendTime = recommendTime;
     }
 
@@ -235,18 +235,19 @@ public class ListviewBase {
 
     public static class MemberBean {
         /**
-         * age : 20
-         * gender : 1
-         * nickname : 蜗牛超车
-         * userName : 13800139000
-         * avatarUrl : UploadFiles/Member/20190823/Editor/0f69aa9c-ab01-40b6-92a0-ef6312993b99.png
+         * age : 18
+         * gender : 0
+         * nickname : 尴尬
+         * userName : 15814903830
+         * avatarUrl : UploadFiles/AccompanyPlayNews/20190916/f2fc2322-b318-41ed-9fc6-fef546cdff8c
          * areaCode : 440100
-         * areaName : 广东省 广州市
-         * lableAudio : 0d104a48-6ec6-4306-a7a7-49169e251eb0.aac
-         * applyLable : 1,2,3,4
-         * approvalLable : 6,7
-         * totalFans : 1
-         * vip : false
+         * areaName : 广州市
+         * lableAudio : UploadFiles/AccompanyPlayNews/20190916/4d740d6b-4d1d-49f4-844c-df64946ab752|UploadFiles/AccompanyPlayNews/20190916/4e72ed61-884f-4dcb-89c7-9f2346c9cac2|UploadFiles/AccompanyPlayNews/20190916/19c16c25-0b19-4b67-b702-e83c4714a5c3|
+         * lableStatus : 0
+         * applyLable : 9,13,5,2
+         * approvalLable : null
+         * totalFans : 0
+         * vip : true
          */
 
         private int age;
@@ -257,6 +258,7 @@ public class ListviewBase {
         private int areaCode;
         private String areaName;
         private String lableAudio;
+        private int lableStatus;
         private String applyLable;
         private String approvalLable;
         private int totalFans;
@@ -324,6 +326,14 @@ public class ListviewBase {
 
         public void setLableAudio(String lableAudio) {
             this.lableAudio = lableAudio;
+        }
+
+        public int getLableStatus() {
+            return lableStatus;
+        }
+
+        public void setLableStatus(int lableStatus) {
+            this.lableStatus = lableStatus;
         }
 
         public String getApplyLable() {

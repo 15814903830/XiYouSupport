@@ -38,6 +38,7 @@ import com.chengfan.xiyou.ui.MainActivity;
 import com.chengfan.xiyou.ui.login.LoginActivity;
 import com.chengfan.xiyou.ui.mine.order.FileBase;
 import com.chengfan.xiyou.utils.AppData;
+import com.chengfan.xiyou.utils.FileToBase64;
 import com.chengfan.xiyou.utils.FontHelper;
 import com.chengfan.xiyou.utils.GetJsonDataUtil;
 import com.chengfan.xiyou.utils.UserStorage;
@@ -324,7 +325,7 @@ public class CompleteInfoActivity
         String path = mAlbumFiles.get(0).getPath();
         File tempFile = new File(path.trim());
         String fileName = tempFile.getName();
-        postimg(best64(result.get(0).getPath()));
+        postimg(FileToBase64.best64(result.get(0).getPath()));
 
         mUploadFile = new UploadFile(0, tempFile, fileName);
         ImageLoaderManager.getInstance().showImage(mCompleteHeadCiv, result.get(0).getPath());
