@@ -57,18 +57,15 @@ public class UIApplication extends BaseApplication {
         initCloudChannel(this);//阿里云推送
         initAuto();
         PushConfig config = new PushConfig.Builder()
-                //.enableHWPush(true)
-               .enableMiPush("2882303761518159638", "5411815958638")
+                .enableHWPush(true)
+               .enableMiPush("2882303761518161218", "5881816162218")
 //                .enableMeiZuPush("魅族 appId", "魅族 appKey")
-           //        .enableFCM(true)
+                  .enableFCM(true)
+                //.enableVivoPush(true)
+               // .enableOppoPush(OPPO_App_KEY, OPPO_App_Secret)
                 .build();
+        RongPushClient.setPushConfig(config);
 
-
-        //启用 OPPO vivo 推送服务
-//        PushConfig.Builder builder = new PushConfig.Builder();
-//        builder.enableVivoPush(true);
-//        builder.enableOppoPush(OPPO_App_KEY, OPPO_App_Secret);
-//        RongPushClient.setPushConfig(builder.build());
 
 
 

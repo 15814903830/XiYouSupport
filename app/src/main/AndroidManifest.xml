@@ -56,7 +56,7 @@
     <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
     <!-- MeiZu 配置结束 < -->
 
-    <!--oppo-->
+    <!-- OPPO  < -->
     <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
 
     <!-- 小米 配置开始 < -->
@@ -462,18 +462,18 @@
                 android:value="androidhwext:style/Theme.Emui.Translucent" />
         </activity>
 
-        <!-- 解决华为移动服务升级问题的透明界面（必须声明）-->
-        <activity
-            android:name="com.huawei.android.hms.agent.common.HMSAgentActivity"
-            android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.Translucent">
-            <meta-data
-                android:name="hwc-theme"
-                android:value="androidhwext:style/Theme.Emui.Translucent" />
-        </activity>
+        <!--&lt;!&ndash; 解决华为移动服务升级问题的透明界面（必须声明）&ndash;&gt;-->
+        <!--<activity-->
+        <!--android:name="com.huawei.android.hms.agent.common.HMSAgentActivity"-->
+        <!--android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"-->
+        <!--android:excludeFromRecents="true"-->
+        <!--android:exported="false"-->
+        <!--android:hardwareAccelerated="true"-->
+        <!--android:theme="@android:style/Theme.Translucent">-->
+        <!--<meta-data-->
+        <!--android:name="hwc-theme"-->
+        <!--android:value="androidhwext:style/Theme.Emui.Translucent" />-->
+        <!--</activity>-->
 
         <provider
             android:name="com.huawei.hms.update.provider.UpdateProvider"
@@ -520,8 +520,7 @@
         </receiver>
         <!-- MeiZu 配置结束 < -->
 
-
-        <!--oppo推送服务配置开始-->
+        <!-- oppo推送服务配置开始 < -->
         <service
             android:name="com.coloros.mcssdk.PushService"
             android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
@@ -529,22 +528,21 @@
                 <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
             </intent-filter>
         </service>
-        <!--oppo推送服务配置结束-->
-
+        <!-- oppo推送服务配置结束 < -->
 
 
         <!-- vivo 推送服务需要配置的 service、activity -->
         <service
             android:name="com.vivo.push.sdk.service.CommandClientService"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name="com.vivo.push.sdk.LinkProxyClientActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- vivo push 推送 receiver 声明 -->
-        <receiver android:name="io.rong.push.platform.vivo.VivoPushMessageReceiver" >
+        <receiver android:name="io.rong.push.platform.vivo.VivoPushMessageReceiver">
             <intent-filter>
                 <!-- 接收 vivo push 消息 -->
                 <action android:name="com.vivo.pushclient.action.RECEIVE" />
@@ -552,24 +550,13 @@
         </receiver>
 
 
-
-
-
-
-
-
-
-
-
-
-
         <!-- vivo 推送配置项 -->
         <meta-data
             android:name="com.vivo.push.api_key"
-            android:value="您的 vivo 推送平台生成 AppKey"/>
+            android:value="您的 vivo 推送平台生成 AppKey" />
         <meta-data
             android:name="com.vivo.push.app_id"
-            android:value="您的 vivo 推送平台生成 AppID"/>
+            android:value="您的 vivo 推送平台生成 AppID" />
 
 
         <!--高德地图-->

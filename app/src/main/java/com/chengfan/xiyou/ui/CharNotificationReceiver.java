@@ -16,12 +16,11 @@ public class CharNotificationReceiver extends PushMessageReceiver {
 
     @Override
     public boolean onNotificationMessageClicked(Context context, PushType pushType, PushNotificationMessage pushNotificationMessage) {
-        Log.e("PushType",pushType.getName());
-        if (pushType.getName().equals("MI")){
-            UIApplication.context.startActivity(new Intent( UIApplication.context,MainActivity.class));
-            return false;
-        }
-        return true;
+//        if (pushType.getName().equals("MI")){
+//            UIApplication.context.startActivity(new Intent( UIApplication.context,MainActivity.class));
+//            return true;
+//        }
+        return false;
     }
 
 }

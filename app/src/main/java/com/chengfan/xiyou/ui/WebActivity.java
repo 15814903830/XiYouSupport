@@ -63,12 +63,11 @@ public class WebActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url)
             {
-
-
                 super.onPageFinished(view, url);
                 // 加载完成
                 if (baseNiceDialog!=null)
                     baseNiceDialog.dismiss();
+                webView.loadUrl("javascript:playerPlay()");
             }
 
             @Override
