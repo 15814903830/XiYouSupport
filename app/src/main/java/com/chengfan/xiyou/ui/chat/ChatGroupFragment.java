@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,11 @@ import com.chengfan.xiyou.utils.RongQuit;
 import com.zero.ci.base.BaseApiResponse;
 import com.zero.ci.base.BaseFragment;
 import com.zero.ci.refresh.ZRefreshLayout;
+import com.zero.ci.refresh.api.RefreshFooter;
+import com.zero.ci.refresh.api.RefreshHeader;
+import com.zero.ci.refresh.api.RefreshLayout;
+import com.zero.ci.refresh.api.constant.RefreshState;
+import com.zero.ci.refresh.api.listener.OnMultiPurposeListener;
 import com.zero.ci.tool.ToastUtil;
 import com.zero.ci.widget.recyclerview.OnItemClickListener;
 import com.zero.ci.widget.recyclerview.OnItemMenuClickListener;
@@ -52,13 +58,13 @@ import io.rong.imkit.RongIM;
  */
 public class ChatGroupFragment
         extends BaseFragment<ChatGroupContract.View, ChatGroupPresenterImpl>
-        implements ChatGroupContract.View {
+        implements ChatGroupContract.View ,SwipeRefreshLayout.OnRefreshListener{
     View mView;
     View emptyView;
     @BindView(R.id.chat_group_srv)
     SwipeRecyclerView mChatGroupSrv;
     @BindView(R.id.chat_group_zrl)
-    ZRefreshLayout mChatGroupZrl;
+    SwipeRefreshLayout mChatGroupZrl;
     Unbinder unbinder;
 
     List<ChatGroupEntity> mChatGroupEntityList;
@@ -78,12 +84,9 @@ public class ChatGroupFragment
         mPresenter = new ChatGroupPresenterImpl();
         mPresenter.onAttach(getActivity(), this);
         mPresenter.listLoad();
-
         initAdapter();
-
         mGroupMemberDialog = new ChatGroupMemberDialog(getActivity());
         mNoMemberDialog = new ChatGroupNoMemberDialog(getActivity());
-
         mGroupMemberDialog.setGroupMemberListener(new ChatGroupMemberDialog.GroupMemberListener() {
             @Override
             public void onGroupMemberListener() {
@@ -107,7 +110,15 @@ public class ChatGroupFragment
 
             }
         });
-
+        mChatGroupZrl.setOnRefreshListener(this);//设置刷新监听器
+//        mChatGroupZrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                mPresenter.listLoad();
+//                initAdapter();
+//                mChatGroupZrl.setRefreshing(false);
+//            }
+//        });
         return mView;
     }
 
@@ -115,8 +126,6 @@ public class ChatGroupFragment
     private void initAdapter() {
         mChatGroupEntityList = new ArrayList<>();
         mChatGroupAdapter = new ChatGroupAdapter(R.layout.adapter_chat_group, mChatGroupEntityList);
-
-
         mChatGroupSrv.setLayoutManager(new LinearLayoutManager(getActivity()));
         mChatGroupSrv.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -228,12 +237,14 @@ public class ChatGroupFragment
         }
 
     }
-
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
+    @Override
+    public void onRefresh() {
+        mPresenter.listLoad();
+        mChatGroupZrl.setRefreshing(false);
+    }
 }

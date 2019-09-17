@@ -236,7 +236,6 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         getdata();
         iniBanner();
         bottomInit();
-        setAccompanyData();
         addvptab();
         return mView;
     }
@@ -283,42 +282,6 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
         mBotNav.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), APPContents.FONTS_BOLD));
     }
 
-    private void setAccompanyData() {
-        mAccompanyJvp.setTransitionEffect(JazzyViewPager.TransitionEffect.Standard);
-        mAccompanyJvp.setOnPageChangeListener(new MyPageChangeListener());
-        AccompanyJvAdapter accompanyJvAdapter = new AccompanyJvAdapter(getActivity(), mAccompanyJvp);
-        mAccompanyJvp.setAdapter(accompanyJvAdapter);
-
-        //ViewPager切换的监听事件
-        mAccompanyJvp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                position = position % 1;// 需要对position的值进行重新赋值，否则会造成数组越界
-                // 更新小圆点的显示
-                for (int i = 0; i < 1; i++) {
-                    ImageView iv = (ImageView) mLinear.getChildAt(i);
-                    // 当前滑到的是那一页就让第几个小圆点处于选中状态
-                    if (position == i) {
-                        iv.setEnabled(true);
-                    } else {
-                        iv.setEnabled(false);
-                    }
-                }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
-        initPoint();
-    }
 
     private void initPoint() {
         for (int i = 0; i < 1; i++) {
@@ -543,7 +506,6 @@ public class AccompanyFragment extends BaseFragment<AccompanyContract.View, Acco
             subjectBeas.setTitle("更多");
             subjectBeas.setId(0);
             recyBaee.getSubject().add(subjectBeas);
-
             getlabys(recyBaee);
         } catch (Exception e) {
             e.printStackTrace();

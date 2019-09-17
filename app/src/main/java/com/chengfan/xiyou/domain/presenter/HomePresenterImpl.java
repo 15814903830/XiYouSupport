@@ -31,7 +31,6 @@ public class HomePresenterImpl
             public void onNetNext(HomeBannerEntity result) {
                 mView.homePageLoad(result);
             }
-
             @Override
             public void onNetError(Throwable e) {
 

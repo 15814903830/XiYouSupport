@@ -1,6 +1,7 @@
 package com.chengfan.xiyou.ui.main;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,8 +28,10 @@ import com.chengfan.xiyou.domain.model.entity.AccompanyEntity;
 import com.chengfan.xiyou.okhttp.HttpCallBack;
 import com.chengfan.xiyou.okhttp.OkHttpUtils;
 import com.chengfan.xiyou.okhttp.RequestParams;
+import com.chengfan.xiyou.ui.WebActivity;
 import com.chengfan.xiyou.ui.accompany.AccompanyUserInfoActivity;
 import com.chengfan.xiyou.ui.login.LoginActivity;
+import com.chengfan.xiyou.utils.AppData;
 import com.zero.ci.tool.ForwardUtil;
 
 import org.json.JSONArray;
@@ -174,9 +177,18 @@ public class RecommendFragment extends Fragment implements HttpCallBack {
             adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                    Bundle toBundle = new Bundle();
-                    toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, mAccompanyEntityList.getAccompanyPlay().get(position).getId());
-                    ForwardUtil.getInstance(getActivity()).forward(AccompanyUserInfoActivity.class, toBundle);
+                    int id = mAccompanyEntityList.getAccompanyPlay().get(position).getMemberNews().getId();
+                    String userId = AppData.getString(AppData.Keys.AD_USER_ID);
+                    String url = APIContents.HOST + "/WapNews/MemberNewsVoidDetail?" + "id=" + id + "&memberId=" + userId;
+                    Log.e("initAdapter",url);
+                    Intent intent = new Intent(getActivity(), WebActivity.class);
+                    intent.putExtra(WebActivity.KEY_URL, url);
+                    startActivity(intent);
+
+
+//                    Bundle toBundle = new Bundle();
+//                    toBundle.putInt(APPContents.E_CURRENT_MEMBER_ID, mAccompanyEntityList.getAccompanyPlay().get(position).getId());
+//                    ForwardUtil.getInstance(getActivity()).forward(AccompanyUserInfoActivity.class, toBundle);
                 }
             });
         }

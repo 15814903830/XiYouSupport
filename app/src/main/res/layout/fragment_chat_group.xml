@@ -4,16 +4,14 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-
-    <com.zero.ci.refresh.ZRefreshLayout
-        android:id="@+id/chat_group_zrl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/chat_group_zrl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
 
         <com.zero.ci.widget.recyclerview.SwipeRecyclerView
             android:id="@+id/chat_group_srv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
-    </com.zero.ci.refresh.ZRefreshLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

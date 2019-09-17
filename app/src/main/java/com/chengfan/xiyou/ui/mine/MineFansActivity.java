@@ -49,7 +49,7 @@ public class MineFansActivity extends BaseActivity {
 
         mXyMiddleTv.setText(getResources().getText(R.string.fans_title_txt));
 
-        mFansWv.loadUrl("http://xy.gx11.cn/Wap/Fans?id=" + AppData.getString(AppData.Keys.AD_USER_ID) + "&page=1&limit=0");
+        mFansWv.loadUrl("http://api.maihui111.com/Wap/Fans?id=" + AppData.getString(AppData.Keys.AD_USER_ID) + "&page=1&limit=0");
 
     }
 

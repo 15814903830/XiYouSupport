@@ -64,7 +64,7 @@ import io.rong.imkit.RongIM;
  * @DATE : 2019-07-10/19:47
  * @Description: 创建群聊
  */
-public class ChatCreateGroupActivity
+public class    ChatCreateGroupActivity
         extends BaseActivity<ChatGroupCreateContract.View, ChatGroupCreatePresenterImpl>
         implements ChatGroupCreateContract.View, HttpCallBack {
     @BindView(R.id.xy_middle_tv)
@@ -159,7 +159,6 @@ public class ChatCreateGroupActivity
         } else {
             ToastUtil.show(createGroupEntity.getMsg());
         }
-
 
     }
 
@@ -272,7 +271,7 @@ public class ChatCreateGroupActivity
         bean.setAvatarUrl(imagePath);
 
         mGroupChatImage = APIContents.HOST + "/" + imagePath;
-       // Logger.d("ChatCreateGroupActivity ===>>>  " + new Gson().toJson(bean));
+       Logger.d("ChatCreateGroupActivity ===>>>  " + new Gson().toJson(bean));
         mPresenter.createParameter(bean);
     }
 

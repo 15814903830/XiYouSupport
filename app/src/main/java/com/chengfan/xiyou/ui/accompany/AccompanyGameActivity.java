@@ -243,12 +243,10 @@ public class AccompanyGameActivity extends BaseActivity<AccompanyGameContract.Vi
 
 
     public void initlistadapter(List<LableBase> listlable) {
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         AddressAdapter addressAdapter = new AddressAdapter(this,list,listlable);
         recyclerView.setAdapter(addressAdapter);
-        addressAdapter.notifyDataSetChanged();
         addressAdapter.setOnItemClickListener(new AddressAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView parent, View view, int position, int data,List<String> icon) {

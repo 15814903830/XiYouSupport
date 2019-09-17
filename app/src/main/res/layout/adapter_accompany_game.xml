@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:textSize="12sp"
                 android:textColor="#D1AE81"
-                android:text="12s"
+                android:text=""
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
         </LinearLayout>

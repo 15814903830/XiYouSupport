@@ -46,6 +46,7 @@ import com.github.zackratos.ultimatebar.UltimateBar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zero.ci.base.BaseActivity;
+import com.zero.ci.network.zrequest.conver.IFromJson;
 import com.zero.ci.network.zrequest.request.HttpRequest;
 import com.zero.ci.network.zrequest.response.AbstractResponse;
 import com.zero.ci.refresh.ZRefreshLayout;
@@ -138,13 +139,17 @@ public class MineFamilyActivity extends BaseActivity<MineFamilyContract.View, Mi
         initZrl();
         initWebSettings();
 
-//        webView.setWebViewClient(new WebViewClient(){
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-//                return super.shouldOverrideUrlLoading(view, url);
-//            }
-//        });
-    }
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    finish();
+                return true;
+            }
+        });
+        initWebSettings();
+
+
+}
     private void getdata() {
         new Thread(new Runnable() {
             @Override

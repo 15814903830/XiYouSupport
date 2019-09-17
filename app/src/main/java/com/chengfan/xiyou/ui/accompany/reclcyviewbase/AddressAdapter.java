@@ -3,6 +3,7 @@ package com.chengfan.xiyou.ui.accompany.reclcyviewbase;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
+import android.support.annotation.UiThread;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -107,22 +108,28 @@ public class AddressAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         }
 
-        try {
-            if (mList.get(i).getAudioPath().equals("")) {
-            } else {
-                ((ViewHolder) viewHolder).linearLayout.setVisibility(View.VISIBLE);
-                MediaPlayer md = new MediaPlayer();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 try {
-                    md.setDataSource(APIContents.HOST + "/" + mList.get(i).getAudioPath());//获取音频时长
-                    md.prepare();
-                    ((ViewHolder) viewHolder).tv_time.setText(md.getDuration() / 1000 + "s");
+                    if (mList.get(i).getAudioPath().equals("")) {
+                    } else {
+                        ((ViewHolder) viewHolder).linearLayout.setVisibility(View.VISIBLE);
+                        MediaPlayer md = new MediaPlayer();
+                        try {
+                            md.setDataSource(APIContents.HOST + "/" + mList.get(i).getAudioPath());//获取音频时长
+                            md.prepare();
+                            ((ViewHolder) viewHolder).tv_time.setText(md.getDuration() / 1000 + "s");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }).start();
 
         ((ViewHolder) viewHolder).linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override

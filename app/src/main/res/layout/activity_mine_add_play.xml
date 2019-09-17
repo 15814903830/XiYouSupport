@@ -27,10 +27,10 @@
                 android:layout_height="260dp">
 
                 <ImageView
-                    android:adjustViewBounds="true"
                     android:id="@+id/add_content_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
                      />
 
                 <LinearLayout

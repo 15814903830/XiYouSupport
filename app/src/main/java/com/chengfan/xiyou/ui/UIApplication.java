@@ -59,13 +59,12 @@ public class UIApplication extends BaseApplication {
         PushConfig config = new PushConfig.Builder()
                 .enableHWPush(true)
                .enableMiPush("2882303761518161218", "5881816162218")
-//                .enableMeiZuPush("魅族 appId", "魅族 appKey")
+                .enableMeiZuPush("1007622", "0993c0540a8546bbbe399166c4d99a4e")
                   .enableFCM(true)
-                //.enableVivoPush(true)
-               // .enableOppoPush(OPPO_App_KEY, OPPO_App_Secret)
+                .enableVivoPush(true)
+                .enableOppoPush("c4c53cc9352a45ee8d4adf0850ed7ea6", "494656d7b83243a18d60195cdca5ae9b")
                 .build();
         RongPushClient.setPushConfig(config);
-
         RongPushClient.setPushConfig(config);
         LitePal.initialize(this);
         RongIM.init(this);
